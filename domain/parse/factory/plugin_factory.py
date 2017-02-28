@@ -18,22 +18,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
-import getopt
-from exceptions.no_installation_file_provided import NoInstallationFileProvided
+from domain.plugin import Plugin
 
-class ArgumentParser:
-    def __init__(self, args):
-        self.options, self.args = getopt.getopt(args, "i:", ["installer-file="])
-        self.inputFile = None
+class PluginFactory:
+    def __init__(self, json_plugins_array):
+        """
+        Default constructor
 
-    def parse(self):
-        for option, argument in self.options:            
-            if(option in ("-i","--installer-file")):
-                self.inputFile = argument
-        if(self.inputFile == None):
-            raise NoInstallationFileProvided("No installation file provided")
+        :param json_plugins_array: A JSON-array containing all the Plugins as JSON-objects
+        """
+        self.json_plugins_array = json_plugins_array
 
 
-
-                
-    
+    def load_plugins(self):
+        plugin_list = []
+        for plugin in self.json_plugins_array:
+            plugin_object = Plugin(plugin["name"], plugin["commands"])
+            plugin_list.append(plugin_object)
+        return plugin_list

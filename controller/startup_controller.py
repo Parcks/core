@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 import os
+from controller.installation_controller import InstallationController
 from exceptions.permission_denied_error import PermissionDeniedError
 from cli.argument_parser import ArgumentParser
 
@@ -31,11 +32,19 @@ class StartupController:
         print ("Parcks v. {:0.2f} - (c) JValck - Setarit".format(self.version))
         if(not self.executedAsRoot()):
             raise PermissionDeniedError("Parcks must be runned as root")
-        self.parseArguments()
+        installationFile = self.parse_arguments()
+        self.boot_install_controller(installationFile)
 
     def executedAsRoot(self):
         return os.geteuid() == 0
 
-    def parseArguments(self):
+    def parse_arguments(self):
+        """        
+        @return: The location of the installation file 
+        """
         self.argumentParser.parse()
-        print(self.argumentParser.inputFile)
+        return self.argumentParser.inputFile
+
+    def boot_install_controller(self, installationFile):
+        controller = InstallationController(installationFile)
+        controller.run()

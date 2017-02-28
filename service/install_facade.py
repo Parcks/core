@@ -18,22 +18,21 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
-import getopt
-from exceptions.no_installation_file_provided import NoInstallationFileProvided
+from domain.parse.installation_file_parser import InstallationFileParser
 
-class ArgumentParser:
-    def __init__(self, args):
-        self.options, self.args = getopt.getopt(args, "i:", ["installer-file="])
-        self.inputFile = None
+class InstallFacade:
+    def __init__(self, installFileLocation):
+        self.installFileLocation = installFileLocation
 
-    def parse(self):
-        for option, argument in self.options:            
-            if(option in ("-i","--installer-file")):
-                self.inputFile = argument
-        if(self.inputFile == None):
-            raise NoInstallationFileProvided("No installation file provided")
+    def parse_installation_file(self):
+        parser = InstallationFileParser(self.installFileLocation)
+        self.software_catalog = parser.parse()
 
+    def install(self):
+        print(self.software_catalog.packages[0].plugins)
+        
 
-
-                
     
+
+    
+        
