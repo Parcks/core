@@ -18,10 +18,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
+from __future__ import absolute_import
 import os
-from controller.installation_controller import InstallationController
-from exceptions.permission_denied_error import PermissionDeniedError
-from cli.argument_parser import ArgumentParser
+from src.controller.installation_controller import InstallationController
+from src.exceptions.permission_denied_error import PermissionDeniedError
+from src.cli.argument_parser import ArgumentParser
 
 class StartupController:
     def __init__(self, args):

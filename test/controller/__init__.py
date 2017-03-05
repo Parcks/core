@@ -18,21 +18,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
-from domain.plugin import Plugin
-
-class PluginFactory:
-    def __init__(self, json_plugins_array):
-        """
-        Default constructor
-
-        :param json_plugins_array: A JSON-array containing all the Plugins as JSON-objects
-        """
-        self.json_plugins_array = json_plugins_array
-
-
-    def load_plugins(self):
-        plugin_list = []
-        for plugin in self.json_plugins_array:
-            plugin_object = Plugin(plugin["name"], plugin["commands"])
-            plugin_list.append(plugin_object)
-        return plugin_list

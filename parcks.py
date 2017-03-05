@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 Environment Packages Installer
 Copyright (C) 2017  JValck - Setarit
@@ -18,12 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
-from service.install_facade import InstallFacade
+import sys
+from src.main import start
 
-class InstallationController:
-    def __init__(self, installFileLocation):
-        self.facade = InstallFacade(installFileLocation)        
-
-    def run(self):
-        self.facade.parse_installation_file()
-        self.facade.install()
+if __name__ == "__main__":
+    start(sys.argv[1:])

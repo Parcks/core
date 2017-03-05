@@ -18,17 +18,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
-from domain.installable import Installable
+from __future__ import absolute_import
+from src.domain.package import Package
+from src.domain.parse.factory.plugin_factory import PluginFactory
 
-class Plugin(Installable):
-    def __init__(self, name, commands):
+class PackageFactory:
+    def __init__(self, json_package_array):
         """
         Default constructor
-        
-        :param name: The name of the package
-        :param cammands: An array containing all the commands to be executed
+        :param json_package_array: An JSON-array containing Package JSON-objects
         """
-        super().__init__(name)
+        self.json_package_array = json_package_array
 
-    def install(self):
-        print("install plugin {:s}".format(self.name))
+    def load_packages(self):
+        package_list = []
+        for package in self.json_package_array:
+            package_object = Package(package["package"])
+            plugin_factory = PluginFactory(package["post-installation"])
+            package_object.plugins = plugin_factory.load_plugins()
+            package_list.append(package_object)
+        return package_list
+            
+        

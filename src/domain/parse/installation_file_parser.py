@@ -18,9 +18,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
-from domain.parse.parsable import Parsable
-from domain.software_catalog import SoftwareCatalog
-from domain.parse.factory.package_factory import PackageFactory
+from __future__ import absolute_import
+from src.domain.parse.parsable import Parsable
+from src.domain.software_catalog import SoftwareCatalog
+from src.domain.parse.factory.package_factory import PackageFactory
 import json
 
 class InstallationFileParser(Parsable):

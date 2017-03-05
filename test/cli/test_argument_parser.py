@@ -18,8 +18,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
-from exceptions.error import Error
+from __future__ import absolute_import
+import unittest
+from src.cli.argument_parser import ArgumentParser
 
-class NoInstallationFileProvided(Error):
-    def __init(self, message):
-        self.message = message
+class TestArgumentParser(unittest.TestCase):
+    def test_parse_sets_input_file(self):
+        parser = ArgumentParser("-i file.parcks")
+        parser.parse()
+        ##self.assertEqual("file.parcks", parser.inputFile)
+        self.assertTrue("false")

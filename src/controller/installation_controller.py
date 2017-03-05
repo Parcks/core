@@ -18,21 +18,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
-from domain.parse.installation_file_parser import InstallationFileParser
+from __future__ import absolute_import
+from src.service.install_facade import InstallFacade
 
-class InstallFacade:
+class InstallationController:
     def __init__(self, installFileLocation):
-        self.installFileLocation = installFileLocation
+        self.facade = InstallFacade(installFileLocation)        
 
-    def parse_installation_file(self):
-        parser = InstallationFileParser(self.installFileLocation)
-        self.software_catalog = parser.parse()
-
-    def install(self):
-        print(self.software_catalog.packages[0].plugins)
-        
-
-    
-
-    
-        
+    def run(self):
+        self.facade.parse_installation_file()
+        self.facade.install()

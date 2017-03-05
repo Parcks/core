@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 """
 Environment Packages Installer
 Copyright (C) 2017  JValck - Setarit
@@ -20,13 +18,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
-from __future__ import absolute_import
-import sys
-from controller.startup_controller import StartupController
-
-def start(args):    
-    startupController = StartupController(args)
-    startupController.run()
-
-if __name__ == "__main__":
-    start(sys.argv[1:])

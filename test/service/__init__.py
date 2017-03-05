@@ -18,9 +18,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
-from exceptions.error import Error
-
-class PermissionDeniedError(Error):
-    def __init__(self, message, path = None):
-        self.message = message
-        self.path = path
