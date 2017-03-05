@@ -19,23 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-import unittest
-from src.cli.argument_parser import ArgumentParser
-from src.exceptions.no_installation_file_provided_error import NoInstallationFileProvidedError
+from src.exceptions.error import Error
 
-class TestArgumentParser(unittest.TestCase):
-    def test_parse_sets_input_file(self):
-        parser = ArgumentParser("-i file.parcks".split())
-        parser.parse()
-        self.assertEqual("file.parcks", parser.inputFile)
-
-    def test_parse_sets_input_file_long_parameter(self):
-        parser = ArgumentParser("--installer-file=file.parcks".split())
-        parser.parse()
-        self.assertEqual("file.parcks", parser.inputFile)
-
-    def test_parse_raises_NoInstallationFilePassedError(self):
-        parser = ArgumentParser([])
-        with self.assertRaises(NoInstallationFileProvidedError):
-            parser.parse()
-        
+class NoInstallationFileProvidedError(Error):
+    def __init(self, message):
+        self.message = message

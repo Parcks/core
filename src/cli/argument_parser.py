@@ -20,16 +20,24 @@ Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
 import getopt
-from src.exceptions.no_installation_file_provided import NoInstallationFileProvided
+from src.exceptions.no_installation_file_provided_error import NoInstallationFileProvidedError
 
 class ArgumentParser:
     def __init__(self, args):
+        """
+        Default constructor
+        :param args: The arguments from the command-line
+        :type args: list of str
+        """
         self.options, self.args = getopt.getopt(args, "i:", ["installer-file="])
         self.inputFile = None
 
     def parse(self):
+        """
+        Parses the command-line arguments and sets self.inputFile
+        """
         for option, argument in self.options:            
             if(option in ("-i","--installer-file")):
                 self.inputFile = argument
         if(self.inputFile == None):
-            raise NoInstallationFileProvided("No installation file provided")
+            raise NoInstallationFileProvidedError("No installation file provided")
