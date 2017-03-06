@@ -19,44 +19,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-import unittest,json
-from src.domain.parse.factory.plugin_factory import PluginFactory
+from src.domain.plugin import Plugin
 
-class TestPluginFactory(unittest.TestCase):
-    def setUp(self):
-        self.create_valid_json()
-        self.create_invalid_json()
-
-    def create_valid_json(self):
-        JSON = """\
-        [
-	    {
-		"type":"plugin",
-		"name":"composer",
-		"url":"http://www.example.com"
-	    },
-	    {
-		"type":"commands",
-		"cmds":["cp","mv"]
-	    }
-	]
+class PostInstallationParser:
+    def __init__(self, json_post_installation_array):
         """
-        self.validJSON = json.loads(JSON)
+        Default constructor
 
-    def create_invalid_json(self):
-        JSON = """\
-        [
-	    {
-		"type":"plugin",
-		"name":"composer",
-		"url":"http://www.example.com"
-	    },
-	    {		
-		"cmds":["cp","mv"]
-	    }
-	]
+        :param json_plugins_array: A JSON-array containing all post-installation actions (plugin, commands)
         """
-        self.invalidJSON = json.loads(JSON)
+        self.json_plugins_array = json_post_installation_array
 
-    
-        
+
+    def parse_post_installation(self):
+        plugin_list = []
+        for plugin in self.json_plugins_array:
+            plugin_object = self.load_post_installation_object(plugin)
+            plugin_list.append(plugin_object)
+        return plugin_list
+
+    def load_post_installation_object(self, post_installation_json_object):
+        print(post_installation_json_object)

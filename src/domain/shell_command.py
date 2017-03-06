@@ -19,21 +19,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.plugin import Plugin
+from src.domain.installable import Installable
 
-class PluginFactory:
-    def __init__(self, json_plugins_array):
+class ShellCommand(Installable):
+    def __init__(self, asRoot=False, commands):
         """
         Default constructor
-
-        :param json_plugins_array: A JSON-array containing all the Plugins as JSON-objects
+        :param commands: The commands to be executed
+        :type commands: list of str
         """
-        self.json_plugins_array = json_plugins_array
+        super().__init__(None)
+        self.commands = commands
 
-
-    def load_plugins(self):
-        plugin_list = []
-        for plugin in self.json_plugins_array:
-            plugin_object = Plugin(plugin["name"], plugin["commands"])
-            plugin_list.append(plugin_object)
-        return plugin_list
+    def install(self):
+        print("Shell Command installation")

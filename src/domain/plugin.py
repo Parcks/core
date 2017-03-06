@@ -22,12 +22,16 @@ from __future__ import absolute_import
 from src.domain.installable import Installable
 
 class Plugin(Installable):
-    def __init__(self, name, commands):
+    def __init__(self, name, url, shell=None):
         """
         Default constructor
         
         :param name: The name of the package
-        :param cammands: An array containing all the commands to be executed
+        :param url: The url of the plugin to be downloaded
+        :param shell: The Shell object of the plugin or None if it has to be downloaded
+        :type name: str
+        :type url: str
+        :type shell: src.domain.shell.Shell
         """
         super().__init__(name)
 

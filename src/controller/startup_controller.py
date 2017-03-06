@@ -26,17 +26,18 @@ from src.cli.argument_parser import ArgumentParser
 
 class StartupController:
     def __init__(self, args):
-        self.version = 1.0
+        self.version = 2.0
         self.argumentParser = ArgumentParser(args)
 
     def run(self):
-        print ("Parcks v. {:0.2f} - (c) JValck - Setarit".format(self.version))
-        if(not self.executedAsRoot()):
-            raise PermissionDeniedError("Parcks must be runned as root")
+        print ("Parcks v.{:0.2f} - (c) JValck - Setarit".format(self.version))
         installationFile = self.parse_arguments()
         self.boot_install_controller(installationFile)
 
     def executedAsRoot(self):
+        """
+        deprecated:: 2.0
+        """
         return os.geteuid() == 0
 
     def parse_arguments(self):

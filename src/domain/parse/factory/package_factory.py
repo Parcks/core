@@ -20,7 +20,7 @@ Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
 from src.domain.package import Package
-from src.domain.parse.factory.plugin_factory import PluginFactory
+from src.domain.parse.factory.post_installation_parser import PostInstallationParser
 
 class PackageFactory:
     def __init__(self, json_package_array):
@@ -31,12 +31,15 @@ class PackageFactory:
         self.json_package_array = json_package_array
 
     def load_packages(self):
+        """
+        Loads the packages from the JSON-array
+        :returns: A list of packages or an empty list if no packages specified
+        :rtype: list of Package
+        """
         package_list = []
         for package in self.json_package_array:
             package_object = Package(package["package"])
-            plugin_factory = PluginFactory(package["post-installation"])
-            package_object.plugins = plugin_factory.load_plugins()
+            post_installation_parser = PostInstallationParser(package["post-installation"])
+            package_object.plugins = post_installation_parser.parse_post_installation()
             package_list.append(package_object)
         return package_list
-            
-        

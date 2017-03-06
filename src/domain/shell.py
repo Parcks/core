@@ -19,44 +19,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-import unittest,json
-from src.domain.parse.factory.plugin_factory import PluginFactory
+from src.domain.installable import Installable
 
-class TestPluginFactory(unittest.TestCase):
-    def setUp(self):
-        self.create_valid_json()
-        self.create_invalid_json()
-
-    def create_valid_json(self):
-        JSON = """\
-        [
-	    {
-		"type":"plugin",
-		"name":"composer",
-		"url":"http://www.example.com"
-	    },
-	    {
-		"type":"commands",
-		"cmds":["cp","mv"]
-	    }
-	]
+class Shell(Installable):
+    def __init__(self, shellCommands):
         """
-        self.validJSON = json.loads(JSON)
-
-    def create_invalid_json(self):
-        JSON = """\
-        [
-	    {
-		"type":"plugin",
-		"name":"composer",
-		"url":"http://www.example.com"
-	    },
-	    {		
-		"cmds":["cp","mv"]
-	    }
-	]
+        Default constructor
+        :param shellCommands: The shell commands to be executed
+        :type shellCommands: src.domain.shell_command.ShellCommand
         """
-        self.invalidJSON = json.loads(JSON)
+        super().__init__(None)
+        self.shellCommands = shellCommands
 
-    
-        
+    def install(self):
+        print("shell")
