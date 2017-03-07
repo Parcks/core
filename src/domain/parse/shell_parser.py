@@ -37,4 +37,4 @@ class ShellParser:
         for json_command in self.shell_json:
             parser = ShellCommandParser(json_command)
             shell_commands_list.append(parser.parse_shell_command())
-        return shell_commands_list
+        return Shell(shell_commands_list)

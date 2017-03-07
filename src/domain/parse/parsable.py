@@ -20,8 +20,9 @@ Setarit - support[at]setarit.com
 """
 from abc import ABCMeta, abstractmethod
 
-class Parsable(metaclass=ABCMeta):
+class Parsable:
     def __init__(self, filePath):
+        __metaclass__ = ABCMeta
         self.filePath = filePath
         
     @abstractmethod

@@ -31,6 +31,7 @@ class ShellCommand(Installable):
         :type asRoot: bool
         """
         super().__init__(None)
+        self.asRoot = asRoot
         self.commands = commands
 
     def install(self):

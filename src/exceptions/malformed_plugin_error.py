@@ -18,13 +18,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
-from abc import ABCMeta, abstractmethod
+from __future__ import absolute_import
+from src.exceptions.error import Error
 
-class Installable:
-    def __init__(self, name):
-        __metaclass__=ABCMeta
-        self.name = name
-        
-    @abstractmethod
-    def install(self):
-        pass
+class MalformedPluginError(Error):
+    def __init(self, message):
+        self.message = message

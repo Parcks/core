@@ -21,11 +21,14 @@ Setarit - support[at]setarit.com
 from __future__ import absolute_import
 import unittest,json
 from src.domain.parse.factory.post_installation_parser import PostInstallationParser
+from src.domain.parse.plugin_parser import PluginParser
+from src.domain.parse.shell_parser import ShellParser
+from unittest.mock import patch
 
 class TestPostInstallationParser(unittest.TestCase):
     def setUp(self):
         self.create_valid_json()
-        self.create_invalid_json()
+        self.parser = PostInstallationParser(self.validJSON)
 
     def create_valid_json(self):
         JSON = """\
@@ -34,29 +37,33 @@ class TestPostInstallationParser(unittest.TestCase):
 		"type":"plugin",
 		"name":"composer",
 		"url":"http://www.example.com"
-	    },
-	    {
-		"type":"commands",
-		"cmds":["cp","mv"]
-	    }
+            },
+            {
+                "type":"shell",
+		"cmds":[
+                    {
+			"root":true,
+			"do":["whoami","ls -al"]
+                    },
+                    {   
+			"root":false,
+			"do":["pwd"]
+                    }
+		]
+            }
 	]
         """
         self.validJSON = json.loads(JSON)
 
-    def create_invalid_json(self):
-        JSON = """\
-        [
-	    {
-		"type":"plugin",
-		"name":"composer",
-		"url":"http://www.example.com"
-	    },
-	    {		
-		"cmds":["cp","mv"]
-	    }
-	]
-        """
-        self.invalidJSON = json.loads(JSON)
+    @patch.object(PluginParser, 'load_plugin')
+    @patch.object(ShellParser, 'load_shell')
+    def test_load_post_installation_object_calls_right_parser(self, mocked_shell_parser, mocked_plugin_parser):        
+        self.parser.parse_post_installation()
+        self.assertEqual(1, mocked_plugin_parser.call_count)
+        self.assertEqual(1, mocked_shell_parser.call_count)
 
-    
+    @patch.object(PostInstallationParser, 'load_post_installation_object')
+    def test_parse_post_installation_calls_load_post_installation_object_twice_if_two_plugins(self, mocked_parser):
+        self.parser.parse_post_installation()
+        self.assertEqual(2, mocked_parser.call_count)
         

@@ -22,14 +22,14 @@ from __future__ import absolute_import
 from src.domain.installable import Installable
 
 class Shell(Installable):
-    def __init__(self, shellCommands):
+    def __init__(self, shell_commands):
         """
         Default constructor
-        :param shellCommands: The shell commands to be executed
-        :type shellCommands: list of :class:`src.domain.shell_command.ShellCommand`
+        :param shell_commands: The shell commands to be executed
+        :type shell_commands: list of :class:`src.domain.shell_command.ShellCommand`
         """
         super().__init__(None)
-        self.shellCommands = shellCommands
+        self.shell_commands = shell_commands
 
     def install(self):
         print("shell")

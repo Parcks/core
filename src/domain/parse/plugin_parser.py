@@ -22,6 +22,7 @@ from __future__ import absolute_import
 import json
 from src.domain.plugin import Plugin
 from src.domain.parse.shell_parser import ShellParser
+from src.exceptions.malformed_plugin_error import MalformedPluginError
 
 class PluginParser:
     def __init__(self, json_object):
@@ -37,10 +38,13 @@ class PluginParser:
         Loads the plugin object from the JSON representation
         :returns: The loaded Plugin object
         :rtype: src.domain.plugin.Plugin
+        :raises MalformedPluginError: If there is no url nor commands provided
         """
         name = self.json_object["name"]
         url = self.load_url()
         commands = self.load_commands()
+        if self.no_url_and_commands_provided(url, commands):
+            raise MalformedPluginError("No url and commands provided")
         return Plugin(name, url, commands)
         
 
@@ -65,7 +69,10 @@ class PluginParser:
         :rtype: src.domain.shell.Shell
         """
         try:
-            shell_parser = ShellParser(self.json_object["cmds"])
+            shell_parser = ShellParser(self.json_object["cmds"])            
             return shell_parser.load_shell()
         except KeyError:
             return None
+
+    def no_url_and_commands_provided(self, url, commands):
+        return url == None and commands == None
