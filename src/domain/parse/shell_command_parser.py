@@ -19,44 +19,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-import unittest,json
-from src.domain.parse.factory.plugin_factory import PluginFactory
+from src.domain.shell_command import ShellCommand
+import json
 
-class TestPluginFactory(unittest.TestCase):
-    def setUp(self):
-        self.create_valid_json()
-        self.create_invalid_json()
-
-    def create_valid_json(self):
-        JSON = """\
-        [
-	    {
-		"type":"plugin",
-		"name":"composer",
-		"url":"http://www.example.com"
-	    },
-	    {
-		"type":"commands",
-		"cmds":["cp","mv"]
-	    }
-	]
+class ShellCommandParser:
+    def __init__(self, json_shell_command):
         """
-        self.validJSON = json.loads(JSON)
-
-    def create_invalid_json(self):
-        JSON = """\
-        [
-	    {
-		"type":"plugin",
-		"name":"composer",
-		"url":"http://www.example.com"
-	    },
-	    {		
-		"cmds":["cp","mv"]
-	    }
-	]
+        Default constructor
+        :param json_shell_command:The json representation of the ShellCommand
+        :type json_shell_command: json
         """
-        self.invalidJSON = json.loads(JSON)
+        self.json_shell_command = json_shell_command
 
-    
-        
+    def parse_shell_command(self):
+        """
+        Converts the JSON representation to a ShellCommand object
+        :returns: The ShellCommand object
+        :rtype: src.domain.shell_command.ShellCommand
+        """
+        return ShellCommand(self.json_shell_command["do"], self.json_shell_command["root"])

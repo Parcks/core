@@ -22,11 +22,13 @@ from __future__ import absolute_import
 from src.domain.installable import Installable
 
 class ShellCommand(Installable):
-    def __init__(self, asRoot=False, commands):
+    def __init__(self, commands, asRoot=False):
         """
         Default constructor
         :param commands: The commands to be executed
         :type commands: list of str
+        :param asRoot: Indicates if the shell command object should run as root
+        :type asRoot: bool
         """
         super().__init__(None)
         self.commands = commands

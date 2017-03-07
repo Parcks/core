@@ -19,21 +19,44 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
+import unittest,json
+from src.domain.parse.factory.post_installation_parser import PostInstallationParser
 
-class Plugin(Installable):
-    def __init__(self, name, url=None, shell=None):
+class TestPostInstallationParser(unittest.TestCase):
+    def setUp(self):
+        self.create_valid_json()
+        self.create_invalid_json()
+
+    def create_valid_json(self):
+        JSON = """\
+        [
+	    {
+		"type":"plugin",
+		"name":"composer",
+		"url":"http://www.example.com"
+	    },
+	    {
+		"type":"commands",
+		"cmds":["cp","mv"]
+	    }
+	]
         """
-        Default constructor
+        self.validJSON = json.loads(JSON)
+
+    def create_invalid_json(self):
+        JSON = """\
+        [
+	    {
+		"type":"plugin",
+		"name":"composer",
+		"url":"http://www.example.com"
+	    },
+	    {		
+		"cmds":["cp","mv"]
+	    }
+	]
+        """
+        self.invalidJSON = json.loads(JSON)
+
+    
         
-        :param name: The name of the package
-        :param url: The url of the plugin to be downloaded or None
-        :param shell: The Shell object of the plugin or None if it has to be downloaded
-        :type name: str
-        :type url: str
-        :type shell: src.domain.shell.Shell
-        """
-        super().__init__(name)
-
-    def install(self):
-        print("install plugin {:s}".format(self.name))

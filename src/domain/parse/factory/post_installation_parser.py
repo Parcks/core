@@ -20,6 +20,8 @@ Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
 from src.domain.plugin import Plugin
+from src.domain.parse.plugin_parser import PluginParser
+from src.domain.parse.shell_parser import ShellParser
 
 class PostInstallationParser:
     def __init__(self, json_post_installation_array):
@@ -39,4 +41,9 @@ class PostInstallationParser:
         return plugin_list
 
     def load_post_installation_object(self, post_installation_json_object):
-        print(post_installation_json_object)
+        if(post_installation_json_object["type"].upper()=="PLUGIN"):
+            parser = PluginParser(post_installation_json_object)
+            return parser.load_plugin()
+        elif(post_installation_json_object["type"].upper()=="SHELL"):
+            parser = ShellParser(post_installation_json_object["cmds"])
+            return parser.load_shell()

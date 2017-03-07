@@ -26,7 +26,7 @@ class Shell(Installable):
         """
         Default constructor
         :param shellCommands: The shell commands to be executed
-        :type shellCommands: src.domain.shell_command.ShellCommand
+        :type shellCommands: list of :class:`src.domain.shell_command.ShellCommand`
         """
         super().__init__(None)
         self.shellCommands = shellCommands

@@ -19,21 +19,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
+from src.domain.parse.shell_command_parser import ShellCommandParser
+from src.domain.shell import Shell
+import json
 
-class Plugin(Installable):
-    def __init__(self, name, url=None, shell=None):
+class ShellParser:
+    def __init__(self, shell_json):
         """
         Default constructor
-        
-        :param name: The name of the package
-        :param url: The url of the plugin to be downloaded or None
-        :param shell: The Shell object of the plugin or None if it has to be downloaded
-        :type name: str
-        :type url: str
-        :type shell: src.domain.shell.Shell
+        :param shell_json: Contains the ShellCommands as JSON-array
+        :type shell_json: list of json objects
         """
-        super().__init__(name)
+        self.shell_json = shell_json
 
-    def install(self):
-        print("install plugin {:s}".format(self.name))
+    def load_shell(self):
+        shell_commands_list = []
+        for json_command in self.shell_json:
+            parser = ShellCommandParser(json_command)
+            shell_commands_list.append(parser.parse_shell_command())
+        return shell_commands_list
