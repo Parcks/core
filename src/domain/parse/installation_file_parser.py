@@ -26,7 +26,7 @@ import json
 
 class InstallationFileParser(Parsable):
     def __init__(self, filePath):
-        super().__init__(filePath)
+        super(InstallationFileParser, self).__init__(filePath)
         
     def parse(self):
         catalog = None

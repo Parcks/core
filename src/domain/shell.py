@@ -28,7 +28,7 @@ class Shell(Installable):
         :param shell_commands: The shell commands to be executed
         :type shell_commands: list of :class:`src.domain.shell_command.ShellCommand`
         """
-        super().__init__(None)
+        super(Shell, self).__init__()
         self.shell_commands = shell_commands
 
     def install(self):

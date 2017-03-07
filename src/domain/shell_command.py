@@ -30,7 +30,7 @@ class ShellCommand(Installable):
         :param asRoot: Indicates if the shell command object should run as root
         :type asRoot: bool
         """
-        super().__init__(None)
+        super(ShellCommand, self).__init__()
         self.asRoot = asRoot
         self.commands = commands
 

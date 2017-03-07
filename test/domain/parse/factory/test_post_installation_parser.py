@@ -23,7 +23,10 @@ import unittest,json
 from src.domain.parse.factory.post_installation_parser import PostInstallationParser
 from src.domain.parse.plugin_parser import PluginParser
 from src.domain.parse.shell_parser import ShellParser
-from unittest.mock import patch
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 class TestPostInstallationParser(unittest.TestCase):
     def setUp(self):

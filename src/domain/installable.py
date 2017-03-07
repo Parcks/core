@@ -20,8 +20,8 @@ Setarit - support[at]setarit.com
 """
 from abc import ABCMeta, abstractmethod
 
-class Installable:
-    def __init__(self, name):
+class Installable(object):
+    def __init__(self, name = None):
         __metaclass__=ABCMeta
         self.name = name
         

@@ -23,7 +23,10 @@ import unittest, json
 from src.domain.parse.shell_parser import ShellParser
 from src.domain.parse.shell_command_parser import ShellCommandParser
 from src.domain.shell_command import ShellCommand
-from unittest.mock import patch
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 class TestShellParser(unittest.TestCase):
     def setUp(self):

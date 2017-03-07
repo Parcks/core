@@ -23,6 +23,10 @@ import unittest, shutil, tempfile, sys
 from os import path
 import json
 from src.domain.parse.installation_file_parser import InstallationFileParser
+try:
+    FileNotFoundError
+except NameError:
+    FileNotFoundError = IOError
 
 class TestInstallationFileParser(unittest.TestCase):
     def setUp(self):

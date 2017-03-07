@@ -33,7 +33,7 @@ class Plugin(Installable):
         :type url: str
         :type shell: src.domain.shell.Shell
         """
-        super().__init__(name)
+        super(Plugin, self).__init__(name)
         self.url = url
         self.shell = shell
 

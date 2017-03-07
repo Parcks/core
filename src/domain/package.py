@@ -29,7 +29,7 @@ class Package(Installable):
         :param name: The name of the package
         :param plugins: An array containing all the plugins. Can be none
         """
-        super().__init__(name)
+        super(Package, self).__init__(name)
 
     def install(self):
         print("install {:s}".format(self.name))
