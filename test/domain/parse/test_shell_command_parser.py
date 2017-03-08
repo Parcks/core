@@ -44,13 +44,13 @@ class TestShellCommandParser(unittest.TestCase):
         """
         self.invalid_json = json.loads(JSON)
 
-    def test_parse_shell_command_returns_shell_command(self):
+    def test_parse_returns_shell_command(self):
         parser = ShellCommandParser(self.valid_json)
         shell_command = parser.parse()
         self.assertTrue(shell_command.asRoot)
         self.assertTrue(self.check_list_equal(["whoami","ls -al"], shell_command.commands))
 
-    def test_parse_shell_command_raises_key_error_if_invalid_json(self):
+    def test_parse_raises_key_error_if_invalid_json(self):
         parser = ShellCommandParser(self.invalid_json)
         with self.assertRaises(KeyError):
             parser.parse()

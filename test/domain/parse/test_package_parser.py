@@ -57,23 +57,23 @@ class TestPackageParser(unittest.TestCase):
         """
         self.validNoPackages = json.loads(JSON)
 
-    def test_load_packages_loads_correct_packages(self):
+    def test_parse_loads_correct_packages(self):
         parser = PackageParser(self.validMultiplePackages)
         packages = parser.parse()
         self.assertEqual("php", packages[0].name)
         self.assertEqual("git", packages[1].name)
 
-    def test_load_packages_returns_one_package_if_one_package_provided(self):
+    def test_parse_returns_one_package_if_one_package_provided(self):
         parser = PackageParser(self.validJSON)
         packages = parser.parse()
         self.assertEqual(1, len(packages))
 
-    def test_load_packages_returns_two_packages_if_two_packages_provided(self):
+    def test_parse_returns_two_packages_if_two_packages_provided(self):
         parser = PackageParser(self.validMultiplePackages)
         packages = parser.parse()
         self.assertEqual(2, len(packages))
 
-    def test_load_packages_returns_empty_list_if_no_packages_provided(self):
+    def test_parse_returns_empty_list_if_no_packages_provided(self):
         parser = PackageParser(self.validNoPackages)
         packages = parser.parse()
         self.assertEqual(0, len(packages))

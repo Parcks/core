@@ -71,14 +71,14 @@ class TestPluginParser(unittest.TestCase):
         """
         self.valid_plugin_JSON_with_commands = json.loads(JSON)
 
-    def test_load_plugin_returns_plugin(self):
+    def test_parse_returns_plugin(self):
         parser = PluginParser(self.valid_plugin_JSON)
         plugin = parser.parse()
         self.assertEqual("composer", plugin.name)
         self.assertEqual("http://www.example.com", plugin.url)
         self.assertEqual(None, plugin.shell)
 
-    def test_load_plugin_raises_malformed_plugin_error_on_invalid_json(self):
+    def test_parse_raises_malformed_plugin_error_on_invalid_json(self):
         parser = PluginParser(self.invalid_plugin_JSON)
         with self.assertRaises(MalformedPluginError):
             parser.parse()

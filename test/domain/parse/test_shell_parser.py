@@ -67,24 +67,24 @@ class TestShellParser(unittest.TestCase):
         self.valid_zero_JSON = json.loads(JSON)
 
     @patch.object(ShellCommandParser, 'parse')
-    def test_load_shell_calls_shell_command_parser_parse_twice_if_two_commands(self, mock):
+    def test_parse_calls_shell_command_parser_parse_twice_if_two_commands(self, mock):
         parser = ShellParser(self.valid_two_JSON)
         parser.parse()
         self.assertEqual(2, mock.call_count)
 
     @patch.object(ShellCommandParser, 'parse')
-    def test_load_shell_calls_shell_command_parser_parse_once_if_one_commands(self, mock):
+    def test_parse_calls_shell_command_parser_parse_once_if_one_commands(self, mock):
         parser = ShellParser(self.valid_one_JSON)
         parser.parse()
         self.assertEqual(1, mock.call_count)
 
     @patch.object(ShellCommandParser, 'parse')
-    def test_load_shell_calls_shell_command_parser_parse_never_if_no_commands(self, mock):
+    def test_parse_calls_shell_command_parser_parse_never_if_no_commands(self, mock):
         parser = ShellParser(self.valid_zero_JSON)
         parser.parse()
         self.assertEqual(0, mock.call_count)
 
-    def test_load_shell_returns_shell_object(self):
+    def test_parse_returns_shell_object(self):
         parser = ShellParser(self.valid_two_JSON)
         shell_object = parser.parse()
         self.assertEqual(2, len(shell_object.shell_commands))
