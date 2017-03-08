@@ -19,22 +19,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
+from src.domain.parse.json_parsable import JSONParsable
 from src.domain.shell_command import ShellCommand
 import json
 
-class ShellCommandParser:
+class ShellCommandParser(JSONParsable):
     def __init__(self, json_shell_command):
         """
         Default constructor
         :param json_shell_command:The json representation of the ShellCommand
         :type json_shell_command: json
         """
-        self.json_shell_command = json_shell_command
+        super(ShellCommandParser, self).__init__(json_shell_command)
 
-    def parse_shell_command(self):
+    def parse(self):
         """
         Converts the JSON representation to a ShellCommand object
         :returns: The ShellCommand object
         :rtype: src.domain.shell_command.ShellCommand
         """
-        return ShellCommand(self.json_shell_command["do"], self.json_shell_command["root"])
+        return ShellCommand(self.json_object["do"], self.json_object["root"])

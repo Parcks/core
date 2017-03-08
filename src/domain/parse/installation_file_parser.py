@@ -19,24 +19,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.parse.parsable import Parsable
+from src.domain.parse.file_parsable import FileParsable
 from src.domain.software_catalog import SoftwareCatalog
-from src.domain.parse.factory.package_factory import PackageFactory
+from src.domain.parse.package_parser import PackageParser
 import json
 
-class InstallationFileParser(Parsable):
-    def __init__(self, filePath):
-        super(InstallationFileParser, self).__init__(filePath)
+class InstallationFileParser(FileParsable):
+    def __init__(self, file_path):
+        super(InstallationFileParser, self).__init__(file_path)
         
     def parse(self):
         catalog = None
-        with open(self.filePath) as installFile:
+        with open(self.file_path) as installFile:
             data = json.load(installFile)
             catalog = self.create_software_catalog(data)
         return catalog
 
     def create_software_catalog(self, data):
         catalog = SoftwareCatalog(data["name"])
-        packageFactory = PackageFactory(data["install"])
-        catalog.packages = packageFactory.load_packages()        
+        package_parser = PackageParser(data["install"])
+        catalog.packages = package_parser.parse()        
         return catalog

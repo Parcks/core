@@ -20,7 +20,7 @@ Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
 import unittest,json
-from src.domain.parse.factory.post_installation_parser import PostInstallationParser
+from src.domain.parse.post_installation_parser import PostInstallationParser
 from src.domain.parse.plugin_parser import PluginParser
 from src.domain.parse.shell_parser import ShellParser
 try:
@@ -58,15 +58,15 @@ class TestPostInstallationParser(unittest.TestCase):
         """
         self.validJSON = json.loads(JSON)
 
-    @patch.object(PluginParser, 'load_plugin')
-    @patch.object(ShellParser, 'load_shell')
+    @patch.object(PluginParser, 'parse')
+    @patch.object(ShellParser, 'parse')
     def test_load_post_installation_object_calls_right_parser(self, mocked_shell_parser, mocked_plugin_parser):        
-        self.parser.parse_post_installation()
+        self.parser.parse()
         self.assertEqual(1, mocked_plugin_parser.call_count)
         self.assertEqual(1, mocked_shell_parser.call_count)
 
     @patch.object(PostInstallationParser, 'load_post_installation_object')
     def test_parse_post_installation_calls_load_post_installation_object_twice_if_two_plugins(self, mocked_parser):
-        self.parser.parse_post_installation()
+        self.parser.parse()
         self.assertEqual(2, mocked_parser.call_count)
         

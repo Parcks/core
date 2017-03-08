@@ -20,9 +20,9 @@ Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
 import unittest,json
-from src.domain.parse.factory.package_factory import PackageFactory
+from src.domain.parse.package_parser import PackageParser
 
-class TestPackageFactory(unittest.TestCase):
+class TestPackageParser(unittest.TestCase):
     def setUp(self):
         self.create_valid_json()
         self.create_valid_multiple_json()
@@ -58,22 +58,22 @@ class TestPackageFactory(unittest.TestCase):
         self.validNoPackages = json.loads(JSON)
 
     def test_load_packages_loads_correct_packages(self):
-        factory = PackageFactory(self.validMultiplePackages)
-        packages = factory.load_packages()
+        parser = PackageParser(self.validMultiplePackages)
+        packages = parser.parse()
         self.assertEqual("php", packages[0].name)
         self.assertEqual("git", packages[1].name)
 
     def test_load_packages_returns_one_package_if_one_package_provided(self):
-        factory = PackageFactory(self.validJSON)
-        packages = factory.load_packages()
+        parser = PackageParser(self.validJSON)
+        packages = parser.parse()
         self.assertEqual(1, len(packages))
 
     def test_load_packages_returns_two_packages_if_two_packages_provided(self):
-        factory = PackageFactory(self.validMultiplePackages)
-        packages = factory.load_packages()
+        parser = PackageParser(self.validMultiplePackages)
+        packages = parser.parse()
         self.assertEqual(2, len(packages))
 
     def test_load_packages_returns_empty_list_if_no_packages_provided(self):
-        factory = PackageFactory(self.validNoPackages)
-        packages = factory.load_packages()
+        parser = PackageParser(self.validNoPackages)
+        packages = parser.parse()
         self.assertEqual(0, len(packages))

@@ -19,27 +19,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
+from src.domain.parse.json_parsable import JSONParsable
 from src.domain.package import Package
-from src.domain.parse.factory.post_installation_parser import PostInstallationParser
+from src.domain.parse.post_installation_parser import PostInstallationParser
 
-class PackageFactory:
+class PackageParser(JSONParsable):
     def __init__(self, json_package_array):
         """
         Default constructor
         :param json_package_array: An JSON-array containing Package JSON-objects
         """
-        self.json_package_array = json_package_array
+        super(PackageParser, self).__init__(json_package_array)
 
-    def load_packages(self):
+    def parse(self):
         """
         Loads the packages from the JSON-array
         :returns: A list of packages or an empty list if no packages specified
         :rtype: list of Package
         """
         package_list = []
-        for package in self.json_package_array:
+        for package in self.json_object:
             package_object = Package(package["package"])
             post_installation_parser = PostInstallationParser(package["post-installation"])
-            package_object.plugins = post_installation_parser.parse_post_installation()
+            package_object.plugins = post_installation_parser.parse()
             package_list.append(package_object)
         return package_list

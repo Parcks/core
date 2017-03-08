@@ -46,14 +46,14 @@ class TestShellCommandParser(unittest.TestCase):
 
     def test_parse_shell_command_returns_shell_command(self):
         parser = ShellCommandParser(self.valid_json)
-        shell_command = parser.parse_shell_command()
+        shell_command = parser.parse()
         self.assertTrue(shell_command.asRoot)
         self.assertTrue(self.check_list_equal(["whoami","ls -al"], shell_command.commands))
 
     def test_parse_shell_command_raises_key_error_if_invalid_json(self):
         parser = ShellCommandParser(self.invalid_json)
         with self.assertRaises(KeyError):
-            parser.parse_shell_command()
+            parser.parse()
 
     def check_list_equal(self, listOne, listTwo):
         return len(listOne) == len(listTwo) and sorted(listOne) == sorted(listTwo)

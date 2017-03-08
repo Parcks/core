@@ -20,22 +20,28 @@ Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
 from src.domain.plugin import Plugin
+from src.domain.parse.json_parsable import JSONParsable
 from src.domain.parse.plugin_parser import PluginParser
 from src.domain.parse.shell_parser import ShellParser
 
-class PostInstallationParser:
+class PostInstallationParser(JSONParsable):
     def __init__(self, json_post_installation_array):
         """
         Default constructor
 
         :param json_plugins_array: A JSON-array containing all post-installation actions (plugin, commands)
         """
-        self.json_plugins_array = json_post_installation_array
+        super(PostInstallationParser, self).__init__(json_post_installation_array)
 
 
-    def parse_post_installation(self):
+    def parse(self):
+        """
+        Parses the post-installation actions an creates a list of Plugins
+        :returns: A list of :class:`src.domain.plugin.Plugin`s
+        :rtype: list
+        """
         plugin_list = []
-        for plugin in self.json_plugins_array:
+        for plugin in self.json_object:
             plugin_object = self.load_post_installation_object(plugin)
             plugin_list.append(plugin_object)
         return plugin_list
@@ -43,7 +49,7 @@ class PostInstallationParser:
     def load_post_installation_object(self, post_installation_json_object):
         if(post_installation_json_object["type"].upper()=="PLUGIN"):
             parser = PluginParser(post_installation_json_object)
-            return parser.load_plugin()
+            return parser.parse()
         elif(post_installation_json_object["type"].upper()=="SHELL"):
             parser = ShellParser(post_installation_json_object["cmds"])
-            return parser.load_shell()
+            return parser.parse()

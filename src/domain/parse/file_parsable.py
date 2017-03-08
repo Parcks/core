@@ -18,3 +18,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
+from __future__ import absolute_import
+from src.domain.parse.parsable import Parsable
+from abc import abstractmethod
+
+class FileParsable(Parsable):
+    def __init__(self, file_path):
+        super(FileParsable, self).__init__()
+        """
+        Default constructor
+        :param file_path: The path to parse
+        :type file_path: str
+        """
+        self.file_path = file_path
+
+    @abstractmethod
+    def parse(self):
+        pass

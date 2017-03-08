@@ -18,3 +18,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - support[at]setarit.com
 """
+from __future__ import absolute_import
+from src.domain.parse.parsable import Parsable
+from abc import abstractmethod
+
+class JSONParsable(Parsable):
+    def __init__(self, json_object):
+        super(JSONParsable, self).__init__()
+        """
+        Default constructor
+        :param json_object: The JSON-object to parse
+        :type json_object: json
+        """
+        self.json_object = json_object
+
+    @abstractmethod
+    def parse(self):
+        pass

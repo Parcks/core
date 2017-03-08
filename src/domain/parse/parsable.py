@@ -21,9 +21,8 @@ Setarit - support[at]setarit.com
 from abc import ABCMeta, abstractmethod
 
 class Parsable(object):
-    def __init__(self, filePath):
+    def __init__(self):
         __metaclass__ = ABCMeta
-        self.filePath = filePath
         
     @abstractmethod
     def parse(self):

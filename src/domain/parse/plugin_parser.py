@@ -20,20 +20,21 @@ Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
 import json
+from src.domain.parse.json_parsable import JSONParsable
 from src.domain.plugin import Plugin
 from src.domain.parse.shell_parser import ShellParser
 from src.exceptions.malformed_plugin_error import MalformedPluginError
 
-class PluginParser:
+class PluginParser(JSONParsable):
     def __init__(self, json_object):
         """
         Default constructor
         :param json_object: The JSON representation of the plugin
         :type json_object: json
         """
-        self.json_object = json_object
+        super(PluginParser, self).__init__(json_object)
 
-    def load_plugin(self):
+    def parse(self):
         """
         Loads the plugin object from the JSON representation
         :returns: The loaded Plugin object
@@ -70,7 +71,7 @@ class PluginParser:
         """
         try:
             shell_parser = ShellParser(self.json_object["cmds"])            
-            return shell_parser.load_shell()
+            return shell_parser.parse()
         except KeyError:
             return None
 

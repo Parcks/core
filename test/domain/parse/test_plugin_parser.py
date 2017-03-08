@@ -73,7 +73,7 @@ class TestPluginParser(unittest.TestCase):
 
     def test_load_plugin_returns_plugin(self):
         parser = PluginParser(self.valid_plugin_JSON)
-        plugin = parser.load_plugin()
+        plugin = parser.parse()
         self.assertEqual("composer", plugin.name)
         self.assertEqual("http://www.example.com", plugin.url)
         self.assertEqual(None, plugin.shell)
@@ -81,9 +81,9 @@ class TestPluginParser(unittest.TestCase):
     def test_load_plugin_raises_malformed_plugin_error_on_invalid_json(self):
         parser = PluginParser(self.invalid_plugin_JSON)
         with self.assertRaises(MalformedPluginError):
-            parser.load_plugin()
+            parser.parse()
 
-    @patch.object(ShellParser, 'load_shell')
+    @patch.object(ShellParser, 'parse')
     def test_load_commands_calls_shell_parser_if_commands_provided(self, mock_shell_parser):
         parser = PluginParser(self.valid_plugin_JSON_with_commands)
         parser.load_commands()
