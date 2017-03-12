@@ -20,6 +20,7 @@ Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
 from src.domain.installable import Installable
+import subprocess
 
 class Package(Installable):
     def __init__(self, name, plugins = None):
@@ -32,4 +33,4 @@ class Package(Installable):
         super(Package, self).__init__(name)
 
     def install(self):
-        print("install {:s}".format(self.name))
+        subprocess.call(['sudo', self.name])

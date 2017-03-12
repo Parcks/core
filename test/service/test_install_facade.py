@@ -48,3 +48,11 @@ class TestInstallFacade(unittest.TestCase):
         self.facade.software_catalog = SoftwareCatalog("test", [package])
         self.facade.install()
         self.assertEqual(1, mocked_software_catalog_install_method.call_count)
+
+    @patch.object(Package, 'install')
+    def test_install_calls_software_catalog_install_twice_if_two_packages(self, mocked_software_catalog_install_method):        
+        package = Package("test")
+        pacakge2 = Package("test")
+        self.facade.software_catalog = SoftwareCatalog("test", [package, pacakge2])
+        self.facade.install()
+        self.assertEqual(2, mocked_software_catalog_install_method.call_count)
