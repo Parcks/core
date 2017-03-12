@@ -19,26 +19,32 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.parse.installation_file_parser import InstallationFileParser
+import unittest, os, sys
 from src.domain.log.logger import Logger
-import logging
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
-class InstallFacade:
-    def __init__(self, installFileLocation):
-        self.installFileLocation = installFileLocation
-        self.logger = Logger.logger
-
-    def parse_installation_file(self):
-        parser = InstallationFileParser(self.installFileLocation)
-        self.software_catalog = parser.parse()
-
-    def install(self):
-        self.logger.info("Starting installation:\t "+self.software_catalog.name)
-        for package in self.software_catalog.packages:
-            package.install()
-        
-
+class TestLogger(unittest.TestCase):
+    def line_counter(self):
+        with open(self.test_logger.log_file_path) as fi:
+            lines = sum(1 for line in fi)
+        return lines
     
+    def setUp(self):
+        self.test_logger = Logger() 
 
-    
-    
+    def tearDown(self):
+        if(os.path.exists(self.test_logger.log_file_path)):
+            os.remove(self.test_logger.log_file_path)
+
+    def test_logger_is_singleton(self):
+        logger = Logger()
+        self.assertEqual(logger, self.test_logger)
+
+    @patch.object(Logger, 'make_directory_if_not_exists')
+    def test_generate_path_calls_make_directory_if_not_exists(self, mocked_method):
+        logger = Logger()
+        path = logger.generate_path()
+        self.assertTrue(mocked_method.called)

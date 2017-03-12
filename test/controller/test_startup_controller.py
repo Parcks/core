@@ -21,7 +21,7 @@ Setarit - support[at]setarit.com
 from __future__ import absolute_import
 from src.controller.startup_controller import StartupController
 from src.controller.installation_controller import InstallationController
-import unittest, sys, os
+import unittest, logging
 try:
     from unittest.mock import patch, MagicMock
 except ImportError:
@@ -30,11 +30,10 @@ except ImportError:
 class TestStarupController(unittest.TestCase):
     def setUp(self):
         self.controller = StartupController("-i file.parcks".split())
-        self.out = open(os.devnull, 'w')
-        sys.stdout = self.out ##disable print
+        logging.disable(logging.CRITICAL) #disable logging
 
     def tearDown(self):
-        self.out.close()
+        logging.disable(logging.NOTSET) #enable logging
 
     @patch.object(StartupController, 'parse_arguments')
     @patch.object(StartupController, 'boot_install_controller')

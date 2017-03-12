@@ -23,14 +23,17 @@ import os
 from src.controller.installation_controller import InstallationController
 from src.exceptions.permission_denied_error import PermissionDeniedError
 from src.cli.argument_parser import ArgumentParser
+from src.domain.log.logger import Logger
 
 class StartupController:
     def __init__(self, args):
         self.version = 2.0
         self.argumentParser = ArgumentParser(args)
+        logger = Logger()
+        self.logger = logger.logger
 
     def run(self):
-        print ("Parcks v.{:0.2f} - (c) JValck - Setarit".format(self.version))
+        self.logger.info("v.{:0.2f} - (c) JValck - Setarit".format(self.version))
         installationFile = self.parse_arguments()
         self.boot_install_controller(installationFile)
 

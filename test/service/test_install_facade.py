@@ -21,7 +21,9 @@ Setarit - support[at]setarit.com
 from __future__ import absolute_import
 from src.service.install_facade import InstallFacade
 from src.domain.parse.installation_file_parser import InstallationFileParser
-import unittest
+from src.domain.software_catalog import SoftwareCatalog
+from src.domain.package import Package
+import unittest, logging
 try:
     from unittest.mock import patch, MagicMock
 except ImportError:
@@ -30,9 +32,19 @@ except ImportError:
 class TestInstallFacade(unittest.TestCase):
     def setUp(self):
         self.facade = InstallFacade("file.parcks")
+        logging.disable(logging.CRITICAL)
+
+    def tearDown(self):
+        logging.disable(logging.NOTSET)
 
     @patch.object(InstallationFileParser, 'parse')
     def test_parse_installation_file_calls_installation_file_parser(self, mock):
         self.facade.parse_installation_file()
         self.assertTrue(mock.called)
-        
+
+    @patch.object(Package, 'install')
+    def test_install_calls_software_catalog_install_once_if_only_one_package(self, mocked_software_catalog_install_method):        
+        package = Package("test")
+        self.facade.software_catalog = SoftwareCatalog("test", [package])
+        self.facade.install()
+        self.assertEqual(1, mocked_software_catalog_install_method.call_count)

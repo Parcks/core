@@ -24,7 +24,9 @@ class SoftwareCatalog:
         """
         Default constructor
         :param name: The name of the software catalog
+        :type name: str
         :param packages: An array of the packages to install. Can be None
+        :type packages: list of :class:`src.domain.package.Package`
         """
         self.name = name
         self.packages = packages
