@@ -8,3 +8,5 @@ python:
 install: "pip install -Ur requirements"
 # command to run tests
 script: python -m unittest discover
+after_success:
+  - coveralls
