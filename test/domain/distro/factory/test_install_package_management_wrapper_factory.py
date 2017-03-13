@@ -19,17 +19,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
+from src.domain.distro.factory.install_package_management_wrapper_factory import InstallPackageManagementWrapperFactory
+from src.domain.package import Package
+from src.exceptions.unsupported_distro_name_error import UnsupportedDistroNameError
+import unittest
 
-class Package(Installable):
-    def __init__(self, name, plugins = None):
-        """
-        Default constructor
-        
-        :param name: The name of the package
-        :param plugins: An array containing all the plugins. Can be none
-        """
-        super(Package, self).__init__(name)
+class TestInstallPackageManagementWrapperFactory(unittest.TestCase):
+    def setUp(self):
+        self.factory = InstallPackageManagementWrapperFactory()
+    
+    def test_create_returns_correct_implementation(self):
+        wrapper = self.factory.create("debian", Package("test"))
+        self.assertEqual("DebianInstallPackageManagementWrapper", wrapper.__class__.__name__)
 
-    def install(self):
-        print("install package")
+    def test_create_raises_exception_on_unknown_distro_name(self):
+        with self.assertRaises(UnsupportedDistroNameError):
+            self.factory.create("fictiveDistro", Package("test"))

@@ -19,31 +19,28 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.service.install_facade import InstallFacade
-from src.domain.parse.installation_file_parser import InstallationFileParser
-from src.domain.distro.factory.install_package_management_wrapper_factory import InstallPackageManagementWrapperFactory
-from src.domain.package import Package
-import unittest, logging
+from src.domain.distro.debian.debian_install_package_management_wrapper import DebianInstallPackageManagementWrapper
+import unittest, logging, subprocess
+from src.exceptions.package_installation_failure_error import PackageInstallationFailureError
 try:
     from unittest.mock import patch, MagicMock
 except ImportError:
     from mock import patch
 
-class TestInstallFacade(unittest.TestCase):
+class TestDebianInstallPackageManagementWrapper(unittest.TestCase):
     def setUp(self):
-        self.facade = InstallFacade("file.parcks")
-        self.facade.distro_name = "debian"
         logging.disable(logging.CRITICAL)
+        self.wrapper = DebianInstallPackageManagementWrapper("test")
 
     def tearDown(self):
         logging.disable(logging.NOTSET)
 
-    @patch.object(InstallationFileParser, 'parse')
-    def test_parse_installation_file_calls_installation_file_parser(self, mock):
-        self.facade.parse_installation_file()
-        self.assertTrue(mock.called)
+    @patch.object(DebianInstallPackageManagementWrapper, 'handle_result')
+    @patch('subprocess.call')    
+    def test_install_calls_subprocess(self, mocked_call_method, mocked_handle_result):
+        self.wrapper.install()
+        self.assertTrue(mocked_call_method.called)
 
-    @patch.object(InstallPackageManagementWrapperFactory, 'create')
-    def test_create_install_package_management_wrapper_calls_factory_create(self, mocked_factory_create):
-        self.facade.create_install_package_management_wrapper(Package("test"))
-        self.assertTrue(mocked_factory_create.called)
+    def test_handle_result_raises_PackageInstallationFailureError_on_installation_failure(self):
+        with self.assertRaises(PackageInstallationFailureError):
+            self.wrapper.handle_result(1)

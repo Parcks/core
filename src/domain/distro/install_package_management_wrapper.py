@@ -19,17 +19,32 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
+from src.domain.distro.package_management_wrapper import PackageManagementWrapper
+from abc import ABCMeta, abstractmethod
 
-class Package(Installable):
-    def __init__(self, name, plugins = None):
+class InstallPackageManagementWrapper(PackageManagementWrapper):
+    def __init__(self, package_name):
         """
         Default constructor
-        
-        :param name: The name of the package
-        :param plugins: An array containing all the plugins. Can be none
+        :param package_name: The name of the package to install
+        :type package_name: str
         """
-        super(Package, self).__init__(name)
+        __metaclass__=ABCMeta
+        super(PackageManagementWrapper, self).__init__(package_name)
 
+    @abstractmethod
     def install(self):
-        print("install package")
+        pass
+
+    @abstractmethod
+    def is_installed(self):
+        pass
+
+    @abstractmethod
+    def handle_result(self, result_code):
+        """
+        Handles the result of an package installation call
+        :param result_code: The result code of the installation call
+        :type result_code: int
+        """
+        pass

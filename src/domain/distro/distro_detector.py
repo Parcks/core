@@ -19,17 +19,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
+import distro # pragma: no cover
+from src.domain.log.logger import Logger
 
-class Package(Installable):
-    def __init__(self, name, plugins = None):
-        """
-        Default constructor
-        
-        :param name: The name of the package
-        :param plugins: An array containing all the plugins. Can be none
-        """
-        super(Package, self).__init__(name)
-
-    def install(self):
-        print("install package")
+def detect_distro(): # pragma: no cover
+    """
+    Detects the distro name
+    :returns: The name of the distro see `here <http://distro.readthedocs.io/en/latest/>`_
+    :rtype: str
+    """
+    distro_name = distro.like()
+    if not distro_name:
+        distro_name = distro.id()
+    Logger.logger.info("Detected distro:\t"+distro_name)
+    return distro_name

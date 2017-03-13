@@ -19,17 +19,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
-
-class Package(Installable):
-    def __init__(self, name, plugins = None):
-        """
-        Default constructor
-        
-        :param name: The name of the package
-        :param plugins: An array containing all the plugins. Can be none
-        """
-        super(Package, self).__init__(name)
-
-    def install(self):
-        print("install package")
