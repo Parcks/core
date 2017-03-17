@@ -52,4 +52,5 @@ class PostInstallationParser(JSONParsable):
             return parser.parse()
         elif(post_installation_json_object["type"].upper()=="SHELL"):
             parser = ShellParser(post_installation_json_object["cmds"])
-            return parser.parse()
+            shell_object = parser.parse()
+            return Plugin("Anonymous Plugin", shell=shell_object)
