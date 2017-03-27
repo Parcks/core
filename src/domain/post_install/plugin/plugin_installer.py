@@ -19,25 +19,23 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
-from src.domain.post_install.plugin.plugin_installer import PluginInstaller
+from src.domain.post_install.plugin.plugin_validator import PluginValidator
+from src.domain.post_install.plugin.plugin_downloader import PluginDownloader
+from src.domain.post_install.plugin.plugin_runner import PluginRunner
 
-class Plugin(Installable):
-    def __init__(self, name, url=None, shell=None):
+class PluginInstaller:
+    def __init__(self,  plugin):
         """
         Default constructor
-        
-        :param name: The name of the package
-        :param url: The url of the plugin to be downloaded or None
-        :param shell: The Shell object of the plugin or None if it has to be downloaded
-        :type name: str
-        :type url: str
-        :type shell: src.domain.shell.Shell
+        :param plugin: The plugin that needs to be installed
+        :type plugin: src.domain.plugin
         """
-        super(Plugin, self).__init__(name)
-        self.url = url
-        self.shell = shell
-        self.installer = PluginInstaller(self)
-
-    def install(self):
-        self.installer.run()
+        self.plugin = plugin
+        self.plugin_validator = PluginValidator(plugin)
+        self.plugin_downloader = PluginDownloader(plugin)
+        self.plugin_runner = PluginRunner(plugin)
+        
+    def run(self):
+        self.plugin_validator.validate()
+        if(self.plugin_validator.is_download_required()):
+            print("download "+self.plugin.name)

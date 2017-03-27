@@ -33,3 +33,7 @@ class Package(Installable):
 
     def install(self):
         print("install package")
+        
+    def handle_post_installation(self):
+        for plugin in self.plugins:
+            plugin.install()

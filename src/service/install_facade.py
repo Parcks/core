@@ -23,7 +23,6 @@ from src.domain.parse.installation_file_parser import InstallationFileParser
 from src.domain.log.logger import Logger
 from src.domain.distro.distro_detector import detect_distro
 from src.domain.distro.factory.install_package_management_wrapper_factory import InstallPackageManagementWrapperFactory
-import logging
 
 class InstallFacade:
     def __init__(self, installFileLocation):
@@ -41,6 +40,7 @@ class InstallFacade:
         for package in self.software_catalog.packages:
             install_package_management_wrapper = self.create_install_package_management_wrapper(package)
             install_package_management_wrapper.install()
+            package.handle_post_installation()
 
     def detect_distro_name(self):        
         return detect_distro()

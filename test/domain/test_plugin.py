@@ -19,25 +19,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
+from src.domain.plugin import Plugin
 from src.domain.post_install.plugin.plugin_installer import PluginInstaller
-
-class Plugin(Installable):
-    def __init__(self, name, url=None, shell=None):
-        """
-        Default constructor
-        
-        :param name: The name of the package
-        :param url: The url of the plugin to be downloaded or None
-        :param shell: The Shell object of the plugin or None if it has to be downloaded
-        :type name: str
-        :type url: str
-        :type shell: src.domain.shell.Shell
-        """
-        super(Plugin, self).__init__(name)
-        self.url = url
-        self.shell = shell
-        self.installer = PluginInstaller(self)
-
-    def install(self):
-        self.installer.run()
+import unittest
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
+    
+class TestPlugin(unittest.TestCase):
+    def setUp(self):
+        self.plugin = Plugin("Test Plugin")
+    
+    @patch.object(PluginInstaller,  'run')
+    def test_install_calls_run_on_plugin_installer(self,  mock):
+        self.plugin.install()
+        self.assertTrue(mock.called)
