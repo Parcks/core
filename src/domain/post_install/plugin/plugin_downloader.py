@@ -19,6 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
+try:
+    import urllib2 as urlllib
+except ImportError:
+    import urllib
 
 class PluginDownloader:
     def __init__(self,  plugin):
@@ -28,3 +32,6 @@ class PluginDownloader:
         :type plugin: src.domain.plugin
         """
         self.plugin = plugin
+        
+    def download(self):
+        url = self.plugin.url
