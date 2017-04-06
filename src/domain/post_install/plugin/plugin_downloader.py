@@ -19,10 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-try:
-    import urllib2 as urlllib
-except ImportError:
-    import urllib
+import requests
 
 class PluginDownloader:
     def __init__(self,  plugin):
@@ -34,4 +31,25 @@ class PluginDownloader:
         self.plugin = plugin
         
     def download(self):
+        package_json = self.download_from_repo()
+        return self.parse(package_json)
+        
+    def download_from_repo(self):
+        """
+        Downloads the package from the repository
+        :returns: The plain package json
+        :rtype: json
+        """
         url = self.plugin.url
+        response = requests.get(url)
+        return response.json()
+        
+    def parse(self,  package_json):
+        """
+        Parses the plain package_json
+        Uses :class:`src.domain.parse.plugin_parser.PluginParser`
+        :returns: The downloaded package
+        :rtype: src.domain.plugin.Plugin
+        """
+        parser = PluginParser(package_json)
+        return parser.parse()

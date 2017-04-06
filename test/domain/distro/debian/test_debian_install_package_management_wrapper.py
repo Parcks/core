@@ -23,7 +23,7 @@ from src.domain.distro.debian.debian_install_package_management_wrapper import D
 import unittest, logging, subprocess
 from src.exceptions.package_installation_failure_error import PackageInstallationFailureError
 try:
-    from unittest.mock import patch, MagicMock
+    from unittest.mock import patch
 except ImportError:
     from mock import patch
 

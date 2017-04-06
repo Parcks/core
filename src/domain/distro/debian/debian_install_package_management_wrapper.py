@@ -49,4 +49,4 @@ class DebianInstallPackageManagementWrapper(InstallPackageManagementWrapper):
         if result_code == 0:
             Logger.logger.info("Package "+self.package_name+" installed")
         else:
-            raise PackageInstallationFailureError("Package "+self.package_name+" failed to complete the installation")
+            raise PackageInstallationFailureError(self.package_name)
