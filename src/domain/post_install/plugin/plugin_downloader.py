@@ -31,6 +31,11 @@ class PluginDownloader:
         self.plugin = plugin
         
     def download(self):
+        """
+        Downloads the package from the repository
+        :returns: The downloaded package
+        :rtype: src.domain.plugin.Plugin
+        """
         package_json = self.download_from_repo()
         return self.parse(package_json)
         

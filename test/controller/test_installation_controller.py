@@ -23,7 +23,7 @@ import unittest
 from src.controller.installation_controller import InstallationController
 from src.service.install_facade import InstallFacade
 try:
-    from unittest.mock import patch, MagicMock
+    from unittest.mock import patch
 except ImportError:
     from mock import patch
 

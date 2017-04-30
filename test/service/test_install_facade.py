@@ -25,7 +25,8 @@ from src.domain.distro.factory.install_package_management_wrapper_factory import
 from src.domain.package import Package
 from src.domain.software_catalog import SoftwareCatalog
 from src.domain.distro.debian.debian_install_package_management_wrapper import DebianInstallPackageManagementWrapper
-import unittest, logging
+from src.domain.log.logger import Logger
+import unittest
 try:
     from unittest.mock import patch
 except ImportError:
@@ -36,10 +37,10 @@ class TestInstallFacade(unittest.TestCase):
         self.facade = InstallFacade("file.parcks")
         self.facade.distro_name = "debian"
         self.facade.software_catalog = self.create_software_catalog()
-        logging.disable(logging.CRITICAL)
+        Logger.disable_all()
 
     def tearDown(self):
-        logging.disable(logging.NOTSET)
+        Logger.enable()
         
     def create_software_catalog(self):
         catalog = SoftwareCatalog("dummy",  [Package("git")])

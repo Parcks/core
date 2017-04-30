@@ -21,19 +21,20 @@ Setarit - support[at]setarit.com
 from __future__ import absolute_import
 from src.controller.startup_controller import StartupController
 from src.controller.installation_controller import InstallationController
-import unittest, logging
+from src.domain.log.logger import Logger
+import unittest
 try:
-    from unittest.mock import patch, MagicMock
+    from unittest.mock import patch
 except ImportError:
     from mock import patch
 
 class TestStarupController(unittest.TestCase):
     def setUp(self):
         self.controller = StartupController("-i file.parcks".split())
-        logging.disable(logging.CRITICAL) #disable logging
+        Logger.disable_all()
 
     def tearDown(self):
-        logging.disable(logging.NOTSET) #enable logging
+        Logger.enable()
 
     @patch.object(StartupController, 'parse_arguments')
     @patch.object(StartupController, 'boot_install_controller')

@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-import unittest, shutil, tempfile, sys
+import unittest, shutil, tempfile
 from os import path
 import json
 from src.domain.parse.installation_file_parser import InstallationFileParser

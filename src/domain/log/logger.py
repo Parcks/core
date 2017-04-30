@@ -66,4 +66,12 @@ class Logger(object):
         formatter = logging.Formatter('%(levelname)-8s %(message)s')
         console.setFormatter(formatter)
         # add the handler to the root logger
-        logging.getLogger('').addHandler(console)  
+        logging.getLogger('').addHandler(console)
+        
+    @staticmethod
+    def disable_all():
+        logging.disable(logging.CRITICAL)
+      
+    @staticmethod
+    def enable():
+        logging.disable(logging.NOTSET)

@@ -21,6 +21,9 @@ Setarit - support[at]setarit.com
 from __future__ import absolute_import
 from src.exceptions.malformed_plugin_error import MalformedPluginError
 
+"""
+Checks if the plugin requires a download
+"""
 class PluginValidator:
     def __init__(self,  plugin):
         """
