@@ -22,6 +22,7 @@ from __future__ import absolute_import
 import unittest
 from src.controller.installation_controller import InstallationController
 from src.service.install_facade import InstallFacade
+from src.domain.log.logger import Logger
 try:
     from unittest.mock import patch
 except ImportError:
@@ -30,6 +31,10 @@ except ImportError:
 class TestInstallationController(unittest.TestCase):
     def setUp(self):
         self.controller = InstallationController("file.parcks")
+        Logger.disable_all()
+        
+    def tearDown(self):
+        Logger.enable()
 
     @patch.object(InstallFacade, 'install')
     @patch.object(InstallFacade, 'parse_installation_file')

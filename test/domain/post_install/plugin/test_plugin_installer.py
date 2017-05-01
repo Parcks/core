@@ -24,6 +24,7 @@ from src.domain.shell import Shell
 from src.domain.shell_command import ShellCommand
 from src.domain.post_install.plugin.plugin_validator import PluginValidator
 from src.domain.post_install.plugin.plugin_installer import PluginInstaller
+from src.domain.log.logger import Logger
 import unittest
 try:
     from unittest.mock import patch
@@ -35,6 +36,10 @@ class TestPluginInstaller(unittest.TestCase):
         self.plugin_installer_with_invalid_plugin = PluginInstaller(Plugin("dummy_plugin"))
         self.plugin_installer_with_plugin_that_needs_a_download = PluginInstaller(Plugin("dummy_plugin",  "http://www.example.com"))
         self.plugin_installer_with_plugin_that_does_not_need_a_download = PluginInstaller(Plugin("dummy_plugin",  shell=Shell([ShellCommand("pwd")])))
+        Logger.disable_all()
+        
+    def tearDown(self):
+        Logger.enable()
         
     @patch.object(PluginValidator,  'validate')
     def test_run_calls_validate_on_plugin_validator(self,  mock):

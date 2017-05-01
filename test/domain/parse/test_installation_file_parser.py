@@ -21,6 +21,7 @@ Setarit - support[at]setarit.com
 from __future__ import absolute_import
 import unittest, shutil, tempfile
 from os import path
+from src.domain.log.logger import Logger
 import json
 from src.domain.parse.installation_file_parser import InstallationFileParser
 try:
@@ -33,9 +34,11 @@ class TestInstallationFileParser(unittest.TestCase):
         self.testDir = tempfile.mkdtemp()
         self.tempFile = self.create_test_install_file()
         self.invalidTempFile = self.create_invalid_test_install_file()
+        Logger.disable_all()
 
     def tearDown(self):
         shutil.rmtree(self.testDir)
+        Logger.enable()
 
     def create_test_install_file(self):
         JSON = """\

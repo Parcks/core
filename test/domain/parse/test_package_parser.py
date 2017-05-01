@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
+from src.domain.log.logger import Logger
 import unittest,json
 from src.domain.parse.package_parser import PackageParser
 
@@ -26,7 +27,11 @@ class TestPackageParser(unittest.TestCase):
     def setUp(self):
         self.create_valid_json()
         self.create_valid_multiple_json()
-        self.create_valid_no_packages_json()        
+        self.create_valid_no_packages_json()
+        Logger.disable_all()
+        
+    def tearDown(self):
+        Logger.enable()
 
     def create_valid_json(self):
         JSON = """\

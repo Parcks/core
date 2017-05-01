@@ -23,6 +23,7 @@ import unittest, json
 from src.domain.parse.shell_parser import ShellParser
 from src.domain.parse.shell_command_parser import ShellCommandParser
 from src.domain.shell_command import ShellCommand
+from src.domain.log.logger import Logger
 try:
     from unittest.mock import patch
 except ImportError:
@@ -33,6 +34,10 @@ class TestShellParser(unittest.TestCase):
         self.create_valid_shell_json_two()
         self.create_valid_shell_json_one()
         self.create_valid_shell_json_zero()
+        Logger.disable_all()
+        
+    def tearDown(self):
+        Logger.enable()
 
     def create_valid_shell_json_two(self):
         JSON = """\

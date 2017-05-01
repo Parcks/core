@@ -22,11 +22,16 @@ from __future__ import absolute_import
 from src.domain.distro.factory.install_package_management_wrapper_factory import InstallPackageManagementWrapperFactory
 from src.domain.package import Package
 from src.exceptions.unsupported_distro_name_error import UnsupportedDistroNameError
+from src.domain.log.logger import Logger
 import unittest
 
 class TestInstallPackageManagementWrapperFactory(unittest.TestCase):
     def setUp(self):
         self.factory = InstallPackageManagementWrapperFactory()
+        Logger.disable_all()
+        
+    def tearDown(self):
+        Logger.enable()
     
     def test_create_returns_correct_implementation(self):
         wrapper = self.factory.create("debian", Package("test"))

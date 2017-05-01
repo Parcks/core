@@ -19,24 +19,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
+from src.domain.post_install.plugin.plugin_downloader import PluginDownloader
 from src.domain.plugin import Plugin
-from src.domain.post_install.plugin.plugin_installer import PluginInstaller
 from src.domain.log.logger import Logger
 import unittest
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
+
+class TestPluginDownloader(unittest.TestCase):
+    TEST_PLUGIN_URL = "https://raw.githubusercontent.com/Parcks/plugins/master/testPlugin.ppl"
     
-class TestPlugin(unittest.TestCase):
     def setUp(self):
-        self.plugin = Plugin("Test Plugin")
+        self.plugin = Plugin("Dummy plugin", TestPluginDownloader.TEST_PLUGIN_URL)
+        self.plugin_downloader = PluginDownloader(self.plugin)
         Logger.disable_all()
         
     def tearDown(self):
         Logger.enable()
-    
-    @patch.object(PluginInstaller,  'run')
-    def test_install_calls_run_on_plugin_installer(self,  mock):
-        self.plugin.install()
-        self.assertTrue(mock.called)
+        
+    def test_download_from_repo_returns_dict_plugin(self):
+        downloaded_json_plugin = self.plugin_downloader.download_from_repo()
+        self.assertTrue(type(downloaded_json_plugin) is dict)
+        
+    @patch.object(PluginDownloader,  'parse')
+    @patch.object(PluginDownloader,  'download_from_repo')
+    def test_download_calls_download_from_repo(self,  mock,  mocked_parse):
+        self.plugin_downloader.download()
+        self.assertTrue(mock.call_count == 1)
+        
+    @patch.object(PluginDownloader,  'parse')
+    @patch.object(PluginDownloader,  'download_from_repo')
+    def test_download_calls_parse(self,  mock,  mocked_parse):
+        self.plugin_downloader.download()
+        self.assertTrue(mocked_parse.call_count == 1)

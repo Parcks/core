@@ -21,11 +21,16 @@ Setarit - support[at]setarit.com
 from __future__ import absolute_import
 import unittest, json
 from src.domain.parse.shell_command_parser import ShellCommandParser
+from src.domain.log.logger import Logger
 
 class TestShellCommandParser(unittest.TestCase):
     def setUp(self):
         self.create_valid_json()
         self.create_invalid_json()
+        Logger.disable_all()
+        
+    def tearDown(self):
+        Logger.enable()
 
     def create_valid_json(self):
         JSON = """\

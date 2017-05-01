@@ -23,6 +23,7 @@ import unittest,json
 from src.domain.parse.post_installation_parser import PostInstallationParser
 from src.domain.parse.plugin_parser import PluginParser
 from src.domain.parse.shell_parser import ShellParser
+from src.domain.log.logger import Logger
 try:
     from unittest.mock import patch
 except ImportError:
@@ -32,6 +33,10 @@ class TestPostInstallationParser(unittest.TestCase):
     def setUp(self):
         self.create_valid_json()
         self.parser = PostInstallationParser(self.validJSON)
+        Logger.disable_all()
+        
+    def tearDown(self):
+        Logger.enable()
 
     def create_valid_json(self):
         JSON = """\

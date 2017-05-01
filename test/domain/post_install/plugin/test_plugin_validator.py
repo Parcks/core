@@ -23,6 +23,7 @@ from src.domain.plugin import Plugin
 from src.domain.shell import Shell
 from src.domain.post_install.plugin.plugin_validator import PluginValidator
 from src.exceptions.malformed_plugin_error import MalformedPluginError
+from src.domain.log.logger import Logger
 import unittest
     
 # the validation of the plugin format is done by src.domain.parse.plugin_parser. This code is not tested in this testcase
@@ -31,6 +32,10 @@ class TestPluginValidator(unittest.TestCase):
         self.create_plugin_that_requires_download()
         self.create_plugin_no_download_required()
         self.create_invalid_plugin()
+        Logger.disable_all()
+        
+    def tearDown(self):
+        Logger.enable()
         
     def create_plugin_that_requires_download(self):
         self.plugin_download = Plugin("Dummy plugin",  "http://example.com")

@@ -23,6 +23,7 @@ import unittest,json
 from src.domain.parse.plugin_parser import PluginParser
 from src.exceptions.malformed_plugin_error import MalformedPluginError
 from src.domain.parse.shell_parser import ShellParser
+from src.domain.log.logger import Logger
 try:
     from unittest.mock import patch
 except ImportError:
@@ -33,6 +34,10 @@ class TestPluginParser(unittest.TestCase):
         self.create_valid_plugin_json()
         self.create_invalid_plugin_json()
         self.create_valid_plugin_json_with_commands()
+        Logger.disable_all()
+        
+    def tearDown(self):
+        Logger.enable()
 
     def create_valid_plugin_json(self):
         JSON = """\
