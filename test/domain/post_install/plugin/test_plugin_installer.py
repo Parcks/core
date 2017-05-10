@@ -25,6 +25,7 @@ from src.domain.shell_command import ShellCommand
 from src.domain.post_install.plugin.plugin_validator import PluginValidator
 from src.domain.post_install.plugin.plugin_installer import PluginInstaller
 from src.domain.log.logger import Logger
+from src.domain.post_install.plugin.plugin_downloader import PluginDownloader
 import unittest
 try:
     from unittest.mock import patch
@@ -45,3 +46,11 @@ class TestPluginInstaller(unittest.TestCase):
     def test_run_calls_validate_on_plugin_validator(self,  mock):
         self.plugin_installer_with_plugin_that_needs_a_download.run()
         self.assertTrue(mock.call_count > 0)
+        
+    @patch.object(PluginDownloader,  'download')
+    def test_download_plugin_but_keep_local_name_keeps_original_name(self,  mock):
+        mock.return_value = Plugin("dummy_plugin") #mock the return value
+        name_before_download = self.plugin_installer_with_plugin_that_needs_a_download.plugin.name
+        self.plugin_installer_with_plugin_that_needs_a_download.download_plugin_but_keep_local_name()
+        name_after_download = self.plugin_installer_with_plugin_that_needs_a_download.plugin.name
+        self.assertEqual(name_before_download,  name_after_download)

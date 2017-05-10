@@ -38,4 +38,10 @@ class PluginInstaller:
     def run(self):
         self.plugin_validator.validate()
         if(self.plugin_validator.is_download_required()):
-            print("download "+self.plugin.name)
+            self.download_plugin_but_keep_local_name()
+        self.plugin_runner.run()
+        
+    def download_plugin_but_keep_local_name(self):
+        local_plugin_name = self.plugin.name
+        self.plugin = self.plugin_downloader.download()
+        self.plugin.name = local_plugin_name

@@ -19,7 +19,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
+from src.domain.parse.plugin_parser import PluginParser
 import requests
+from src.domain.log.logger import Logger
 
 class PluginDownloader:
     def __init__(self,  plugin):
@@ -45,6 +47,7 @@ class PluginDownloader:
         :returns: The plain package json
         :rtype: json
         """
+        Logger.logger.info("Downloading plugin "+self.plugin.name+" from repository")
         url = self.plugin.url
         response = requests.get(url)
         return response.json()

@@ -19,17 +19,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.post_install.shell.shell_runner import ShellRunner
-
-class PluginRunner:
-    def __init__(self,  plugin):
-        """
-        Default constructor
-        :param plugin: The plugin to install
-        :type plugin: src.domain.plugin
-        """
-        self.plugin = plugin
-        self.shell_runner = ShellRunner(plugin.shell)
-    
+class ShellRunner():
+    def __init__(self,  shell):
+        self.shell = shell
+        
     def run(self):
-        self.shell_runner.run()
+        print("TODO: shell runner run method")

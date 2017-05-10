@@ -20,9 +20,10 @@ Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
 from src.domain.parse.json_parsable import JSONParsable
-from src.domain.plugin import Plugin
 from src.domain.parse.shell_parser import ShellParser
 from src.exceptions.malformed_plugin_error import MalformedPluginError
+#from src.domain.plugin import Plugin
+import src.domain.plugin
 
 class PluginParser(JSONParsable):
     def __init__(self, json_object):
@@ -40,13 +41,23 @@ class PluginParser(JSONParsable):
         :rtype: src.domain.plugin.Plugin
         :raises MalformedPluginError: If there is no url nor commands provided
         """
-        name = self.json_object["name"]
+        name = self.load_name()
         url = self.load_url()
         commands = self.load_commands()
         if self.no_url_and_commands_provided(url, commands):
             raise MalformedPluginError("No url and commands provided")
-        return Plugin(name, url, commands)
-        
+        return src.domain.plugin.Plugin(name, url, commands)
+      
+    def load_name(self):  
+        """
+        Reads the name (if any) of the plugin form the JSON-object
+        :returns: The name of the plugin
+        :rtype: str
+        """
+        try:
+            return self.json_object["name"]
+        except KeyError:
+            return "Anonymous plugin"
 
     def load_url(self):
         """
