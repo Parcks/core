@@ -19,16 +19,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.post_install.shell.shell_command_runnable import ShellCommandRunnable
-
-class ShellCommandRunner(ShellCommandRunnable):
+from abc import ABCMeta, abstractmethod
+class ShellCommandRunnable(object):
     def __init__(self,  shell_command):
-        """
-        Default constructor
-        :param shell_command: The ShellCommand to run
-        :type shell_command: `src.domain.shell_command.ShellCommand`
-        """
-        super(ShellCommandRunner,  self).__init__(shell_command)
+        __metaclass__ = ABCMeta
+        self.shell_command = shell_command
         
+    @abstractmethod
     def run(self):
-        print("TODO: normal shell command runner")
+        pass

@@ -21,14 +21,14 @@ Setarit - support[at]setarit.com
 from __future__ import absolute_import
 from src.domain.post_install.shell.shell_command_runnable import ShellCommandRunnable
 
-class ShellCommandRunner(ShellCommandRunnable):
+class RootShellCommandRunner(ShellCommandRunnable):
     def __init__(self,  shell_command):
         """
         Default constructor
         :param shell_command: The ShellCommand to run
         :type shell_command: `src.domain.shell_command.ShellCommand`
         """
-        super(ShellCommandRunner,  self).__init__(shell_command)
+        super(RootShellCommandRunner,  self).__init__(shell_command)
         
     def run(self):
-        print("TODO: normal shell command runner")
+        print("TODO: root shell command runner")

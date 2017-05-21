@@ -45,3 +45,4 @@ class PluginInstaller:
         local_plugin_name = self.plugin.name
         self.plugin = self.plugin_downloader.download()
         self.plugin.name = local_plugin_name
+        self.plugin_runner = PluginRunner(self.plugin) #update PluginRunner
