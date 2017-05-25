@@ -19,21 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.post_install.shell.shell_command_runnable import ShellCommandRunnable
-import subprocess
+from src.exceptions.error import Error
 
-class RootShellCommandRunner(ShellCommandRunnable):
-    def __init__(self,  shell_command):
-        """
-        Default constructor
-        :param shell_command: The ShellCommand to run
-        :type shell_command: `src.domain.shell_command.ShellCommand`
-        """
-        super(RootShellCommandRunner,  self).__init__(shell_command)
-        self.executable_command_prefix = ["sudo"]
-        
-    def run(self):
-        for command in self.shell_command.commands:            
-            executable_commands  = self.executable_command_prefix + self.create_executable_command_array(command)
-            result = subprocess.call(executable_commands)
-            self.handle_result(result,  command)
+class PackageInstallationFailureError(Error):
+    def __init__(self):
+        self.message = "A shell command failed to execute. Please check the logfile for further information"

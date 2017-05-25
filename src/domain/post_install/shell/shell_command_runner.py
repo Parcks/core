@@ -20,6 +20,7 @@ Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
 from src.domain.post_install.shell.shell_command_runnable import ShellCommandRunnable
+import subprocess
 
 class ShellCommandRunner(ShellCommandRunnable):
     def __init__(self,  shell_command):
@@ -31,4 +32,7 @@ class ShellCommandRunner(ShellCommandRunnable):
         super(ShellCommandRunner,  self).__init__(shell_command)
         
     def run(self):
-        print("TODO: normal shell command runner")
+        for command in self.shell_command.commands:            
+            executable_commands  = self.create_executable_command_array(command)
+            result = subprocess.call(executable_commands)
+            self.handle_result(result,  command)

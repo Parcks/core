@@ -20,11 +20,37 @@ Setarit - support[at]setarit.com
 """
 from __future__ import absolute_import
 from abc import ABCMeta, abstractmethod
+from src.domain.log.logger import Logger
+import src.exceptions.shell_command_failed_error
+
 class ShellCommandRunnable(object):
     def __init__(self,  shell_command):
         __metaclass__ = ABCMeta
         self.shell_command = shell_command
         
+    def handle_result(self,  result_code,  command):
+        if result_code == 1:
+            self.write_error_log_message(command)
+            raise ShellCommandFailedError()
+        else:
+            self.write_success_log_message(command)
+        
+    def write_error_log_message(self, command):
+        Logger.logger.debug("The command "+command+" failed to execute. Try running the command manually. Open an issue on GitHub to solve the error if it persists.")
+        
+    def write_success_log_message(self,  command):
+        Logger.logger.debug("The command "+command+" executed successfully")
+        
+    def create_executable_command_array(self,  command):
+        """
+        Creates a list that is executable by the subprocess
+        :param command: The command to execute
+        :type command: str
+        :returns: The executable command list
+        :rtype: list
+        """
+        return command.split(" ")
+    
     @abstractmethod
     def run(self):
         pass
