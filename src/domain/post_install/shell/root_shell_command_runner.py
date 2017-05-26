@@ -34,6 +34,17 @@ class RootShellCommandRunner(ShellCommandRunnable):
         
     def run(self):
         for command in self.shell_command.commands:            
-            executable_commands  = self.executable_command_prefix + self.create_executable_command_array(command)
+            executable_commands  = self.create_root_executable_command_array(command)
             result = subprocess.call(executable_commands)
             self.handle_result(result,  command)
+            
+    def create_root_executable_command_array(self,  command):
+        """
+        Creates a list that is executable by the subprocess
+        Requests root privileges in the executable command list
+        :param command: The command to execute
+        :type command: str
+        :returns: The executable command list
+        :rtype: list
+        """
+        return self.executable_command_prefix + self.create_executable_command_array(command)
