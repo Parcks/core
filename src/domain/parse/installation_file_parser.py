@@ -22,6 +22,7 @@ from __future__ import absolute_import
 from src.domain.parse.file_parsable import FileParsable
 from src.domain.software_catalog import SoftwareCatalog
 from src.domain.parse.package_parser import PackageParser
+from src.exceptions.invalid_installation_file_extension_error import InvalidInstallationFileExtensionError
 import json
 
 class InstallationFileParser(FileParsable):
@@ -30,10 +31,15 @@ class InstallationFileParser(FileParsable):
         
     def parse(self):
         catalog = None
+        self.validate_file_extension()
         with open(self.file_path) as installFile:
             data = json.load(installFile)
             catalog = self.create_software_catalog(data)
         return catalog
+        
+    def validate_file_extension(self):
+        if(not self.file_path.endswith(".parcks")):
+            raise InvalidInstallationFileExtensionError("The installation file extension does not meet the requirements.")
 
     def create_software_catalog(self, data):
         catalog = SoftwareCatalog(data["name"])

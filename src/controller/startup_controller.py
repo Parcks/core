@@ -21,7 +21,6 @@ Setarit - support[at]setarit.com
 from __future__ import absolute_import
 import os
 from src.controller.installation_controller import InstallationController
-from src.exceptions.permission_denied_error import PermissionDeniedError
 from src.cli.argument_parser import ArgumentParser
 from src.domain.log.logger import Logger
 

@@ -34,5 +34,5 @@ class ShellCommandRunner(ShellCommandRunnable):
     def run(self):
         for command in self.shell_command.commands:            
             executable_commands  = self.create_executable_command_array(command)
-            result = subprocess.Popen(executable_commands,  cwd=self.shell_command.work_directory)
+            result = subprocess.Popen(executable_commands,  cwd=self.shell_command.work_directory).wait()
             self.handle_result(result,  command)

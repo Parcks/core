@@ -22,18 +22,24 @@ from __future__ import absolute_import
 import unittest, shutil, tempfile
 from os import path
 from src.domain.log.logger import Logger
+from src.exceptions.invalid_installation_file_extension_error import InvalidInstallationFileExtensionError
 import json
 from src.domain.parse.installation_file_parser import InstallationFileParser
 try:
     FileNotFoundError
 except NameError:
     FileNotFoundError = IOError
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 class TestInstallationFileParser(unittest.TestCase):
     def setUp(self):
         self.testDir = tempfile.mkdtemp()
         self.tempFile = self.create_test_install_file()
         self.invalidTempFile = self.create_invalid_test_install_file()
+        self.invalid_extension_file = self.create_invalid_file_extension_install_file()
         Logger.disable_all()
 
     def tearDown(self):
@@ -41,6 +47,13 @@ class TestInstallationFileParser(unittest.TestCase):
         Logger.enable()
 
     def create_test_install_file(self):
+        jsonData = self.create_valid_json()
+        tempJsonPath = path.join(self.testDir,"test.parcks")
+        with open(tempJsonPath ,'w') as ofile:
+            json.dump(jsonData, ofile)
+        return tempJsonPath
+
+    def create_valid_json(self):
         JSON = """\
         {
 	"name":"PHP installer",
@@ -51,11 +64,7 @@ class TestInstallationFileParser(unittest.TestCase):
             ]
         }
         """
-        jsonData = json.loads(JSON)
-        tempJsonPath = path.join(self.testDir,"test.parcks")
-        with open(tempJsonPath ,'w') as ofile:
-            json.dump(jsonData, ofile)
-        return tempJsonPath
+        return json.loads(JSON)
 
     def create_invalid_test_install_file(self):
         JSON = """\
@@ -65,6 +74,13 @@ class TestInstallationFileParser(unittest.TestCase):
         """
         jsonData = json.loads(JSON)
         tempJsonPath = path.join(self.testDir,"invalidTest.parcks")
+        with open(tempJsonPath ,'w') as ofile:
+            json.dump(jsonData, ofile)
+        return tempJsonPath
+        
+    def create_invalid_file_extension_install_file(self):
+        jsonData = self.create_valid_json()
+        tempJsonPath = path.join(self.testDir,"invalid_extension.json")
         with open(tempJsonPath ,'w') as ofile:
             json.dump(jsonData, ofile)
         return tempJsonPath
@@ -87,3 +103,15 @@ class TestInstallationFileParser(unittest.TestCase):
         parser = InstallationFileParser(self.tempFile)
         catalog = parser.parse()
         self.assertEqual("PHP installer", catalog.name)
+        
+    def test_validate_file_extension_raises_InvalidInstallationFileExtensionError_if_no_valid_extension(self):
+        parser = InstallationFileParser(self.invalid_extension_file)
+        with self.assertRaises(InvalidInstallationFileExtensionError):
+            parser.validate_file_extension()
+            
+    @patch.object(InstallationFileParser,  'validate_file_extension')
+    def test_parse_calls_validate_file_extension(self,  mock):
+       parser = InstallationFileParser(self.tempFile)
+       parser.parse()
+       self.assertEqual(1,  mock.call_count)
+        
