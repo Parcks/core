@@ -38,25 +38,25 @@ class TestShellCommandRunner(unittest.TestCase):
     def tearDown(self):
         Logger.enable()
         
-    @patch('subprocess.call')
+    @patch('subprocess.Popen')
     @patch.object(ShellCommandRunnable, 'create_executable_command_array')
     def test_run_calls_create_executable_command_array_once_if_one_command(self,  mock,  subprocess_mock):
         self.runner.run()
         self.assertEqual(1,  mock.call_count)
         
-    @patch('subprocess.call')
+    @patch('subprocess.Popen')
     @patch.object(ShellCommandRunnable, 'create_executable_command_array')
     def test_run_calls_create_executable_command_array_twice_if_two_commands(self,  mock,  subprocess_mock):
         self.runner_multiple.run()
         self.assertEqual(2,  mock.call_count)
         
-    @patch('subprocess.call')
+    @patch('subprocess.Popen')
     @patch.object(ShellCommandRunnable, 'handle_result')
     def test_run_calls_handle_result_once_if_one_command(self,  mock,  subprocess_mock):
         self.runner.run()
         self.assertEqual(1,  mock.call_count)
         
-    @patch('subprocess.call')
+    @patch('subprocess.Popen')
     @patch.object(ShellCommandRunnable, 'handle_result')
     def test_run_calls_handle_result_twice_if_two_commands(self,  mock,  subprocess_mock):
         self.runner_multiple.run()

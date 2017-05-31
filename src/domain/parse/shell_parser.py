@@ -22,7 +22,7 @@ from __future__ import absolute_import
 from src.domain.parse.json_parsable import JSONParsable
 from src.domain.parse.shell_command_parser import ShellCommandParser
 from src.domain.shell import Shell
-import json
+#import json
 
 class ShellParser(JSONParsable):
     def __init__(self, shell_json):

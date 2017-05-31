@@ -21,7 +21,7 @@ Setarit - support[at]setarit.com
 from __future__ import absolute_import
 from src.domain.parse.json_parsable import JSONParsable
 from src.domain.shell_command import ShellCommand
-import json
+#import json
 
 class ShellCommandParser(JSONParsable):
     def __init__(self, json_shell_command):
@@ -38,4 +38,10 @@ class ShellCommandParser(JSONParsable):
         :returns: The ShellCommand object
         :rtype: src.domain.shell_command.ShellCommand
         """
-        return ShellCommand(self.json_object["do"], self.json_object["root"])
+        return ShellCommand(self.json_object["do"], self.json_object["root"],  self.load_working_directory())
+        
+    def load_working_directory(self):
+        try:
+            return self.json_object["work-dir"]
+        except KeyError:
+            return None

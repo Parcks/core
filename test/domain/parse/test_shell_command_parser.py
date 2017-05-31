@@ -22,11 +22,16 @@ from __future__ import absolute_import
 import unittest, json
 from src.domain.parse.shell_command_parser import ShellCommandParser
 from src.domain.log.logger import Logger
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 class TestShellCommandParser(unittest.TestCase):
     def setUp(self):
         self.create_valid_json()
         self.create_invalid_json()
+        self.create_valid_json_with_work_directory()
         Logger.disable_all()
         
     def tearDown(self):
@@ -48,6 +53,16 @@ class TestShellCommandParser(unittest.TestCase):
 	}
         """
         self.invalid_json = json.loads(JSON)
+        
+    def create_valid_json_with_work_directory(self):
+        JSON = """\
+        {
+            "root":false,
+            "do":["whoami","ls -al"],
+            "work-dir": "/opt"
+	}
+        """
+        self.valid_json_work_directory = json.loads(JSON)
 
     def test_parse_returns_shell_command(self):
         parser = ShellCommandParser(self.valid_json)
@@ -59,6 +74,22 @@ class TestShellCommandParser(unittest.TestCase):
         parser = ShellCommandParser(self.invalid_json)
         with self.assertRaises(KeyError):
             parser.parse()
+
+    @patch.object(ShellCommandParser,  'load_working_directory')
+    def test_parse_calls_load_working_directory(self,  mock):
+        parser = ShellCommandParser(self.valid_json)
+        parser.parse()
+        self.assertEqual(mock.call_count,  1)
+        
+    def test_parse_returns_shell_command_with_no_work_directory_if_none_specified(self):
+        parser = ShellCommandParser(self.valid_json)
+        shell_command = parser.parse()
+        self.assertEqual(None,  shell_command.work_directory)
+        
+    def test_parse_returns_shell_command_with_correct_work_directory(self):
+        parser = ShellCommandParser(self.valid_json_work_directory)
+        shell_command = parser.parse()
+        self.assertEqual("/opt",  shell_command.work_directory)
 
     def check_list_equal(self, listOne, listTwo):
         return len(listOne) == len(listTwo) and sorted(listOne) == sorted(listTwo)
