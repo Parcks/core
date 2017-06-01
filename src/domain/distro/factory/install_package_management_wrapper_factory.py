@@ -37,5 +37,5 @@ class InstallPackageManagementWrapperFactory:
         if(distro_name == "debian"):
             install_package_management_wrapper = DebianInstallPackageManagementWrapper(package_name)
         else:
-            raise UnsupportedDistroNameError("The distro "+distro_name+" is not (yet) supported")
+            raise UnsupportedDistroNameError(distro_name)
         return install_package_management_wrapper

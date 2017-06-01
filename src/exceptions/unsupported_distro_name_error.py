@@ -22,6 +22,5 @@ from __future__ import absolute_import
 from src.exceptions.error import Error
 
 class UnsupportedDistroNameError(Error):
-    def __init__(self, message, path = None):
-        self.message = message
-        self.path = path
+    def __init__(self, distro_name):
+        self.message = "The distro "+distro_name+" is not (yet) supported"
