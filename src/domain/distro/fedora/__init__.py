@@ -18,9 +18,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - parcks[at]setarit.com
 """
-from __future__ import absolute_import
-from src.exceptions.error import Error
-
-class InvalidInstallationFileExtensionError(Error):
-    def __init(self, message):
-        super(Error, self).__init__(message)

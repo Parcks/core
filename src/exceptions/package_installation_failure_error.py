@@ -22,6 +22,5 @@ from __future__ import absolute_import
 from src.exceptions.error import Error
 
 class PackageInstallationFailureError(Error):
-    def __init__(self, package_name, path = None):
-        self.message = "Package "+package_name+" failed to complete the installation"
-        self.path = path
+    def __init__(self, package_name):
+        super(Error, self).__init__("Package "+package_name+" failed to complete the installation")

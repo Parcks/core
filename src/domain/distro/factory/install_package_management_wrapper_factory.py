@@ -19,6 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
+
+from src.domain.distro.fedora.fedora_install_package_management_wrapper import FedoraInstallPackageManagementWrapper
 from src.exceptions.unsupported_distro_name_error import UnsupportedDistroNameError
 from src.domain.distro.debian.debian_install_package_management_wrapper import DebianInstallPackageManagementWrapper
 
@@ -36,6 +38,8 @@ class InstallPackageManagementWrapperFactory:
         install_package_management_wrapper = None
         if(distro_name == "debian"):
             install_package_management_wrapper = DebianInstallPackageManagementWrapper(package_name)
+        elif(distro_name == "fedora"):
+            install_package_management_wrapper = FedoraInstallPackageManagementWrapper(package_name)
         else:
             raise UnsupportedDistroNameError(distro_name)
         return install_package_management_wrapper

@@ -20,8 +20,6 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 from src.domain.distro.install_package_management_wrapper import InstallPackageManagementWrapper
-from src.domain.log.logger import Logger
-from src.exceptions.package_installation_failure_error import PackageInstallationFailureError
 import subprocess
 
 class DebianInstallPackageManagementWrapper(InstallPackageManagementWrapper):
@@ -39,14 +37,3 @@ class DebianInstallPackageManagementWrapper(InstallPackageManagementWrapper):
 
     def is_installed(self):
         return False
-
-    def handle_result(self, result_code):
-        """
-        Handles the result of an package installation call
-        :param result_code: The result code of the installation call
-        :type result_code: int
-        """
-        if result_code == 0:
-            Logger.logger.info("Package "+self.package_name+" installed")
-        else:
-            raise PackageInstallationFailureError(self.package_name)

@@ -23,4 +23,5 @@ from src.exceptions.error import Error
 
 class PackageInstallationFailureError(Error):
     def __init__(self):
-        self.message = "A shell command failed to execute. Please check the logfile for further information"
+        message = "A shell command failed to execute. Please check the logfile for further information"
+        super(Error, self).__init__(message)

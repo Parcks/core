@@ -23,4 +23,4 @@ from src.exceptions.error import Error
 
 class UnsupportedDistroNameError(Error):
     def __init__(self, distro_name):
-        self.message = "The distro "+distro_name+" is not (yet) supported"
+        super(Error, self).__init__("The distro "+distro_name+" is not (yet) supported")

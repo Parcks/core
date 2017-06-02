@@ -23,4 +23,4 @@ from src.exceptions.error import Error
 
 class MalformedPluginError(Error):
     def __init(self, message):
-        self.message = message
+        super(Error, self).__init__(message)

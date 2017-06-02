@@ -20,6 +20,8 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 from src.domain.distro.package_management_wrapper import PackageManagementWrapper
+from src.exceptions.package_installation_failure_error import PackageInstallationFailureError
+from src.domain.log.logger import Logger
 from abc import ABCMeta, abstractmethod
 
 class InstallPackageManagementWrapper(PackageManagementWrapper):
@@ -40,11 +42,13 @@ class InstallPackageManagementWrapper(PackageManagementWrapper):
     def is_installed(self):
         pass
 
-    @abstractmethod
     def handle_result(self, result_code):
         """
         Handles the result of an package installation call
         :param result_code: The result code of the installation call
         :type result_code: int
         """
-        pass
+        if result_code == 0:
+            Logger.logger.info("Package "+self.package_name+" installed")
+        else:
+            raise PackageInstallationFailureError(self.package_name)

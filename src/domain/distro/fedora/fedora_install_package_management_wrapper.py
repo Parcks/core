@@ -18,9 +18,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - parcks[at]setarit.com
 """
-from __future__ import absolute_import
-from src.exceptions.error import Error
+from src.domain.distro.install_package_management_wrapper import InstallPackageManagementWrapper
+import subprocess
 
-class InvalidInstallationFileExtensionError(Error):
-    def __init(self, message):
-        super(Error, self).__init__(message)
+
+class FedoraInstallPackageManagementWrapper(InstallPackageManagementWrapper):
+    def __init__(self, package_name):
+        """
+        Default constructor
+        :param package_name: The name of the package to install
+        :type package_name: str
+        """
+        super(InstallPackageManagementWrapper, self).__init__(package_name)
+
+    def install(self):
+        result = subprocess.call(['sudo', 'dnf', 'install', '-y', self.package_name])
+        self.handle_result(result)
+
+    def is_installed(self):
+        return False
