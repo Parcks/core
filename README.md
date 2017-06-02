@@ -6,7 +6,11 @@ Parcks is a project from [Setarit](http://setarit.com)
 To run the test fire up your terminal and run `python -m unittest discover` or `python3 -m unittest discover` for Python 3.3+
 
 ## To do
-* Request confirmation if non official plugin repo url
-* Show warning if running as root
-* Support Fedora
+* Fix double download if unverified plugin
 * Support all linux distro families
+
+## Tested distros
+* Ubuntu
+* Debian
+* Fedora
+All derivates of the above linux families should work. If it is not the case, please open an issue.

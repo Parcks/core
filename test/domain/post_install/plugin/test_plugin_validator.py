@@ -25,7 +25,8 @@ from src.domain.post_install.plugin.plugin_validator import PluginValidator
 from src.exceptions.malformed_plugin_error import MalformedPluginError
 from src.domain.log.logger import Logger
 import unittest
-    
+
+
 # the validation of the plugin format is done by src.domain.parse.plugin_parser. This code is not tested in this testcase
 class TestPluginValidator(unittest.TestCase):
     def setUp(self):
@@ -39,14 +40,14 @@ class TestPluginValidator(unittest.TestCase):
         Logger.enable()
         
     def create_plugin_that_requires_download(self):
-        self.plugin_download = Plugin("Dummy plugin",  "http://example.com")
+        self.plugin_download = Plugin("Dummy plugin", "http://example.com")
         
     def create_plugin_that_requires_download_official_repo(self):
-        self.plugin_download_official_repo = Plugin("Dummy plugin",  "https://raw.githubusercontent.com/Parcks/plugins/master/testPlugin.ppl")
+        self.plugin_download_official_repo = Plugin("Dummy plugin", "https://raw.githubusercontent.com/Parcks/plugins/master/testPlugin.ppl")
         
     def create_plugin_no_download_required(self):
-        dummy_shell = Shell("pwd")
-        self.plugin_no_download = Plugin("Dummy plugin",  shell=dummy_shell)
+        dummy_shell = Shell(["pwd"])
+        self.plugin_no_download = Plugin("Dummy plugin", shell=dummy_shell)
         
     def create_invalid_plugin(self):
         self.invalid_plugin = Plugin("Dummy plugin")
@@ -65,7 +66,7 @@ class TestPluginValidator(unittest.TestCase):
         plugin_validator = PluginValidator(self.invalid_plugin)
         self.assertRaises(MalformedPluginError,  plugin_validator.validate)
         
-    def test_is_external_download_url_retruns_true_if_non_official_url(self):
+    def test_is_external_download_url_returns_true_if_non_official_url(self):
         plugin_validator = PluginValidator(self.plugin_download)
         plugin_validator.validate()
         self.assertTrue(plugin_validator.is_external_download_url())

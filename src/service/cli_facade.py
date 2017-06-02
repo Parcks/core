@@ -38,11 +38,11 @@ class CliFacade:
     def ask_user(self,  question,  default_answer = False):
         """
         Asks a question to the user and waits for the input
-        :param question_text: The text to display to the user
-        :type question_text: str
+        :param question: The text to display to the user
+        :type question: str
         :param default_answer: The default answer of the question when the user hit enter without answer, if none specified it will be False
         :type default_answer: bool
         :returns: The answer on the question or the default answer if no answer given
         :rtype: str or bool
         """
-        return self.user_input.ask(self.user_input.ask_native(question),  default_answer)
+        return self.user_input.ask(lambda: self.user_input.ask_native(question),  default_answer)

@@ -32,16 +32,22 @@ try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
+import sys
+
 
 class TestPluginInstaller(unittest.TestCase):
     def setUp(self):
         self.plugin_installer_with_invalid_plugin = PluginInstaller(Plugin("dummy_plugin"))
-        self.plugin_installer_with_plugin_that_needs_a_download = PluginInstaller(Plugin("dummy_plugin",  "http://www.example.com"))
+        self.plugin_installer_with_plugin_that_needs_a_download = PluginInstaller(Plugin("dummy_plugin", url="https://raw.githubusercontent.com/Parcks/plugins/master/testPlugin.ppl"))
         self.plugin_installer_with_plugin_that_does_not_need_a_download = PluginInstaller(Plugin("dummy_plugin",  shell=Shell([ShellCommand("pwd")])))
+        self.plugin_installer_unverified_plugin_source = PluginInstaller(Plugin("dummy_plugin", url="http://www.example.com"))
+        self.saved_out = sys.stdout
+        sys.stdout = open("/dev/null", "w")
         Logger.disable_all()
         
     def tearDown(self):
         Logger.enable()
+        sys.stdout = self.saved_out
         
     @patch.object(PluginRunner,  'run')
     @patch.object(PluginValidator,  'validate')
@@ -63,3 +69,14 @@ class TestPluginInstaller(unittest.TestCase):
         plugin_runner_before_download = self.plugin_installer_with_plugin_that_needs_a_download.plugin_runner
         self.plugin_installer_with_plugin_that_needs_a_download.download_plugin_but_keep_local_name()
         self.assertNotEqual(plugin_runner_before_download,  self.plugin_installer_with_plugin_that_needs_a_download.plugin_runner)
+
+    @patch.object(PluginValidator, 'is_download_required')
+    def test_download_if_necessary_calls_is_download_required_on_validator(self, mock):
+        self.plugin_installer_with_plugin_that_needs_a_download.download_if_necessary()
+        self.assertEqual(1, mock.call_count)
+
+    @patch.object(PluginInstaller, 'ask_confirmation')
+    @patch.object(PluginValidator, 'is_external_download_url')
+    def test_verify_url_calls_is_external_download_url_on_plugin_validator_url_if_download_required(self, mock, mocked_input):
+        self.plugin_installer_unverified_plugin_source.verify_url()
+        self.assertEqual(1, mock.call_count)

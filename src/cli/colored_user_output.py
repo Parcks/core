@@ -26,4 +26,4 @@ class ColoredUserOutput:
         :param message: The message to print
         :type message: str
         """
-        print("\033[1;33;40m "+message+"\n")
+        print("\033[1;33;49mWARNING\t"+message+"\033[0m")
