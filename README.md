@@ -13,4 +13,11 @@ To run the test fire up your terminal and run `python -m unittest discover` or `
 * Ubuntu
 * Debian
 * Fedora
+
 All derivates of the above linux families should work. If it is not the case, please open an issue.
+
+## Contributing
+See the [Contribution file](https://github.com/Parcks/core/blob/master/CONTRIBUTING).
+
+## Maintainer
+* [JValck](https://github.com/JValck) - [Twitter](https://twitter.com/realJValck)
