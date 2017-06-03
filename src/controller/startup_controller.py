@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-import os
+import os, pkg_resources
 from src.controller.installation_controller import InstallationController
 from src.cli.argument_parser import ArgumentParser
 from src.domain.log.logger import Logger
@@ -28,17 +28,24 @@ from src.service.cli_facade import CliFacade
 
 class StartupController:
     def __init__(self, args):
-        self.version = 2.0
+        self.version = self.fetch_version_from_setup()
         self.argumentParser = ArgumentParser(args)
         self.cli_facade = CliFacade()
         logger = Logger()
         self.logger = logger.logger
 
     def run(self):
-        self.logger.info("v.{:0.2f} - (GPLv2) JValck - Setarit".format(self.version))
+        self.logger.info("v." + self.version + " - (GPLv2) JValck - Setarit")
         self.display_warning_if_executing_as_root()
         installationFile = self.parse_arguments()
         self.boot_install_controller(installationFile)
+
+    def fetch_version_from_setup(self):
+        try:
+            return pkg_resources.require("Parcks")[0].version
+        except pkg_resources.DistributionNotFound:
+            return "DEVELOPMENT"
+
 
     def display_warning_if_executing_as_root(self):
         if(self.executingAsRoot()):

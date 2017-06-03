@@ -24,9 +24,12 @@ from __future__ import absolute_import
 import sys
 from .controller.startup_controller import StartupController
 
-def start(args):    
-    startupController = StartupController(args)
-    startupController.run()
+
+def start(args=None):
+    if args is None:
+        args = sys.argv[1:]
+    startup_controller = StartupController(args)
+    startup_controller.run()
 
 if __name__ == "__main__":
     start(sys.argv[1:])
