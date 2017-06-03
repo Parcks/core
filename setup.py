@@ -1,10 +1,5 @@
 #!/usr/bin/env python
-from setuptools import setup
-
-
-with open('README.rst') as readme_file:
-    README = readme_file.read()
-
+from setuptools import setup, find_packages
 
 install_requires = [
     'mock==2.0.0',
@@ -22,7 +17,7 @@ setup(
     maintainer='JValck',
     maintainer_email='parcks@setarit.com',
     url='https://github.com/Parcks',
-    packages=['src'],
+    packages= find_packages(),
     install_requires=install_requires,
     license="Apache License 2.0",
     platforms='Linux',
