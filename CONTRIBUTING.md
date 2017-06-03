@@ -30,5 +30,3 @@ Things to keep in mind:
 * Ensure the issue was not already reported by searching on GitHub under [Issues](https://github.com/Parcks/core/issues).
 * Indicate what kind of issue you are opening: a bug? a feature request (FR)? ...
 * Start the name of your issue with: `[<parcks_version> KIND_OF_ISSUE]` for example: `[2.0 BUG]` or `[2.0 FR]`
-
-
