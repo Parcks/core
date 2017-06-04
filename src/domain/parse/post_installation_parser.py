@@ -24,6 +24,7 @@ from src.domain.parse.json_parsable import JSONParsable
 from src.domain.parse.plugin_parser import PluginParser
 from src.domain.parse.shell_parser import ShellParser
 
+
 class PostInstallationParser(JSONParsable):
     def __init__(self, json_post_installation_array):
         """
@@ -32,7 +33,6 @@ class PostInstallationParser(JSONParsable):
         :param json_plugins_array: A JSON-array containing all post-installation actions (plugin, commands)
         """
         super(PostInstallationParser, self).__init__(json_post_installation_array)
-
 
     def parse(self):
         """

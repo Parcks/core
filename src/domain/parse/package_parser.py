@@ -40,7 +40,20 @@ class PackageParser(JSONParsable):
         package_list = []
         for package in self.json_object:
             package_object = Package(package["package"])
-            post_installation_parser = PostInstallationParser(package["post-installation"])
-            package_object.plugins = post_installation_parser.parse()
+            package_object.plugins = self.boot_installation_parser(package)
             package_list.append(package_object)
         return package_list
+
+    def boot_installation_parser(self, package_json):
+        """
+        Fires the :class:`src.domain.parse.post_installation_parser.PostInstallationParser` to parse
+        the plugins to be executed after the installation of the package
+        :param package_json: The json containing the package
+        :type package_json: json
+        :returns: list of plugins or an empty list if no post-installation key provided
+        """
+        try:
+            post_installation_parser = PostInstallationParser(package_json["post-installation"])
+            return post_installation_parser.parse()
+        except KeyError:
+            return []

@@ -21,8 +21,9 @@ Setarit - parcks[at]setarit.com
 from __future__ import absolute_import
 from src.domain.installable import Installable
 
+
 class Package(Installable):
-    def __init__(self, name, plugins = None):
+    def __init__(self, name, plugins=[]):
         """
         Default constructor
         
@@ -30,6 +31,7 @@ class Package(Installable):
         :param plugins: An array containing all the plugins. Can be none
         """
         super(Package, self).__init__(name)
+        self.plugins = plugins
 
     def install(self):
         print("install package")

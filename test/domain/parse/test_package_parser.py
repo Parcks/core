@@ -28,6 +28,7 @@ class TestPackageParser(unittest.TestCase):
         self.create_valid_json()
         self.create_valid_multiple_json()
         self.create_valid_no_packages_json()
+        self.create_valid_json_no_post_installation_entry()
         Logger.disable_all()
         
     def tearDown(self):
@@ -62,6 +63,14 @@ class TestPackageParser(unittest.TestCase):
         """
         self.validNoPackages = json.loads(JSON)
 
+    def create_valid_json_no_post_installation_entry(self):
+        JSON = """\
+                [
+        	    {"package": "php"}
+                ]
+                """
+        self.validJSON_no_post_installation = json.loads(JSON)
+
     def test_parse_loads_correct_packages(self):
         parser = PackageParser(self.validMultiplePackages)
         packages = parser.parse()
@@ -82,3 +91,8 @@ class TestPackageParser(unittest.TestCase):
         parser = PackageParser(self.validNoPackages)
         packages = parser.parse()
         self.assertEqual(0, len(packages))
+
+    def test_parse_creates_package_without_plugins_if_no_post_installation_key_provided(self):
+        parser = PackageParser(self.validJSON_no_post_installation)
+        package = parser.parse()
+        self.assertEqual([], package[0].plugins)
