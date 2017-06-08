@@ -21,14 +21,21 @@ Setarit - parcks[at]setarit.com
 from __future__ import absolute_import
 from abc import ABCMeta, abstractmethod
 
+
 class PackageManagementWrapper(object):
-    def __init__(self, package_name):
+    def __init__(self):
         """
         Default parent constructor
-        :param package_name: name of the package
+        """
+        __metaclass__ = ABCMeta
+        self.package_name = None
+
+    def set_package_name(self, package_name):
+        """
+        Setter
+        :param package_name: The name of the package
         :type package_name: str
         """
-        __metaclass__=ABCMeta
         self.package_name = package_name
         
     @abstractmethod

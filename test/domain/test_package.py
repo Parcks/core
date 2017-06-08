@@ -38,7 +38,7 @@ class TestPackage(unittest.TestCase):
         Logger.enable()
 
     def create_package_with_post_install(self):
-        self.package_with_post_install = Package("php", [Plugin("dummy"), Plugin("other dummy")])
+        self.package_with_post_install = Package("php", plugins=[Plugin("dummy"), Plugin("other dummy")])
 
     def create_package_without_post_install(self):
         self.package_without_post_install = Package("php")

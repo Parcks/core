@@ -41,6 +41,7 @@ class PackageParser(JSONParsable):
         for package in self.json_object:
             package_object = Package(package["package"])
             package_object.plugins = self.boot_installation_parser(package)
+            package_object.alternative_names = self.fetch_alternative_names(package)
             package_list.append(package_object)
         return package_list
 
@@ -57,3 +58,15 @@ class PackageParser(JSONParsable):
             return post_installation_parser.parse()
         except KeyError:
             return []
+
+    def fetch_alternative_names(self, package_json):
+        """
+        Will add alternative package names (if any) to the package object
+        :param package_json: The json containing the package
+        :type package_json: json
+        :returns: list of alternative package names
+        """
+        try:
+            return package_json["alternative-names"]
+        except KeyError:
+            return None

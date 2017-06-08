@@ -20,6 +20,7 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 from src.domain.distro.debian.debian_install_package_management_wrapper import DebianInstallPackageManagementWrapper
+from src.domain.distro.install_package_management_wrapper import InstallPackageManagementWrapper
 from src.domain.log.logger import Logger
 import unittest
 from src.exceptions.package_installation_failure_error import PackageInstallationFailureError
@@ -31,12 +32,13 @@ except ImportError:
 class TestDebianInstallPackageManagementWrapper(unittest.TestCase):
     def setUp(self):
         Logger.disable_all()
-        self.wrapper = DebianInstallPackageManagementWrapper("test")
+        self.wrapper = DebianInstallPackageManagementWrapper()
+        self.wrapper.set_package_name("test")
 
     def tearDown(self):
         Logger.enable()
 
-    @patch.object(DebianInstallPackageManagementWrapper, 'handle_result')
+    @patch.object(InstallPackageManagementWrapper, 'handle_result')
     @patch('subprocess.call')    
     def test_install_calls_subprocess(self, mocked_call_method, mocked_handle_result):
         self.wrapper.install()

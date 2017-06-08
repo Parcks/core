@@ -34,9 +34,9 @@ class TestInstallPackageManagementWrapperFactory(unittest.TestCase):
         Logger.enable()
     
     def test_create_returns_correct_implementation(self):
-        wrapper = self.factory.create("debian", Package("test"))
+        wrapper = self.factory.create("debian")
         self.assertEqual("DebianInstallPackageManagementWrapper", wrapper.__class__.__name__)
 
     def test_create_raises_exception_on_unknown_distro_name(self):
         with self.assertRaises(UnsupportedDistroNameError):
-            self.factory.create("fictiveDistro", Package("test"))
+            self.factory.create("fictiveDistro")

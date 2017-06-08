@@ -24,15 +24,14 @@ from src.exceptions.package_installation_failure_error import PackageInstallatio
 from src.domain.log.logger import Logger
 from abc import ABCMeta, abstractmethod
 
+
 class InstallPackageManagementWrapper(PackageManagementWrapper):
-    def __init__(self, package_name):
+    def __init__(self):
         """
         Default constructor
-        :param package_name: The name of the package to install
-        :type package_name: str
         """
         __metaclass__=ABCMeta
-        super(PackageManagementWrapper, self).__init__(package_name)
+        super(PackageManagementWrapper, self).__init__()
 
     @abstractmethod
     def install(self):
@@ -51,4 +50,5 @@ class InstallPackageManagementWrapper(PackageManagementWrapper):
         if result_code == 0:
             Logger.logger.info("Package "+self.package_name+" installed")
         else:
+            Logger.logger.warning("Package "+self.package_name+" failed to complete the installation")
             raise PackageInstallationFailureError(self.package_name)

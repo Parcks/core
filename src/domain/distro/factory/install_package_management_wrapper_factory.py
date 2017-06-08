@@ -25,21 +25,19 @@ from src.exceptions.unsupported_distro_name_error import UnsupportedDistroNameEr
 from src.domain.distro.debian.debian_install_package_management_wrapper import DebianInstallPackageManagementWrapper
 
 class InstallPackageManagementWrapperFactory:
-    def create(self, distro_name, package_name):
+    def create(self, distro_name):
         """
         Creates the correct :class:`src.domain.distro.install_package_management_wrapper.InstallPackageManagementWrapper`
         depending on the distro
         :param distro_name: The name of the distro
         :type distro_name: str
-        :param package_name: The name of the package to install
-        :type package_name: str
         :raises UnsupportedDistroName: If the distro name is not yet supported
         """
         install_package_management_wrapper = None
-        if(distro_name == "debian"):
-            install_package_management_wrapper = DebianInstallPackageManagementWrapper(package_name)
-        elif(distro_name == "fedora"):
-            install_package_management_wrapper = FedoraInstallPackageManagementWrapper(package_name)
+        if distro_name == "debian":
+            install_package_management_wrapper = DebianInstallPackageManagementWrapper()
+        elif distro_name == "fedora":
+            install_package_management_wrapper = FedoraInstallPackageManagementWrapper()
         else:
             raise UnsupportedDistroNameError(distro_name)
         return install_package_management_wrapper

@@ -19,18 +19,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.distro.package_management_wrapper import PackageManagementWrapper
-from abc import ABCMeta, abstractmethod
+from src.exceptions.error import Error
 
 
-class UpdatePackageManagementWrapper(PackageManagementWrapper):
+class NoAlternativePackageSuitableError(Error):
     def __init__(self):
-        """
-        Default constructor
-        """
-        __metaclass__=ABCMeta
-        super(PackageManagementWrapper, self).__init__()
-
-    @abstractmethod
-    def update(self):
-        pass
+        super(Error, self).__init__("No alternative packages could be installed")

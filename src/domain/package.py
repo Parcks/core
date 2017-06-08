@@ -23,15 +23,20 @@ from src.domain.installable import Installable
 
 
 class Package(Installable):
-    def __init__(self, name, plugins=[]):
+    def __init__(self, name, alternative_names=None, plugins=[]):
         """
         Default constructor
         
         :param name: The name of the package
+        :type name: str
+        :param alternative_names: List of possible fallback/alternative package names
+        :type alternative_names: list
         :param plugins: An array containing all the plugins. Can be none
+        :type plugins: list
         """
         super(Package, self).__init__(name)
         self.plugins = plugins
+        self.alternative_names = alternative_names
 
     def install(self):
         print("install package")

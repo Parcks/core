@@ -22,14 +22,13 @@ from __future__ import absolute_import
 from src.domain.distro.install_package_management_wrapper import InstallPackageManagementWrapper
 import subprocess
 
+
 class DebianInstallPackageManagementWrapper(InstallPackageManagementWrapper):
-    def __init__(self, package_name):
+    def __init__(self):
         """
         Default constructor
-        :param package_name: The name of the package to install
-        :type package_name: str
         """
-        super(InstallPackageManagementWrapper, self).__init__(package_name)
+        super(InstallPackageManagementWrapper, self).__init__()
 
     def install(self):
         result = subprocess.call(['sudo', 'apt', 'install', '-y', self.package_name])

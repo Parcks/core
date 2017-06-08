@@ -29,6 +29,7 @@ class TestPackageParser(unittest.TestCase):
         self.create_valid_multiple_json()
         self.create_valid_no_packages_json()
         self.create_valid_json_no_post_installation_entry()
+        self.create_valid_json_with_alternative_names_entry()
         Logger.disable_all()
         
     def tearDown(self):
@@ -71,6 +72,16 @@ class TestPackageParser(unittest.TestCase):
                 """
         self.validJSON_no_post_installation = json.loads(JSON)
 
+    def create_valid_json_with_alternative_names_entry(self):
+        JSON = """\
+        [
+        {"package": "php",
+        "alternative-names":["git"]
+        }
+        ]
+        """
+        self.validJSON_with_alternative_names = json.loads(JSON)
+
     def test_parse_loads_correct_packages(self):
         parser = PackageParser(self.validMultiplePackages)
         packages = parser.parse()
@@ -96,3 +107,13 @@ class TestPackageParser(unittest.TestCase):
         parser = PackageParser(self.validJSON_no_post_installation)
         package = parser.parse()
         self.assertEqual([], package[0].plugins)
+
+    def test_parse_sets_alternative_names_to_None_if_no_alternatives_specified(self):
+        parser = PackageParser(self.validJSON)
+        package = parser.parse()
+        self.assertEqual(None, package[0].alternative_names)
+
+    def test_parse_sets_alternative_names_to_list_of_alternatives_if_alternatives_specified(self):
+        parser = PackageParser(self.validJSON_with_alternative_names)
+        package = parser.parse()
+        self.assertEqual("git", package[0].alternative_names[0])

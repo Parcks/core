@@ -53,7 +53,7 @@ class TestInstallFacade(unittest.TestCase):
 
     @patch.object(InstallPackageManagementWrapperFactory, 'create')
     def test_create_install_package_management_wrapper_calls_factory_create(self, mocked_factory_create):
-        self.facade.create_install_package_management_wrapper(Package("test"))
+        self.facade.create_install_package_management_wrapper()
         self.assertTrue(mocked_factory_create.called)
         
     @patch.object(DebianInstallPackageManagementWrapper,  'install')

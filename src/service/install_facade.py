@@ -23,6 +23,7 @@ from src.domain.parse.installation_file_parser import InstallationFileParser
 from src.domain.log.logger import Logger
 from src.domain.distro.distro_detector import detect_distro
 from src.domain.distro.factory.install_package_management_wrapper_factory import InstallPackageManagementWrapperFactory
+from src.domain.install.package_installer import PackageInstaller
 
 class InstallFacade:
     def __init__(self, installFileLocation):
@@ -30,6 +31,7 @@ class InstallFacade:
         self.logger = Logger.logger
         self.distro_name = self.detect_distro_name()
         self.install_package_management_wrapper_factory = InstallPackageManagementWrapperFactory()
+        self.install_package_management_wrapper = self.create_install_package_management_wrapper()
 
     def parse_installation_file(self):
         parser = InstallationFileParser(self.installFileLocation)
@@ -38,16 +40,14 @@ class InstallFacade:
     def install(self):
         self.logger.info("Starting installation:\t "+self.software_catalog.name)
         for package in self.software_catalog.packages:
-            install_package_management_wrapper = self.create_install_package_management_wrapper(package)
-            install_package_management_wrapper.install()
+            package_installer = PackageInstaller(package, self.install_package_management_wrapper)
+            package_installer.install()
+            #self.install_package_management_wrapper.install()
             package.handle_post_installation()
 
     def detect_distro_name(self):        
         return detect_distro()
 
-    def create_install_package_management_wrapper(self, package):
+    def create_install_package_management_wrapper(self):
         factory = InstallPackageManagementWrapperFactory()
-        return factory.create(self.distro_name, package.name)
-
-    
-    
+        return factory.create(self.distro_name)
