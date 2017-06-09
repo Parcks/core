@@ -10,7 +10,6 @@ To run the test fire up your terminal and run `python -m unittest discover` or `
 * Support all linux distro families
 * Update package list (Debian: `apt-get update`) before installing once a week
 * Continue the execution of the remaining plugins if one is unverified (currently this kills Parcks)
-* Allow alternative package names in the installers
 * Improve test coverage (currently (v.2.1.0) 89%)
 * Make Parcks a standalone package manager
 

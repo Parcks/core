@@ -75,19 +75,19 @@ class TestPackageInstaller(unittest.TestCase):
         with patch('src.domain.distro.debian.debian_install_package_management_wrapper.DebianInstallPackageManagementWrapper') as mock:
             installer_without_alternatives = PackageInstaller(self.package_without_alternatives, mock)
             installer_without_alternatives.try_package()
-            mock.set_package_name.assert_called()
+            mock.set_package_name.assert_called_with()
 
     def test_try_package_calls_install_on_wrapper(self):
         with patch('src.domain.distro.debian.debian_install_package_management_wrapper.DebianInstallPackageManagementWrapper') as mock:
             installer_without_alternatives = PackageInstaller(self.package_without_alternatives, mock)
             installer_without_alternatives.try_package()
-            mock.install.assert_called()
+            mock.install.assert_called_with()
 
     def test_try_alternative_package_calls_set_package_name_on_wrapper(self):
         with patch('src.domain.distro.debian.debian_install_package_management_wrapper.DebianInstallPackageManagementWrapper') as mock:
             installer_without_alternatives = PackageInstaller(self.package_without_alternatives, mock)
             installer_without_alternatives.try_alternative_package("alternative1")
-            mock.set_package_name.assert_called()
+            mock.set_package_name.assert_called_with()
 
     def test_try_alternative_package_calls_set_package_name_on_wrapper_with_alternative_name(self):
         with patch('src.domain.distro.debian.debian_install_package_management_wrapper.DebianInstallPackageManagementWrapper') as mock:
@@ -99,7 +99,7 @@ class TestPackageInstaller(unittest.TestCase):
         with patch('src.domain.distro.debian.debian_install_package_management_wrapper.DebianInstallPackageManagementWrapper') as mock:
             installer_without_alternatives = PackageInstaller(self.package_without_alternatives, mock)
             installer_without_alternatives.try_alternative_package("alternative1")
-            mock.install.assert_called()
+            mock.install.assert_called_with()
 
     def test_try_alternatives_raises_NoAlternativePackageSuitableError_if_all_alternatives_failed(self):
         with patch('src.domain.distro.debian.debian_install_package_management_wrapper.DebianInstallPackageManagementWrapper') as mock:
