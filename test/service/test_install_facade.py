@@ -24,8 +24,8 @@ from src.domain.parse.installation_file_parser import InstallationFileParser
 from src.domain.distro.factory.install_package_management_wrapper_factory import InstallPackageManagementWrapperFactory
 from src.domain.package import Package
 from src.domain.software_catalog import SoftwareCatalog
-from src.domain.distro.debian.debian_install_package_management_wrapper import DebianInstallPackageManagementWrapper
 from src.domain.log.logger import Logger
+from src.domain.install.package_installer import PackageInstaller
 import unittest
 try:
     from unittest.mock import patch
@@ -55,9 +55,14 @@ class TestInstallFacade(unittest.TestCase):
     def test_create_install_package_management_wrapper_calls_factory_create(self, mocked_factory_create):
         self.facade.create_install_package_management_wrapper()
         self.assertTrue(mocked_factory_create.called)
-        
-    @patch.object(DebianInstallPackageManagementWrapper,  'install')
+
+    @patch.object(PackageInstaller, 'install')
     @patch.object(Package,  'handle_post_installation')
     def test_install_calls_handle_post_installation_on_package(self,  mock,  mocked_install_method):
         self.facade.install()
         self.assertTrue(mock.call_count >= 1)
+
+    @patch.object(PackageInstaller, 'install')
+    def test_install_calls_install_on_package_installer(self, mocked_package_installer_install_method):
+        self.facade.install()
+        self.assertTrue(mocked_package_installer_install_method.called)

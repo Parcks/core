@@ -42,7 +42,6 @@ class InstallFacade:
         for package in self.software_catalog.packages:
             package_installer = PackageInstaller(package, self.install_package_management_wrapper)
             package_installer.install()
-            #self.install_package_management_wrapper.install()
             package.handle_post_installation()
 
     def detect_distro_name(self):        

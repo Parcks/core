@@ -63,7 +63,7 @@ class PackageInstaller:
                 self.try_alternative_package(alternative_name)
                 return
             except PackageInstallationFailureError:
-                continue
+                pass
         raise NoAlternativePackageSuitableError()
 
     def try_alternative_package(self, alternative_name):

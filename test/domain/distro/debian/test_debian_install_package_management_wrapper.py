@@ -47,3 +47,7 @@ class TestDebianInstallPackageManagementWrapper(unittest.TestCase):
     def test_handle_result_raises_PackageInstallationFailureError_on_installation_failure(self):
         with self.assertRaises(PackageInstallationFailureError):
             self.wrapper.handle_result(1)
+
+    def test_set_package_name_updates_package_name(self):
+        self.wrapper.set_package_name("name")
+        self.assertEqual("name", self.wrapper.package_name)
