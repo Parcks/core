@@ -21,7 +21,8 @@ Setarit - parcks[at]setarit.com
 from __future__ import absolute_import
 from abc import ABCMeta, abstractmethod
 from src.domain.log.logger import Logger
-import src.exceptions.shell_command_failed_error
+from src.exceptions.shell_command_failed_error import ShellCommandFailedError
+
 
 class ShellCommandRunnable(object):
     def __init__(self,  shell_command):

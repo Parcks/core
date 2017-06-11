@@ -21,7 +21,8 @@ Setarit - parcks[at]setarit.com
 from __future__ import absolute_import
 from src.exceptions.error import Error
 
-class PackageInstallationFailureError(Error):
+
+class ShellCommandFailedError(Error):
     def __init__(self):
         message = "A shell command failed to execute. Please check the logfile for further information"
         super(Error, self).__init__(message)
