@@ -81,16 +81,8 @@ class TestRemoteParser(unittest.TestCase):
         remote = parser.parse()
         self.assertEqual("composer", remote.name)
         self.assertEqual("http://www.example.com", remote.url)
-        self.assertEqual(None, remote.shell)
 
     def test_parse_raises_malformed_remote_error_on_invalid_json(self):
         parser = RemoteParser(self.invalid_remote_JSON)
         with self.assertRaises(MalformedRemoteError):
             parser.parse()
-
-    @patch.object(ShellParser, 'parse')
-    def test_load_commands_calls_shell_parser_if_commands_provided(self, mock_shell_parser):
-        parser = RemoteParser(self.valid_remote_JSON_with_commands)
-        parser.load_commands()
-        self.assertTrue(mock_shell_parser.called)
-        

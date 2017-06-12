@@ -25,8 +25,6 @@ from src.domain.parse.json_parsable import JSONParsable
 from src.domain.parse.shell_command_parser import ShellCommandParser
 
 
-#import json
-
 class ShellParser(JSONParsable):
     def __init__(self, shell_json):
         """
@@ -43,7 +41,7 @@ class ShellParser(JSONParsable):
         :rtype: src.domain.shell.Shell
         """
         shell_commands_list = []
-        for json_command in self.json_object:
+        for json_command in self.json_object["cmds"]:
             parser = ShellCommandParser(json_command)
             shell_commands_list.append(parser.parse())
-        return Shell(shell_commands_list)
+        return Shell(self.json_object["name"] , shell_commands_list)

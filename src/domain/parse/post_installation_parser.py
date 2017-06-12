@@ -20,7 +20,6 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 
-from src.domain.model.post_install.remote import Remote
 from src.domain.parse.json_parsable import JSONParsable
 from src.domain.parse.remote_parser import RemoteParser
 from src.domain.parse.shell_parser import ShellParser
@@ -52,6 +51,5 @@ class PostInstallationParser(JSONParsable):
             parser = RemoteParser(post_installation_json_object)
             return parser.parse()
         elif(post_installation_json_object["type"].upper()=="SHELL"):
-            parser = ShellParser(post_installation_json_object["cmds"])
-            shell_object = parser.parse()
-            return Remote("Anonymous Plugin", shell=shell_object)
+            parser = ShellParser(post_installation_json_object)
+            return parser.parse()

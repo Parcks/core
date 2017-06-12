@@ -20,18 +20,22 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 
-from src.domain.model.installable import Installable
+from src.domain.post_install.shell.shell_runner import ShellRunner
+from src.domain.model.post_install.post_install_runnable import PostInstallRunnable
 
 
-class Shell(Installable):
-    def __init__(self, shell_commands):
+class Shell(PostInstallRunnable):
+    def __init__(self, name, shell_commands):
         """
         Default constructor
         :param shell_commands: The shell commands to be executed
         :type shell_commands: list of :class:`src.domain.shell_command.ShellCommand`
+        :param name: The name of the post-installation script that is displayed to the user
+        :type name: str
         """
-        super(Shell, self).__init__()
+        super(Shell, self).__init__(name)
         self.shell_commands = shell_commands
+        self.runner = ShellRunner(self)
 
-    def install(self):
-        print("shell")
+    def run(self):
+        self.runner.run()

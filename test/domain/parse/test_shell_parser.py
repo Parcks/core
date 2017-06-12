@@ -45,33 +45,47 @@ class TestShellParser(unittest.TestCase):
 
     def create_valid_shell_json_two(self):
         JSON = """\
-        [
-            {
-		"root":true,
-		"do":["whoami","ls -al"]
-            },
-            {   
-		"root":false,
-		"do":["pwd"]
-            }
-	]
+        {
+            "name":"dummy",
+            "type":"shell",
+            "cmds":
+                [
+                    {
+                "root":true,
+                "do":["whoami","ls -al"]
+                    },
+                    {   
+                "root":false,
+                "do":["pwd"]
+                    }
+            ]
+        }
         """
         self.valid_two_JSON = json.loads(JSON)
 
     def create_valid_shell_json_one(self):
         JSON = """\
-        [
-            {
-		"root":true,
-		"do":["whoami","ls -al"]
-            }
-	]
+        {
+            "name":"dummy",
+            "type":"shell",
+            "cmds":
+                [
+                    {
+                "root":true,
+                "do":["whoami","ls -al"]
+                    }
+            ]
+        }
         """
         self.valid_one_JSON = json.loads(JSON)
 
     def create_valid_shell_json_zero(self):
         JSON = """\
-        []
+        {
+            "name":"dummy",
+            "type":"shell",
+            "cmds":[]
+        }
         """
         self.valid_zero_JSON = json.loads(JSON)
 

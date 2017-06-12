@@ -22,8 +22,6 @@ from __future__ import absolute_import
 
 import unittest
 
-from src.domain.model.post_install.shell import Shell
-
 from src.domain.log.logger import Logger
 from src.domain.model.post_install.remote import Remote
 from src.domain.post_install.remote.remote_validator import RemoteValidator
@@ -35,7 +33,6 @@ class TestRemoteValidator(unittest.TestCase):
     def setUp(self):
         self.create_remote_that_requires_download()
         self.create_remote_that_requires_download_official_repo()
-        self.create_remote_no_download_required()
         self.create_invalid_remote()
         Logger.disable_all()
         
@@ -48,23 +45,10 @@ class TestRemoteValidator(unittest.TestCase):
     def create_remote_that_requires_download_official_repo(self):
         self.remote_download_official_repo = Remote("Dummy remote", "https://raw.githubusercontent.com/Parcks/plugins/master/testPlugin.ppl")
         
-    def create_remote_no_download_required(self):
-        dummy_shell = Shell(["pwd"])
-        self.remote_no_download = Remote("Dummy remote", shell=dummy_shell)
-        
+
     def create_invalid_remote(self):
         self.invalid_remote = Remote("Dummy remote")
-        
-    def test_is_download_required_returns_true_if_no_shell_provided(self):
-        remote_validator = RemoteValidator(self.remote_download)
-        remote_validator.validate()
-        self.assertEqual(remote_validator.is_download_required(),  True)
-        
-    def test_is_download_required_returns_false_if_shell_provided(self):
-        remote_validator = RemoteValidator(self.remote_no_download)
-        remote_validator.validate()
-        self.assertEqual(remote_validator.is_download_required(),  False)
-        
+
     def test_validate_raises_MalformedPluginError_on_invalid_remote(self):
         remote_validator = RemoteValidator(self.invalid_remote)
         self.assertRaises(MalformedRemoteError, remote_validator.validate)

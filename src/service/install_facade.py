@@ -30,6 +30,7 @@ class InstallFacade:
         self.installFileLocation = installFileLocation
         self.logger = Logger.logger
         self.distro_name = self.detect_distro_name()
+        self.software_catalog = None
         self.install_package_management_wrapper_factory = InstallPackageManagementWrapperFactory()
         self.install_package_management_wrapper = self.create_install_package_management_wrapper()
 

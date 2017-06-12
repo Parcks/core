@@ -19,8 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.parse.remote_parser import RemoteParser
-import requests
+import requests, src.domain.parse.remote_parser
 from src.domain.log.logger import Logger
 
 class RemoteDownloader:
@@ -59,5 +58,5 @@ class RemoteDownloader:
         :returns: The downloaded package
         :rtype: src.domain.remote.Remote
         """
-        parser = RemoteParser(remote_json)
+        parser = RemoteParser(remote_json) #already imported in post_installation_parser
         return parser.parse()

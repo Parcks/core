@@ -24,10 +24,11 @@ from src.domain.log.logger import Logger
 class ShellRunner():
     def __init__(self,  shell):
         self.shell = shell
+        self.shell_command_runnable = None
         self.factory = ShellCommandRunnableFactory()
         
     def run(self):
-        Logger.logger.info("Starting post-install scripts. Please wait...")
+        Logger.logger.info("Starting shell scripts. Please wait...")
         for shell_command in self.shell.shell_commands:
             self.create_shell_command_runnable(shell_command)        
             self.execute_shell_command_runnable()

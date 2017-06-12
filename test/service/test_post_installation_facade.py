@@ -20,23 +20,33 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 
+from src.domain.log.logger import Logger
 from src.domain.model.post_install.post_install_runnable import PostInstallRunnable
-from src.domain.post_install.remote.remote_runner import RemoteRunner
+from src.domain.model.post_install.remote import Remote
+
+from src.service.post_installation_facade import PostInstallationFacade
+import unittest
+try:
+    from unittest.mock import patch
+except ImportError:
+    from mock import patch
 
 
-class Remote(PostInstallRunnable):
-    def __init__(self, name, url=None):
-        """
-        Default constructor
-        
-        :param name: The name of the post-installation script that is displayed to the user
-        :param url: The url of the remote to be downloaded or None
-        :type name: str
-        :type url: str
-        """
-        super(Remote, self).__init__(name)
-        self.url = url
-        self.installer = RemoteRunner(self)
+class TestPostInstallationFacade(unittest.TestCase):
+    def setUp(self):
+        self.create_facade()
+        Logger.disable_all()
 
-    def install(self):
-        self.installer.run()
+    def tearDown(self):
+        Logger.enable()
+
+    def create_facade(self):
+        self.facade_under_test = PostInstallationFacade([
+            Remote("Dummy", "http://example.com"),
+            Remote("Dummy", "http://example.com")
+        ])
+
+    @patch.object(PostInstallRunnable, 'run')
+    def test_handle_post_installation_calls_run_on_PostInstallRunnable(self, mock):
+        self.facade_under_test.handle_post_installation()
+        self.assertEqual(2, mock.call_count)

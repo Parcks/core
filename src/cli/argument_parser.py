@@ -39,5 +39,5 @@ class ArgumentParser:
         for option, argument in self.options:            
             if(option in ("-i","--installer-file")):
                 self.inputFile = argument
-        if(self.inputFile == None):
+        if(self.inputFile is None):
             raise NoInstallationFileProvidedError("No installation file provided")

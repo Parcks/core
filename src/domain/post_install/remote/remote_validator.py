@@ -32,29 +32,18 @@ class RemoteValidator:
         :type remote: src.domain.remote
         """
         self.remote = remote
-        self.require_download = False
         self.external_download_url = False
         
     def validate(self):
         """
         Validates the remote.
-        :raises MalformedPluginError: If there is no url nor a shell object provided
+        :raises MalformedPluginError: If there is no url  provided
         """
-        if(self.remote.shell is None):
-            self.require_download = True            
-        if(self.remote.shell is None and self.remote.url is None):
-            raise MalformedRemoteError("No url and commands provided")
-        if(self.remote.url is not None and not self.remote.url.startswith("https://raw.githubusercontent.com/Parcks/plugins/")):
+        if(self.remote.url is None):
+            raise MalformedRemoteError("No url provided")
+        if(not self.remote.url.startswith("https://raw.githubusercontent.com/Parcks/plugins/")):
             self.external_download_url = True
-        
-    def is_download_required(self):
-        """
-        Getter
-        :returns: True if the remote needs to be downloaded
-        :rtype: bool
-        """
-        return self.require_download
-        
+
     def is_external_download_url(self):
         """
         Getter

@@ -24,7 +24,7 @@ import unittest
 
 from src.domain.log.logger import Logger
 from src.domain.model.post_install.remote import Remote
-from src.domain.post_install.remote.remote_installer import RemoteInstaller
+from src.domain.post_install.remote.remote_runner import RemoteRunner
 
 try:
     from unittest.mock import patch
@@ -39,7 +39,7 @@ class TestRemote(unittest.TestCase):
     def tearDown(self):
         Logger.enable()
     
-    @patch.object(RemoteInstaller, 'run')
+    @patch.object(RemoteRunner, 'run')
     def test_install_calls_run_on_remote_installer(self,  mock):
         self.remote.install()
         self.assertTrue(mock.called)

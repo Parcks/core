@@ -20,23 +20,19 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 
-from src.domain.model.post_install.post_install_runnable import PostInstallRunnable
-from src.domain.post_install.remote.remote_runner import RemoteRunner
 
-
-class Remote(PostInstallRunnable):
-    def __init__(self, name, url=None):
+class PostInstallationFacade:
+    def __init__(self, post_install_runnables):
         """
         Default constructor
-        
-        :param name: The name of the post-installation script that is displayed to the user
-        :param url: The url of the remote to be downloaded or None
-        :type name: str
-        :type url: str
+        :param post_install_runnables: List of PostInstallRunnable's to execute
+        :type post_install_runnables: list of :class:`src.domain.model.post_install.post_install_runnable.PostInstallRunnable
         """
-        super(Remote, self).__init__(name)
-        self.url = url
-        self.installer = RemoteRunner(self)
+        self.post_install_runnables = post_install_runnables
 
-    def install(self):
-        self.installer.run()
+    def handle_post_installation(self):
+        """
+        Executes all the PostInstallRunnable's
+        """
+        for post_install_runnable in self.post_install_runnables:
+            post_install_runnable.run()

@@ -24,7 +24,7 @@ class UserInput:
         """
         Asks a question to the user and waits for the input
         :param input_method: The method to request the input (use ask_native if in doubt)
-        :type input: func
+        :type input_method: func
         :param default_answer: The default answer of the question when the user hit enter without answer
         :type default_answer: bool
         :returns: The answer on the question or the default answer if no answer given

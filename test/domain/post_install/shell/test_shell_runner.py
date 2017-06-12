@@ -36,9 +36,9 @@ except ImportError:
     
 class TestShellRunner(unittest.TestCase):
     def setUp(self):
-        self.shell = Shell([ShellCommand(["pwd"])])
+        self.shell = Shell("Dummy shell", [ShellCommand(["pwd"])])
         self.shell_runner = ShellRunner(self.shell)
-        self.shell_multiple_commands = Shell([ShellCommand(["pwd"]), ShellCommand(["pwd"])])
+        self.shell_multiple_commands = Shell("Dummy shell", [ShellCommand(["pwd"]), ShellCommand(["pwd"])])
         self.shell_runner_multiple_commands = ShellRunner(self.shell_multiple_commands)
         Logger.disable_all()
         

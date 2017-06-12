@@ -44,4 +44,4 @@ class Package(Installable):
         
     def handle_post_installation(self):
         for post_installation_runnable in self.post_installation_runnables:
-            post_installation_runnable.install()
+            post_installation_runnable.run()

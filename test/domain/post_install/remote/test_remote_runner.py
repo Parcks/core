@@ -22,39 +22,49 @@ from __future__ import absolute_import
 
 import unittest
 
-from src.domain.model.post_install.shell import Shell
-from src.domain.model.post_install.shell_command import ShellCommand
-
 from src.domain.log.logger import Logger
 from src.domain.model.post_install.remote import Remote
+from src.domain.post_install.remote.remote_downloader import RemoteDownloader
 from src.domain.post_install.remote.remote_runner import RemoteRunner
-from src.domain.post_install.shell.shell_runner import ShellRunner
+from src.domain.post_install.remote.remote_validator import RemoteValidator
 
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
+import sys
+
 
 class TestRemoteRunner(unittest.TestCase):
     def setUp(self):
-        self.remote = Remote("dummy_remote", shell=Shell([ShellCommand(["pwd"])]))
-        self.remote_runner = RemoteRunner(self.remote)
-        self.remote_multiple_commands = Remote("Dummy Plugin", shell = Shell([ShellCommand(["pwd"]), ShellCommand(["pwd"])]))
-        self.remote_runner_multiple_commands = RemoteRunner(self.remote_multiple_commands)
+        self.remote_runner_with_remote_verified_source = RemoteRunner(Remote("dummy_remote", url="https://raw.githubusercontent.com/Parcks/plugins/master/testPlugin.ppl"))
+        self.remote_runner_unverified_remote_source = RemoteRunner(Remote("dummy_remote", url="http://www.example.com"))
+        self.saved_out = sys.stdout
+        sys.stdout = open("/dev/null", "w")
         Logger.disable_all()
         
     def tearDown(self):
         Logger.enable()
+        sys.stdout = self.saved_out
         
-    def test_constructor_sets_remote(self):
-        self.assertEqual(self.remote_runner.remote, self.remote)
+    @patch.object(RemoteDownloader, 'download')
+    @patch.object(RemoteValidator, 'validate')
+    def test_run_calls_validate_on_remote_validator(self,  mock,  mocked_remote_downloader_download):
+        self.remote_runner_with_remote_verified_source.run()
+        self.assertTrue(mock.call_count > 0)
+
+    @patch.object(RemoteRunner, 'download')
+    def test_run_calls_download(self, mocked_download):
+        self.remote_runner_with_remote_verified_source.run()
+        self.assertTrue(mocked_download.called)
         
-    @patch.object(ShellRunner,  'run')
-    def test_run_calls_shell_runner_once(self,  mocked_run_method):
-        self.remote_runner.run()
-        self.assertEqual(mocked_run_method.call_count,  1)
-        
-    @patch.object(ShellRunner,  'run')
-    def test_run_calls_shell_runner_once_if_multiple_shell_commands(self,  mocked_run_method):
-        self.remote_runner_multiple_commands.run()
-        self.assertEqual(mocked_run_method.call_count,  1)      
+    @patch.object(RemoteDownloader, 'download')
+    def test_download_remote_from_repository_calls_download_on_remote_downloader(self,  mock):
+        self.remote_runner_with_remote_verified_source.download_remote_from_repository()
+        self.assertTrue(mock.call_count == 1)
+
+    @patch.object(RemoteRunner, 'ask_confirmation')
+    @patch.object(RemoteValidator, 'is_external_download_url')
+    def test_verify_url_calls_is_external_download_url_on_remote_validator_url_if_download_required(self, mock, mocked_input):
+        self.remote_runner_unverified_remote_source.verify_url()
+        self.assertEqual(1, mock.call_count)

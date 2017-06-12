@@ -46,12 +46,12 @@ class TestPackage(unittest.TestCase):
     def create_package_without_post_install(self):
         self.package_without_post_install = Package("php")
 
-    @patch.object(Remote, 'install')
+    @patch.object(Remote, 'run')
     def test_handle_post_installation_calls_install_on_remote_if_remote_provided(self, mocked_install):
         self.package_with_post_install.handle_post_installation()
         self.assertEqual(2, mocked_install.call_count)
 
-    @patch.object(Remote, 'install')
+    @patch.object(Remote, 'run')
     def test_handle_post_installation_does_no_call_install_on_remote_if_no_remotes_provided(self, mocked_install):
         self.package_without_post_install.handle_post_installation()
         self.assertFalse(mocked_install.called)

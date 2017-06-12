@@ -45,10 +45,9 @@ class RemoteParser(JSONParsable):
         """
         name = self.load_name()
         url = self.load_url()
-        commands = self.load_commands()
-        if self.no_url_and_commands_provided(url, commands):
-            raise MalformedRemoteError("No url and commands provided")
-        return src.domain.model.post_install.remote.Remote(name, url, commands)
+        if self.no_url_provided(url):
+            raise MalformedRemoteError("No url provided")
+        return src.domain.model.post_install.remote.Remote(name, url)
       
     def load_name(self):  
         """
@@ -72,20 +71,5 @@ class RemoteParser(JSONParsable):
         except KeyError:
             return None
 
-    def load_commands(self):
-        """
-        Loads the commands for the remote
-        Uses :func:`src.domain.parse.shell_parser.ShellParser.load_shell`
-
-        :returns: The :class:`src.domain.shell.Shell` object
-            or None if no shell available
-        :rtype: src.domain.shell.Shell
-        """
-        try:
-            shell_parser = ShellParser(self.json_object["cmds"])            
-            return shell_parser.parse()
-        except KeyError:
-            return None
-
-    def no_url_and_commands_provided(self, url, commands):
-        return url == None and commands == None
+    def no_url_provided(self, url):
+        return url is None
