@@ -19,10 +19,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.log.logger import Logger
-from src.domain.package import Package
-from src.domain.plugin import Plugin
+
 import unittest
+
+from src.domain.log.logger import Logger
+from src.domain.model.package import Package
+from src.domain.model.post_install.remote import Remote
+
 try:
     from unittest.mock import patch
 except ImportError:
@@ -38,17 +41,17 @@ class TestPackage(unittest.TestCase):
         Logger.enable()
 
     def create_package_with_post_install(self):
-        self.package_with_post_install = Package("php", plugins=[Plugin("dummy"), Plugin("other dummy")])
+        self.package_with_post_install = Package("php", post_installation_runnables=[Remote("dummy"), Remote("other dummy")])
 
     def create_package_without_post_install(self):
         self.package_without_post_install = Package("php")
 
-    @patch.object(Plugin, 'install')
-    def test_handle_post_installation_calls_install_on_plugin_if_plugin_provided(self, mocked_install):
+    @patch.object(Remote, 'install')
+    def test_handle_post_installation_calls_install_on_remote_if_remote_provided(self, mocked_install):
         self.package_with_post_install.handle_post_installation()
         self.assertEqual(2, mocked_install.call_count)
 
-    @patch.object(Plugin, 'install')
-    def test_handle_post_installation_does_no_call_install_on_plugin_if_no_plugins_provided(self, mocked_install):
+    @patch.object(Remote, 'install')
+    def test_handle_post_installation_does_no_call_install_on_remote_if_no_remotes_provided(self, mocked_install):
         self.package_without_post_install.handle_post_installation()
         self.assertFalse(mocked_install.called)

@@ -19,11 +19,14 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
+
+import json
+
+from src.domain.model.software_catalog import SoftwareCatalog
 from src.domain.parse.file_parsable import FileParsable
-from src.domain.software_catalog import SoftwareCatalog
 from src.domain.parse.package_parser import PackageParser
 from src.exceptions.invalid_installation_file_extension_error import InvalidInstallationFileExtensionError
-import json
+
 
 class InstallationFileParser(FileParsable):
     def __init__(self, file_path):

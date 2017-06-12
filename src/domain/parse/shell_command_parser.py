@@ -19,8 +19,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
+
+from src.domain.model.post_install.shell_command import ShellCommand
 from src.domain.parse.json_parsable import JSONParsable
-from src.domain.shell_command import ShellCommand
+
+
 #import json
 
 class ShellCommandParser(JSONParsable):

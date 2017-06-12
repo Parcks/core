@@ -103,10 +103,10 @@ class TestPackageParser(unittest.TestCase):
         packages = parser.parse()
         self.assertEqual(0, len(packages))
 
-    def test_parse_creates_package_without_plugins_if_no_post_installation_key_provided(self):
+    def test_parse_creates_package_without_remotes_if_no_post_installation_key_provided(self):
         parser = PackageParser(self.validJSON_no_post_installation)
         package = parser.parse()
-        self.assertEqual([], package[0].plugins)
+        self.assertEqual([], package[0].post_installation_runnables)
 
     def test_parse_sets_alternative_names_to_None_if_no_alternatives_specified(self):
         parser = PackageParser(self.validJSON)

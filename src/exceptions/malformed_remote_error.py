@@ -19,28 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
+from src.exceptions.error import Error
 
-
-class Package(Installable):
-    def __init__(self, name, alternative_names=None, plugins=[]):
-        """
-        Default constructor
-        
-        :param name: The name of the package
-        :type name: str
-        :param alternative_names: List of possible fallback/alternative package names
-        :type alternative_names: list
-        :param plugins: An array containing all the plugins. Can be none
-        :type plugins: list
-        """
-        super(Package, self).__init__(name)
-        self.plugins = plugins
-        self.alternative_names = alternative_names
-
-    def install(self):
-        print("install package")
-        
-    def handle_post_installation(self):
-        for plugin in self.plugins:
-            plugin.install()
+class MalformedRemoteError(Error):
+    def __init(self, message):
+        super(Error, self).__init__(message)

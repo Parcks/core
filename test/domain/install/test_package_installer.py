@@ -20,12 +20,14 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 
-from src.exceptions.no_alternative_package_suitable_error import NoAlternativePackageSuitableError
-from src.domain.log.logger import Logger
-from src.domain.install.package_installer import PackageInstaller
-from src.domain.package import Package
-from src.exceptions.package_installation_failure_error import PackageInstallationFailureError
 import unittest
+
+from src.domain.install.package_installer import PackageInstaller
+from src.domain.log.logger import Logger
+from src.domain.model.package import Package
+from src.exceptions.no_alternative_package_suitable_error import NoAlternativePackageSuitableError
+from src.exceptions.package_installation_failure_error import PackageInstallationFailureError
+
 try:
     from unittest.mock import patch
 except ImportError:

@@ -19,23 +19,3 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
-
-class ShellCommand(Installable):
-    def __init__(self, commands, asRoot=False,  work_directory = None):
-        """
-        Default constructor
-        :param commands: The commands to be executed
-        :type commands: list of str
-        :param asRoot: Indicates if the shell command object should run as root
-        :type asRoot: bool
-        :param work_directory: The directory where the commands should be executed
-        :type work_directory: str
-        """
-        super(ShellCommand, self).__init__()
-        self.asRoot = asRoot
-        self.commands = commands
-        self.work_directory = work_directory
-
-    def install(self):
-        print("Shell Command installation")

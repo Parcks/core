@@ -19,25 +19,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
-from src.domain.post_install.plugin.plugin_installer import PluginInstaller
 
-class Plugin(Installable):
+from src.domain.model.installable import Installable
+from src.domain.post_install.remote.remote_installer import RemoteInstaller
+
+
+class Remote(Installable):
     def __init__(self, name, url=None, shell=None):
         """
         Default constructor
         
         :param name: The name of the package
-        :param url: The url of the plugin to be downloaded or None
-        :param shell: The Shell object of the plugin or None if it has to be downloaded
+        :param url: The url of the remote to be downloaded or None
+        :param shell: The Shell object of the remote or None if it has to be downloaded
         :type name: str
         :type url: str
         :type shell: src.domain.shell.Shell
         """
-        super(Plugin, self).__init__(name)
+        super(Remote, self).__init__(name)
         self.url = url
         self.shell = shell
-        self.installer = PluginInstaller(self)
+        self.installer = RemoteInstaller(self)
 
     def install(self):
         self.installer.run()

@@ -19,31 +19,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
+from src.domain.post_install.shell.shell_runner import ShellRunner
 
-from src.domain.model.post_install.shell import Shell
-from src.domain.parse.json_parsable import JSONParsable
-from src.domain.parse.shell_command_parser import ShellCommandParser
-
-
-#import json
-
-class ShellParser(JSONParsable):
-    def __init__(self, shell_json):
+class RemoteRunner:
+    def __init__(self, remote):
         """
         Default constructor
-        :param shell_json: Contains the ShellCommands as JSON-array
-        :type shell_json: list of json objects
+        :param remote: The remote to install
+        :type remote: src.domain.remote
         """
-        super(ShellParser, self).__init__(shell_json)
-
-    def parse(self):
-        """
-        Parses the JSON representation of the Shell
-        :returns: The Shell object
-        :rtype: src.domain.shell.Shell
-        """
-        shell_commands_list = []
-        for json_command in self.json_object:
-            parser = ShellCommandParser(json_command)
-            shell_commands_list.append(parser.parse())
-        return Shell(shell_commands_list)
+        self.remote = remote
+        self.shell_runner = ShellRunner(remote.shell)
+    
+    def run(self):
+        self.shell_runner.run()

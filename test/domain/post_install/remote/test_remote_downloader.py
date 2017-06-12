@@ -19,38 +19,41 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.post_install.plugin.plugin_downloader import PluginDownloader
-from src.domain.plugin import Plugin
-from src.domain.log.logger import Logger
+
 import unittest
+
+from src.domain.log.logger import Logger
+from src.domain.model.post_install.remote import Remote
+from src.domain.post_install.remote.remote_downloader import RemoteDownloader
+
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
 
-class TestPluginDownloader(unittest.TestCase):
-    TEST_PLUGIN_URL = "https://raw.githubusercontent.com/Parcks/plugins/master/testPlugin.ppl"
+class TestRemoteDownloader(unittest.TestCase):
+    TEST_REMOTE_URL = "https://raw.githubusercontent.com/Parcks/plugins/master/testPlugin.ppl"
     
     def setUp(self):
-        self.plugin = Plugin("Dummy plugin", TestPluginDownloader.TEST_PLUGIN_URL)
-        self.plugin_downloader = PluginDownloader(self.plugin)
+        self.remote = Remote("Dummy remote", TestRemoteDownloader.TEST_REMOTE_URL)
+        self.remote_downloader = RemoteDownloader(self.remote)
         Logger.disable_all()
         
     def tearDown(self):
         Logger.enable()
         
     def test_download_from_repo_returns_dict_plugin(self):
-        downloaded_json_plugin = self.plugin_downloader.download_from_repo()
+        downloaded_json_plugin = self.remote_downloader.download_from_repo()
         self.assertTrue(type(downloaded_json_plugin) is dict)
         
-    @patch.object(PluginDownloader,  'parse')
-    @patch.object(PluginDownloader,  'download_from_repo')
+    @patch.object(RemoteDownloader, 'parse')
+    @patch.object(RemoteDownloader, 'download_from_repo')
     def test_download_calls_download_from_repo(self,  mock,  mocked_parse):
-        self.plugin_downloader.download()
+        self.remote_downloader.download()
         self.assertTrue(mock.call_count == 1)
         
-    @patch.object(PluginDownloader,  'parse')
-    @patch.object(PluginDownloader,  'download_from_repo')
+    @patch.object(RemoteDownloader, 'parse')
+    @patch.object(RemoteDownloader, 'download_from_repo')
     def test_download_calls_parse(self,  mock,  mocked_parse):
-        self.plugin_downloader.download()
+        self.remote_downloader.download()
         self.assertTrue(mocked_parse.call_count == 1)

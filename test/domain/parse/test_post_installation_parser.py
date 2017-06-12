@@ -21,7 +21,7 @@ Setarit - parcks[at]setarit.com
 from __future__ import absolute_import
 import unittest,json
 from src.domain.parse.post_installation_parser import PostInstallationParser
-from src.domain.parse.plugin_parser import PluginParser
+from src.domain.parse.remote_parser import RemoteParser
 from src.domain.parse.shell_parser import ShellParser
 from src.domain.log.logger import Logger
 try:
@@ -42,7 +42,7 @@ class TestPostInstallationParser(unittest.TestCase):
         JSON = """\
         [
 	    {
-		"type":"plugin",
+		"type":"remote",
 		"name":"composer",
 		"url":"http://www.example.com"
             },
@@ -63,15 +63,15 @@ class TestPostInstallationParser(unittest.TestCase):
         """
         self.validJSON = json.loads(JSON)
 
-    @patch.object(PluginParser, 'parse')
+    @patch.object(RemoteParser, 'parse')
     @patch.object(ShellParser, 'parse')
-    def test_load_post_installation_object_calls_right_parser(self, mocked_shell_parser, mocked_plugin_parser):        
+    def test_load_post_installation_object_calls_right_parser(self, mocked_shell_parser, mocked_remote_parser):
         self.parser.parse()
-        self.assertEqual(1, mocked_plugin_parser.call_count)
+        self.assertEqual(1, mocked_remote_parser.call_count)
         self.assertEqual(1, mocked_shell_parser.call_count)
 
     @patch.object(PostInstallationParser, 'load_post_installation_object')
-    def test_parse_post_installation_calls_load_post_installation_object_twice_if_two_plugins(self, mocked_parser):
+    def test_parse_post_installation_calls_load_post_installation_object_twice_if_two_remotes(self, mocked_parser):
         self.parser.parse()
         self.assertEqual(2, mocked_parser.call_count)
         

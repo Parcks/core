@@ -19,9 +19,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
+
+from src.domain.model.package import Package
 from src.domain.parse.json_parsable import JSONParsable
-from src.domain.package import Package
 from src.domain.parse.post_installation_parser import PostInstallationParser
+
 
 class PackageParser(JSONParsable):
     def __init__(self, json_package_array):
@@ -40,7 +42,7 @@ class PackageParser(JSONParsable):
         package_list = []
         for package in self.json_object:
             package_object = Package(package["package"])
-            package_object.plugins = self.boot_installation_parser(package)
+            package_object.post_installation_runnables = self.boot_installation_parser(package)
             package_object.alternative_names = self.fetch_alternative_names(package)
             package_list.append(package_object)
         return package_list
@@ -48,10 +50,10 @@ class PackageParser(JSONParsable):
     def boot_installation_parser(self, package_json):
         """
         Fires the :class:`src.domain.parse.post_installation_parser.PostInstallationParser` to parse
-        the plugins to be executed after the installation of the package
+        the remotes to be executed after the installation of the package
         :param package_json: The json containing the package
         :type package_json: json
-        :returns: list of plugins or an empty list if no post-installation key provided
+        :returns: list of remotes or an empty list if no post-installation key provided
         """
         try:
             post_installation_parser = PostInstallationParser(package_json["post-installation"])

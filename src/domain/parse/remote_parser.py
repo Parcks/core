@@ -19,45 +19,47 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
+
+# from src.domain.remote import Plugin
+import src.domain.model.post_install.remote
 from src.domain.parse.json_parsable import JSONParsable
 from src.domain.parse.shell_parser import ShellParser
-from src.exceptions.malformed_plugin_error import MalformedPluginError
-#from src.domain.plugin import Plugin
-import src.domain.plugin
+from src.exceptions.malformed_remote_error import MalformedRemoteError
 
-class PluginParser(JSONParsable):
+
+class RemoteParser(JSONParsable):
     def __init__(self, json_object):
         """
         Default constructor
-        :param json_object: The JSON representation of the plugin
+        :param json_object: The JSON representation of the remote
         :type json_object: json
         """
-        super(PluginParser, self).__init__(json_object)
+        super(RemoteParser, self).__init__(json_object)
 
     def parse(self):
         """
-        Loads the plugin object from the JSON representation
+        Loads the remote object from the JSON representation
         :returns: The loaded Plugin object
-        :rtype: src.domain.plugin.Plugin
+        :rtype: src.domain.remote.Remote
         :raises MalformedPluginError: If there is no url nor commands provided
         """
         name = self.load_name()
         url = self.load_url()
         commands = self.load_commands()
         if self.no_url_and_commands_provided(url, commands):
-            raise MalformedPluginError("No url and commands provided")
-        return src.domain.plugin.Plugin(name, url, commands)
+            raise MalformedRemoteError("No url and commands provided")
+        return src.domain.model.post_install.remote.Remote(name, url, commands)
       
     def load_name(self):  
         """
-        Reads the name (if any) of the plugin form the JSON-object
-        :returns: The name of the plugin
+        Reads the name (if any) of the remote form the JSON-object
+        :returns: The name of the remote
         :rtype: str
         """
         try:
             return self.json_object["name"]
         except KeyError:
-            return "Anonymous plugin"
+            return "Anonymous remote"
 
     def load_url(self):
         """
@@ -72,7 +74,7 @@ class PluginParser(JSONParsable):
 
     def load_commands(self):
         """
-        Loads the commands for the plugin
+        Loads the commands for the remote
         Uses :func:`src.domain.parse.shell_parser.ShellParser.load_shell`
 
         :returns: The :class:`src.domain.shell.Shell` object

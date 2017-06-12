@@ -6,7 +6,7 @@ Parcks is a project from [Setarit](http://setarit.com)
 To run the test fire up your terminal and run `python -m unittest discover` or `python3 -m unittest discover` for Python 3.3+
 
 ## To do
-* Fix double download if unverified plugin
+* Fix double download if unverified remote
 * Support all linux distro families
 * Update package list (Debian: `apt-get update`) before installing once a week
 * Continue the execution of the remaining plugins if one is unverified (currently this kills Parcks)

@@ -19,11 +19,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.distro.factory.install_package_management_wrapper_factory import InstallPackageManagementWrapperFactory
-from src.domain.package import Package
-from src.exceptions.unsupported_distro_name_error import UnsupportedDistroNameError
-from src.domain.log.logger import Logger
+
 import unittest
+
+from src.domain.distro.factory.install_package_management_wrapper_factory import InstallPackageManagementWrapperFactory
+from src.domain.log.logger import Logger
+from src.exceptions.unsupported_distro_name_error import UnsupportedDistroNameError
+
 
 class TestInstallPackageManagementWrapperFactory(unittest.TestCase):
     def setUp(self):

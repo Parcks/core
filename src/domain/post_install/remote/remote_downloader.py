@@ -19,24 +19,24 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.parse.plugin_parser import PluginParser
+from src.domain.parse.remote_parser import RemoteParser
 import requests
 from src.domain.log.logger import Logger
 
-class PluginDownloader:
-    def __init__(self,  plugin):
+class RemoteDownloader:
+    def __init__(self, remote):
         """
         Default constructor
-        :param plugin: The plugin to download
-        :type plugin: src.domain.plugin
+        :param remote: The remote to download
+        :type remote: src.domain.remote
         """
-        self.plugin = plugin
+        self.remote = remote
         
     def download(self):
         """
         Downloads the package from the repository
         :returns: The downloaded package
-        :rtype: src.domain.plugin.Plugin
+        :rtype: src.domain.remote.Remote
         """
         package_json = self.download_from_repo()
         return self.parse(package_json)
@@ -47,17 +47,17 @@ class PluginDownloader:
         :returns: The plain package json
         :rtype: json
         """
-        Logger.logger.info("Downloading plugin "+self.plugin.name+" from repository")
-        url = self.plugin.url
+        Logger.logger.info("Downloading remote " + self.remote.name + " from repository")
+        url = self.remote.url
         response = requests.get(url)
         return response.json()
         
-    def parse(self,  package_json):
+    def parse(self, remote_json):
         """
         Parses the plain package_json
-        Uses :class:`src.domain.parse.plugin_parser.PluginParser`
+        Uses :class:`src.domain.parse.remote_parser.PluginParser`
         :returns: The downloaded package
-        :rtype: src.domain.plugin.Plugin
+        :rtype: src.domain.remote.Remote
         """
-        parser = PluginParser(package_json)
+        parser = RemoteParser(remote_json)
         return parser.parse()

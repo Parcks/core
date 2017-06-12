@@ -19,17 +19,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.installable import Installable
 
-class Shell(Installable):
-    def __init__(self, shell_commands):
+from src.domain.model.installable import Installable
+
+
+class Package(Installable):
+    def __init__(self, name, alternative_names=None, post_installation_runnables=[]):
         """
         Default constructor
-        :param shell_commands: The shell commands to be executed
-        :type shell_commands: list of :class:`src.domain.shell_command.ShellCommand`
+        
+        :param name: The name of the package
+        :type name: str
+        :param alternative_names: List of possible fallback/alternative package names
+        :type alternative_names: list
+        :param post_installation_runnables: An array containing all the PostInstallationRunnable's. Can be none
+        :type post_installation_runnables: list
         """
-        super(Shell, self).__init__()
-        self.shell_commands = shell_commands
+        super(Package, self).__init__(name)
+        self.post_installation_runnables = post_installation_runnables
+        self.alternative_names = alternative_names
 
     def install(self):
-        print("shell")
+        print("install package")
+        
+    def handle_post_installation(self):
+        for post_installation_runnable in self.post_installation_runnables:
+            post_installation_runnable.install()

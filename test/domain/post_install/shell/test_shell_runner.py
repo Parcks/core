@@ -19,12 +19,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
+
+import unittest
+
+from src.domain.model.post_install.shell_command import ShellCommand
+
 from src.domain.log.logger import Logger
-from src.domain.shell import Shell
-from src.domain.shell_command import ShellCommand
+from src.domain.model.post_install.shell import Shell
 from src.domain.post_install.shell.shell_command_runnable_factory import ShellCommandRunnableFactory
 from src.domain.post_install.shell.shell_runner import ShellRunner
-import unittest
+
 try:
     from unittest.mock import patch
 except ImportError:

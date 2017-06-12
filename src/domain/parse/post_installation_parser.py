@@ -19,9 +19,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.plugin import Plugin
+
+from src.domain.model.post_install.remote import Remote
 from src.domain.parse.json_parsable import JSONParsable
-from src.domain.parse.plugin_parser import PluginParser
+from src.domain.parse.remote_parser import RemoteParser
 from src.domain.parse.shell_parser import ShellParser
 
 
@@ -30,14 +31,14 @@ class PostInstallationParser(JSONParsable):
         """
         Default constructor
 
-        :param json_plugins_array: A JSON-array containing all post-installation actions (plugin, commands)
+        :param json_remotes_array: A JSON-array containing all post-installation actions (remote, commands)
         """
         super(PostInstallationParser, self).__init__(json_post_installation_array)
 
     def parse(self):
         """
         Parses the post-installation actions an creates a list of Plugins
-        :returns: A list of :class:`src.domain.plugin.Plugin`s
+        :returns: A list of :class:`src.domain.remote.Plugin`s
         :rtype: list
         """
         plugin_list = []
@@ -47,10 +48,10 @@ class PostInstallationParser(JSONParsable):
         return plugin_list
 
     def load_post_installation_object(self, post_installation_json_object):
-        if(post_installation_json_object["type"].upper()=="PLUGIN"):
-            parser = PluginParser(post_installation_json_object)
+        if(post_installation_json_object["type"].upper()=="REMOTE"):
+            parser = RemoteParser(post_installation_json_object)
             return parser.parse()
         elif(post_installation_json_object["type"].upper()=="SHELL"):
             parser = ShellParser(post_installation_json_object["cmds"])
             shell_object = parser.parse()
-            return Plugin("Anonymous Plugin", shell=shell_object)
+            return Remote("Anonymous Plugin", shell=shell_object)

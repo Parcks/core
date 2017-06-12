@@ -19,8 +19,19 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.exceptions.error import Error
 
-class MalformedPluginError(Error):
-    def __init(self, message):
-        super(Error, self).__init__(message)
+from src.domain.model.installable import Installable
+
+
+class Shell(Installable):
+    def __init__(self, shell_commands):
+        """
+        Default constructor
+        :param shell_commands: The shell commands to be executed
+        :type shell_commands: list of :class:`src.domain.shell_command.ShellCommand`
+        """
+        super(Shell, self).__init__()
+        self.shell_commands = shell_commands
+
+    def install(self):
+        print("shell")

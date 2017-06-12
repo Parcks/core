@@ -19,24 +19,25 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.domain.plugin import Plugin
-from src.domain.post_install.plugin.plugin_installer import PluginInstaller
-from src.domain.log.logger import Logger
-import unittest
-try:
-    from unittest.mock import patch
-except ImportError:
-    from mock import patch
-    
-class TestPlugin(unittest.TestCase):
-    def setUp(self):
-        self.plugin = Plugin("Test Plugin")
-        Logger.disable_all()
-        
-    def tearDown(self):
-        Logger.enable()
-    
-    @patch.object(PluginInstaller,  'run')
-    def test_install_calls_run_on_plugin_installer(self,  mock):
-        self.plugin.install()
-        self.assertTrue(mock.called)
+
+from src.domain.model.installable import Installable
+
+
+class ShellCommand(Installable):
+    def __init__(self, commands, asRoot=False,  work_directory = None):
+        """
+        Default constructor
+        :param commands: The commands to be executed
+        :type commands: list of str
+        :param asRoot: Indicates if the shell command object should run as root
+        :type asRoot: bool
+        :param work_directory: The directory where the commands should be executed
+        :type work_directory: str
+        """
+        super(ShellCommand, self).__init__()
+        self.asRoot = asRoot
+        self.commands = commands
+        self.work_directory = work_directory
+
+    def install(self):
+        print("Shell Command installation")

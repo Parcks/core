@@ -19,14 +19,18 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.service.install_facade import InstallFacade
-from src.domain.parse.installation_file_parser import InstallationFileParser
-from src.domain.distro.factory.install_package_management_wrapper_factory import InstallPackageManagementWrapperFactory
-from src.domain.package import Package
-from src.domain.software_catalog import SoftwareCatalog
-from src.domain.log.logger import Logger
-from src.domain.install.package_installer import PackageInstaller
+
 import unittest
+
+from src.domain.model.package import Package
+
+from src.domain.distro.factory.install_package_management_wrapper_factory import InstallPackageManagementWrapperFactory
+from src.domain.install.package_installer import PackageInstaller
+from src.domain.log.logger import Logger
+from src.domain.model.software_catalog import SoftwareCatalog
+from src.domain.parse.installation_file_parser import InstallationFileParser
+from src.service.install_facade import InstallFacade
+
 try:
     from unittest.mock import patch
 except ImportError:

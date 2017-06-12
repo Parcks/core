@@ -19,38 +19,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-from src.exceptions.malformed_plugin_error import MalformedPluginError
+from src.exceptions.malformed_remote_error import MalformedRemoteError
 
 """
-Checks if the plugin requires a download
+Checks if the remote requires a download
 """
-class PluginValidator:
-    def __init__(self,  plugin):
+class RemoteValidator:
+    def __init__(self, remote):
         """
         Default constructor
-        :param plugin: The plugin to validate
-        :type plugin: src.domain.plugin
+        :param remote: The remote to validate
+        :type remote: src.domain.remote
         """
-        self.plugin = plugin
+        self.remote = remote
         self.require_download = False
         self.external_download_url = False
         
     def validate(self):
         """
-        Validates the plugin.
+        Validates the remote.
         :raises MalformedPluginError: If there is no url nor a shell object provided
         """
-        if(self.plugin.shell is None):
+        if(self.remote.shell is None):
             self.require_download = True            
-        if(self.plugin.shell is None and self.plugin.url is None):
-            raise MalformedPluginError("No url and commands provided")         
-        if(self.plugin.url is not None and not self.plugin.url.startswith("https://raw.githubusercontent.com/Parcks/plugins/")):
+        if(self.remote.shell is None and self.remote.url is None):
+            raise MalformedRemoteError("No url and commands provided")
+        if(self.remote.url is not None and not self.remote.url.startswith("https://raw.githubusercontent.com/Parcks/plugins/")):
             self.external_download_url = True
         
     def is_download_required(self):
         """
         Getter
-        :returns: True if the plugin needs to be downloaded
+        :returns: True if the remote needs to be downloaded
         :rtype: bool
         """
         return self.require_download
