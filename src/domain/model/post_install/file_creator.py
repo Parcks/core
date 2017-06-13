@@ -20,24 +20,29 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 
-from src.domain.model.installable import Installable
+from src.domain.model.post_install.file_handle import FileHandle
+from src.domain.post_install.file.file_creator_runner import FileCreatorRunner
 
 
-class ShellCommand(Installable):
-    def __init__(self, commands, as_root=False, work_directory=None):
+class FileCreator(FileHandle):
+
+
+    def __init__(self, name, file_path, contents, as_root=False):
         """
         Default constructor
-        :param commands: The commands to be executed
-        :type commands: list of str
-        :param as_root: Indicates if the shell command object should run as root
+        :param name: The name of the post-installation script that is displayed to the user
+        :param file_path: The absolute path to the file
+        :param contents: Contents to be written to the file
+        :param as_root: The file should be created as root
+        :type name: str
+        :type file_path: str
+        :type contents: str
         :type as_root: bool
-        :param work_directory: The directory where the commands should be executed
-        :type work_directory: str
         """
-        super(ShellCommand, self).__init__()
-        self.asRoot = as_root
-        self.commands = commands
-        self.work_directory = work_directory
+        super(FileCreator, self).__init__(name, file_path, as_root)
+        self.contents = contents
+        self.runner = FileCreatorRunner(self)
 
-    def install(self):
-        print("Shell Command installation")
+    def run(self):
+        self.runner.create_file()
+

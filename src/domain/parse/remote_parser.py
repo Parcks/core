@@ -20,10 +20,8 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 
-# from src.domain.remote import Plugin
 import src.domain.model.post_install.remote
 from src.domain.parse.json_parsable import JSONParsable
-from src.domain.parse.shell_parser import ShellParser
 from src.exceptions.malformed_remote_error import MalformedRemoteError
 
 

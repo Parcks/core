@@ -19,25 +19,27 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
+from abc import ABCMeta, abstractmethod
 
-from src.domain.model.installable import Installable
+from src.domain.model.post_install.post_install_runnable import PostInstallRunnable
 
 
-class ShellCommand(Installable):
-    def __init__(self, commands, as_root=False, work_directory=None):
+class FileHandle(PostInstallRunnable):
+    def __init__(self, name, file_path, as_root=False):
         """
         Default constructor
-        :param commands: The commands to be executed
-        :type commands: list of str
-        :param as_root: Indicates if the shell command object should run as root
+        :param name: The name of the post-installation script that is displayed to the user
+        :param file_path: The absolute path to the file
+        :param as_root: The file should be handled as root
+        :type name: str
+        :type file_path: str
         :type as_root: bool
-        :param work_directory: The directory where the commands should be executed
-        :type work_directory: str
         """
-        super(ShellCommand, self).__init__()
-        self.asRoot = as_root
-        self.commands = commands
-        self.work_directory = work_directory
+        super(FileHandle, self).__init__(name)
+        __metaclass__ = ABCMeta
+        self.file_path = file_path
+        self.as_root = as_root
 
-    def install(self):
-        print("Shell Command installation")
+    @abstractmethod
+    def run(self):
+        pass

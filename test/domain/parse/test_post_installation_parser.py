@@ -23,15 +23,21 @@ import unittest,json
 from src.domain.parse.post_installation_parser import PostInstallationParser
 from src.domain.parse.remote_parser import RemoteParser
 from src.domain.parse.shell_parser import ShellParser
+from src.domain.parse.create_file_parser import CreateFileParser
 from src.domain.log.logger import Logger
+from src.exceptions.unknown_post_installation_object_error import UnknownPostInstallationObjectError
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
 
+
 class TestPostInstallationParser(unittest.TestCase):
     def setUp(self):
         self.create_valid_json()
+        self.create_unknown_type_json()
+        self.create_file_json()
+        self.create_valid_object_json()
         self.parser = PostInstallationParser(self.validJSON)
         Logger.disable_all()
         
@@ -42,26 +48,60 @@ class TestPostInstallationParser(unittest.TestCase):
         JSON = """\
         [
 	    {
-		"type":"remote",
-		"name":"composer",
-		"url":"http://www.example.com"
-            },
-            {
-                "type":"shell",
-		"cmds":[
-                    {
-			"root":true,
-			"do":["whoami","ls -al"]
-                    },
-                    {   
-			"root":false,
-			"do":["pwd"]
-                    }
-		]
-            }
+            "type":"remote",
+            "name":"composer",
+            "url":"http://www.example.com"
+        },
+        {
+            "type":"shell",
+            "cmds":[
+                {
+                    "root":true,
+                    "do":["whoami","ls -al"]
+                },
+                {   
+                    "root":false,
+                    "do":["pwd"]
+                }
+            ]
+        }
 	]
         """
         self.validJSON = json.loads(JSON)
+
+    def create_unknown_type_json(self):
+        JSON = """\
+            [
+        	    {
+                    "type":"unknown-type"
+                }
+        	]
+        """
+        self.unknown_type_json = json.loads(JSON)
+
+    def create_file_json(self):
+        JSON = """\
+            [
+                {
+                    "type":"file-create",
+                    "destination-path":"/tmp/dummy",
+                    "contents":"dummy",
+                    "root":false
+                }
+            ]
+        """
+        self.file_json = json.loads(JSON)
+
+    def create_valid_object_json(self):
+        JSON = """\
+        {
+            "type":"file-create",
+            "destination-path":"/tmp/dummy",
+            "contents":"dummy",
+            "root":false
+        }
+        """
+        self.post_install_object_json = json.loads(JSON)
 
     @patch.object(RemoteParser, 'parse')
     @patch.object(ShellParser, 'parse')
@@ -71,7 +111,17 @@ class TestPostInstallationParser(unittest.TestCase):
         self.assertEqual(1, mocked_shell_parser.call_count)
 
     @patch.object(PostInstallationParser, 'load_post_installation_object')
-    def test_parse_post_installation_calls_load_post_installation_object_twice_if_two_remotes(self, mocked_parser):
+    def test_parse_post_installation_calls_load_post_installation_object_twice_if_two_post_installation_objects(self, mocked_parser):
         self.parser.parse()
         self.assertEqual(2, mocked_parser.call_count)
         
+    def test_load_post_installation_object_raises_UnknownPostInstallationObjectError_if_unknown_type(self):
+        parser = PostInstallationParser(self.unknown_type_json)
+        with self.assertRaises(UnknownPostInstallationObjectError):
+            parser.parse()
+
+    @patch.object(CreateFileParser, 'parse')
+    def test_load_post_installation_object_calls_parse_on_CreateFileParser_if_type_fileCreate(self, mock):
+        parser = PostInstallationParser(self.file_json)
+        returned = parser.parse()
+        self.assertTrue(mock.called)

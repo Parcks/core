@@ -22,7 +22,6 @@ from __future__ import absolute_import
 import unittest,json
 from src.domain.parse.remote_parser import RemoteParser
 from src.exceptions.malformed_remote_error import MalformedRemoteError
-from src.domain.parse.shell_parser import ShellParser
 from src.domain.log.logger import Logger
 try:
     from unittest.mock import patch

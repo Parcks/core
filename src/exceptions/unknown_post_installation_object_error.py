@@ -19,25 +19,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
+from src.exceptions.error import Error
 
-from src.domain.model.installable import Installable
-
-
-class ShellCommand(Installable):
-    def __init__(self, commands, as_root=False, work_directory=None):
-        """
-        Default constructor
-        :param commands: The commands to be executed
-        :type commands: list of str
-        :param as_root: Indicates if the shell command object should run as root
-        :type as_root: bool
-        :param work_directory: The directory where the commands should be executed
-        :type work_directory: str
-        """
-        super(ShellCommand, self).__init__()
-        self.asRoot = as_root
-        self.commands = commands
-        self.work_directory = work_directory
-
-    def install(self):
-        print("Shell Command installation")
+class UnknownPostInstallationObjectError(Error):
+    def __init__(self, object_name):
+        super(UnknownPostInstallationObjectError, self).__init__("The post-installation object "+object_name+" is unknown")
