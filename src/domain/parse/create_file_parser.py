@@ -37,7 +37,7 @@ class CreateFileParser(JSONParsable):
                 self.json_object["contents"],
                 self.load_root()
             )
-        except KeyError, error:
+        except KeyError as error:
             raise MalformedCreateFileError("Missing "+str(error)+" field")
 
     def load_root(self):
