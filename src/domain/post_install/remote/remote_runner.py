@@ -25,6 +25,8 @@ from src.service.cli_facade import CliFacade
 from src.domain.log.logger import Logger
 import sys
 
+from src.service.post_installation_facade import PostInstallationFacade
+
 
 class RemoteRunner:
     def __init__(self, remote):
@@ -34,41 +36,50 @@ class RemoteRunner:
         :type remote: src.domain.remote
         """
         self.remote = remote
+        self.downloaded_json = None
         self.remote_validator = RemoteValidator(remote)
         self.remote_downloader = RemoteDownloader(remote)
         self.cli_facade = CliFacade()
         
     def run(self):
         self.remote_validator.validate()
-        self.download()
-        #TODO: run downloaded file
+        self._download()
+        self._boot_post_installation_facade()
 
-    def download(self):
-        self.verify_url()
-        self.download_remote_from_repository()
+    def _download(self):
+        self._verify_url()
+        self._download_remote_from_repository()
 
-    def verify_url(self):
+    def _verify_url(self):
         if self.remote_validator.is_external_download_url():
-            self.show_warning_and_ask_confirmation_to_continue()
+            self._show_warning_and_ask_confirmation_to_continue()
             Logger().logger.warning("Downloading remote from unverified source")
 
-    def download_remote_from_repository(self):
-        self.remote = self.remote_downloader.download()
+    def _download_remote_from_repository(self):
+        self.downloaded_json = self.remote_downloader.download()
 
-    def show_warning_and_ask_confirmation_to_continue(self):
+    def _show_warning_and_ask_confirmation_to_continue(self):
         """
         Displays a warning message and ask for confirmation to continue.
         If the user does not want to continue, this method ends the program.
         """
         self.cli_facade.print_warning("Parcks will download the remote from an unverified source.\n"
                                       "\tCheck https://github.com/Parcks/core/wiki/Unverified-sources for further info...")
-        answer = self.ask_confirmation()
+        answer = self._ask_confirmation()
         if answer == "N":
             sys.exit(0)
 
-    def ask_confirmation(self):
+    def _ask_confirmation(self):
         answer = (self.cli_facade.ask_user("Are you sure you want to continue [y/n (default)]?", "n")).upper()
         if answer == "Y" or answer == "N":
             return answer
         else:
-            return self.ask_confirmation()
+            return self._ask_confirmation()
+
+    def _boot_post_installation_facade(self):
+        """
+        Creates a PostInstallationFacade from the downloaded json
+        and starts executing the downloaded PostInstallationRunnable(s)
+        """
+        facade = PostInstallationFacade.from_json(self.downloaded_json)
+        facade.handle_post_installation()

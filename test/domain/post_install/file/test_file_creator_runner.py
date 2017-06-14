@@ -32,6 +32,7 @@ try:
 except ImportError:
     from mock import patch
 
+
 class TestFileCreatorRunner(unittest.TestCase):
     def setUp(self):
         Logger.disable_all()
@@ -45,6 +46,15 @@ class TestFileCreatorRunner(unittest.TestCase):
         Logger.enable()
         if os.path.exists(self.test_file_creator_path):
             os.remove(self.test_file_creator_path)
+
+    def line_counter(self, path_to_file):
+        with open(path_to_file) as fi:
+            lines = sum(1 for line in fi)
+        return lines
+
+    def test___init___creates_FileCreatorRunner_with_correct_FileCreator(self):
+        result = FileCreatorRunner(self.file_creator)
+        self.assertEqual(result.file_creator, self.file_creator)
 
     @patch.object(FileCreatorRunner, '_create_file_current_user')
     @patch.object(FileCreatorRunner, '_create_call_array')
@@ -74,3 +84,7 @@ class TestFileCreatorRunner(unittest.TestCase):
     def test_create_file_calls__create_file_as_root_if_root(self, mock, mocked_call_array, mocked_as_root, mocked_subprocess):
         self.file_creator_runner_as_root.create_file()
         self.assertTrue(mocked_as_root.called)
+
+    def test_create_file_writes_to_file(self):
+        self.file_creator_runner.create_file()
+        self.assertEqual(1, self.line_counter(self.file_creator_runner.file_creator.file_path))

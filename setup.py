@@ -9,7 +9,7 @@ install_requires = [
 
 setup(
     name='Parcks',
-    version='2.2.0',
+    version='2.5.0',
     description="A Standardized Packages Installer",
     long_description="A Standardized Packages Installer",
     author="Setarit",

@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
+from src.domain.log.logger import Logger
 import tempfile, subprocess
 
 class FileCreatorRunner:
@@ -39,6 +40,7 @@ class FileCreatorRunner:
             self._create_file_as_root()
         else:
             self._create_file_current_user()
+        Logger.logger.info("File successfully created at "+self.file_creator.file_path)
 
     def _create_file_as_root(self):
         call_array = ["sudo"]+self.call_array
@@ -54,6 +56,7 @@ class FileCreatorRunner:
         """
         temp_file = tempfile.NamedTemporaryFile(delete=False)
         self.temp_file_location = temp_file.name
+        Logger.logger.debug("Writing to temporary file: "+self.temp_file_location)
         temp_file.write(self.file_creator.contents)
         temp_file.close()
 

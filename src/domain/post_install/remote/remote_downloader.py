@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-import requests, src.domain.parse.remote_parser
+import requests
 from src.domain.log.logger import Logger
 
 class RemoteDownloader:
@@ -34,11 +34,10 @@ class RemoteDownloader:
     def download(self):
         """
         Downloads the package from the repository
-        :returns: The downloaded package
-        :rtype: src.domain.remote.Remote
+        :returns: The plain package json
+        :rtype: object or list
         """
-        package_json = self.download_from_repo()
-        return self.parse(package_json)
+        return self.download_from_repo()
         
     def download_from_repo(self):
         """
@@ -46,17 +45,7 @@ class RemoteDownloader:
         :returns: The plain package json
         :rtype: json
         """
-        Logger.logger.info("Downloading remote " + self.remote.name + " from repository")
+        Logger.logger.info("Downloading remote '" + self.remote.name + "' from repository")
         url = self.remote.url
         response = requests.get(url)
         return response.json()
-        
-    def parse(self, remote_json):
-        """
-        Parses the plain package_json
-        Uses :class:`src.domain.parse.remote_parser.PluginParser`
-        :returns: The downloaded package
-        :rtype: src.domain.remote.Remote
-        """
-        parser = RemoteParser(remote_json) #already imported in post_installation_parser
-        return parser.parse()

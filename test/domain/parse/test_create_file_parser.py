@@ -70,3 +70,8 @@ class TestRemoteParser(unittest.TestCase):
         parser = CreateFileParser(self.invalid_create_file_JSON)
         with self.assertRaises(MalformedCreateFileError):
             parser.parse()
+
+    def test_load_root_returns_false_if_no_root_attribute(self):
+        parser = CreateFileParser(self.valid_create_file_JSON)
+        result = parser.parse()
+        self.assertFalse(result.as_root)

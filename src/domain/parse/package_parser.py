@@ -22,7 +22,7 @@ from __future__ import absolute_import
 
 from src.domain.model.package import Package
 from src.domain.parse.json_parsable import JSONParsable
-from src.domain.parse.post_installation_parser import PostInstallationParser
+import src.domain.parse.post_installation_parser
 
 
 class PackageParser(JSONParsable):
@@ -56,7 +56,7 @@ class PackageParser(JSONParsable):
         :returns: list of remotes or an empty list if no post-installation key provided
         """
         try:
-            post_installation_parser = PostInstallationParser(package_json["post-installation"])
+            post_installation_parser = src.domain.parse.post_installation_parser.PostInstallationParser(package_json["post-installation"])
             return post_installation_parser.parse()
         except KeyError:
             return []

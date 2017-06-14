@@ -19,9 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-
-from src.domain.parse.post_installation_parser import PostInstallationParser
-
+import src.domain.parse.post_installation_parser
 
 class PostInstallationFacade:
     def __init__(self, post_install_runnables):
@@ -40,7 +38,7 @@ class PostInstallationFacade:
         :return: The created PostInstallationFacade
         """
         json_array = cls._check_if_json_is_list(json)
-        parser = PostInstallationParser(json_array)
+        parser = src.domain.parse.post_installation_parser.PostInstallationParser(json_array)
         post_installation_runnables = parser.parse()
         return cls(post_installation_runnables)
 

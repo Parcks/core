@@ -38,5 +38,5 @@ class Remote(PostInstallRunnable):
         self.url = url
         self.installer = RemoteRunner(self)
 
-    def install(self):
+    def run(self):
         self.installer.run()

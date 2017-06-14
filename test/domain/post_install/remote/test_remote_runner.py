@@ -24,9 +24,12 @@ import unittest
 
 from src.domain.log.logger import Logger
 from src.domain.model.post_install.remote import Remote
+from src.domain.model.post_install.shell import Shell
+from src.domain.model.post_install.shell_command import ShellCommand
 from src.domain.post_install.remote.remote_downloader import RemoteDownloader
 from src.domain.post_install.remote.remote_runner import RemoteRunner
 from src.domain.post_install.remote.remote_validator import RemoteValidator
+from src.service.post_installation_facade import PostInstallationFacade
 
 try:
     from unittest.mock import patch
@@ -46,25 +49,34 @@ class TestRemoteRunner(unittest.TestCase):
     def tearDown(self):
         Logger.enable()
         sys.stdout = self.saved_out
-        
+
+    @patch.object(RemoteRunner, '_boot_post_installation_facade')
     @patch.object(RemoteDownloader, 'download')
     @patch.object(RemoteValidator, 'validate')
-    def test_run_calls_validate_on_remote_validator(self,  mock,  mocked_remote_downloader_download):
+    def test_run_calls_validate_on_remote_validator(self,  mock,  mocked_remote_downloader_download, mocked_boot_facade):
         self.remote_runner_with_remote_verified_source.run()
         self.assertTrue(mock.call_count > 0)
 
-    @patch.object(RemoteRunner, 'download')
-    def test_run_calls_download(self, mocked_download):
+    @patch.object(RemoteRunner, '_boot_post_installation_facade')
+    @patch.object(RemoteRunner, '_download')
+    def test_run_calls_download(self, mocked_download, mocked_facade):
         self.remote_runner_with_remote_verified_source.run()
         self.assertTrue(mocked_download.called)
         
     @patch.object(RemoteDownloader, 'download')
     def test_download_remote_from_repository_calls_download_on_remote_downloader(self,  mock):
-        self.remote_runner_with_remote_verified_source.download_remote_from_repository()
+        self.remote_runner_with_remote_verified_source._download_remote_from_repository()
         self.assertTrue(mock.call_count == 1)
 
-    @patch.object(RemoteRunner, 'ask_confirmation')
+    @patch.object(RemoteRunner, '_ask_confirmation')
     @patch.object(RemoteValidator, 'is_external_download_url')
     def test_verify_url_calls_is_external_download_url_on_remote_validator_url_if_download_required(self, mock, mocked_input):
-        self.remote_runner_unverified_remote_source.verify_url()
+        self.remote_runner_unverified_remote_source._verify_url()
+        self.assertEqual(1, mock.call_count)
+
+    @patch.object(RemoteRunner, '_download')
+    @patch.object(RemoteRunner, '_boot_post_installation_facade')
+    def test_run_calls__boot_post_installation_facade(self, mock, mock_download):
+        self.remote_runner_with_remote_verified_source.run()
+        self.assertTrue(mock.called)
         self.assertEqual(1, mock.call_count)

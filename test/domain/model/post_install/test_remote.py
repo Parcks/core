@@ -41,5 +41,5 @@ class TestRemote(unittest.TestCase):
     
     @patch.object(RemoteRunner, 'run')
     def test_install_calls_run_on_remote_installer(self,  mock):
-        self.remote.install()
+        self.remote.run()
         self.assertTrue(mock.called)

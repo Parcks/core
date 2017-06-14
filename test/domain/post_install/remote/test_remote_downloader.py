@@ -46,14 +46,7 @@ class TestRemoteDownloader(unittest.TestCase):
         downloaded_json_plugin = self.remote_downloader.download_from_repo()
         self.assertTrue(type(downloaded_json_plugin) is dict)
         
-    @patch.object(RemoteDownloader, 'parse')
     @patch.object(RemoteDownloader, 'download_from_repo')
-    def test_download_calls_download_from_repo(self,  mock,  mocked_parse):
+    def test_download_calls_download_from_repo(self,  mock):
         self.remote_downloader.download()
         self.assertTrue(mock.call_count == 1)
-        
-    @patch.object(RemoteDownloader, 'parse')
-    @patch.object(RemoteDownloader, 'download_from_repo')
-    def test_download_calls_parse(self,  mock,  mocked_parse):
-        self.remote_downloader.download()
-        self.assertTrue(mocked_parse.call_count == 1)
