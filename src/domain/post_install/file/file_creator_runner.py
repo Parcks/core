@@ -54,7 +54,7 @@ class FileCreatorRunner:
         Writes the contents of the FileCreator to a temporary file
         Sets the self.temp_file_location variable
         """
-        temp_file = tempfile.NamedTemporaryFile(delete=False)
+        temp_file = tempfile.NamedTemporaryFile(mode='w', delete=False)
         self.temp_file_location = temp_file.name
         Logger.logger.debug("Writing to temporary file: "+self.temp_file_location)
         temp_file.write(self.file_creator.contents)
