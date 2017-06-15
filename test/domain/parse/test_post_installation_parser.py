@@ -84,6 +84,7 @@ class TestPostInstallationParser(unittest.TestCase):
             [
                 {
                     "type":"file-create",
+                    "name":"dummy create",
                     "destination-path":"/tmp/dummy",
                     "contents":"dummy",
                     "root":false
@@ -96,6 +97,7 @@ class TestPostInstallationParser(unittest.TestCase):
         JSON = """\
         {
             "type":"file-create",
+            "name":"dummy create",
             "destination-path":"/tmp/dummy",
             "contents":"dummy",
             "root":false
@@ -123,5 +125,11 @@ class TestPostInstallationParser(unittest.TestCase):
     @patch.object(CreateFileParser, 'parse')
     def test_load_post_installation_object_calls_parse_on_CreateFileParser_if_type_fileCreate(self, mock):
         parser = PostInstallationParser(self.file_json)
-        returned = parser.parse()
+        parser.parse()
         self.assertTrue(mock.called)
+
+
+    def test_load_post_installation_loads_correct_type(self):
+        parser = PostInstallationParser(self.file_json)
+        result = parser.parse()
+        self.assertEqual("FileCreator", result[0].__class__.__name__)

@@ -28,9 +28,10 @@ try:
 except ImportError:
     from mock import patch
 
+
 class TestStarupController(unittest.TestCase):
     def setUp(self):
-        self.controller = StartupController("-i file.parcks".split())
+        self.controller = StartupController("file.parcks".split())
         Logger.disable_all()
 
     def tearDown(self):
@@ -39,14 +40,14 @@ class TestStarupController(unittest.TestCase):
     @patch.object(StartupController, 'parse_arguments')
     @patch.object(StartupController, 'boot_install_controller')
     def test_run_calls_parse_arguments(self, mocked_parse_arguments, mocked_boot_install_controller):
-        controller = StartupController("-i f.parcks".split())
+        controller = StartupController("f.parcks".split())
         controller.run()
         self.assertTrue(mocked_parse_arguments.called)
 
     @patch.object(StartupController, 'parse_arguments')
     @patch.object(StartupController, 'boot_install_controller')
     def test_run_calls_boot_install_controller(self, mocked_parse_arguments, mocked_boot_install_controller):
-        controller = StartupController("-i f.parcks".split())
+        controller = StartupController("f.parcks".split())
         controller.run()
         self.assertTrue(mocked_boot_install_controller.called)
 

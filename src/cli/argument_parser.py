@@ -19,25 +19,32 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
-import getopt
-from src.exceptions.no_installation_file_provided_error import NoInstallationFileProvidedError
+import argparse
+
 
 class ArgumentParser:
-    def __init__(self, args):
+    def __init__(self, args_from_cli):
         """
         Default constructor
-        :param args: The arguments from the command-line
-        :type args: list of str
+        :param args_from_cli: The arguments from the command-line
+        :type args_from_cli: list of str
         """
-        self.options, self.args = getopt.getopt(args, "i:", ["installer-file="])
+        self.parser = argparse.ArgumentParser(description='A Standardized Packages Installer',
+                                              prog='parcks',
+                                              epilog='Written by Setarit. '
+                                                     'Visit http://parcks.setarit.com for more info.'
+                                              )
+        self.add_arguments()
+        self.args_from_cli = args_from_cli
         self.inputFile = None
+
+    def add_arguments(self):
+        self.parser.add_argument('file', help='Absolute path to the file to execute', metavar='File')
 
     def parse(self):
         """
         Parses the command-line arguments and sets self.inputFile
         """
-        for option, argument in self.options:            
-            if(option in ("-i","--installer-file")):
-                self.inputFile = argument
-        if(self.inputFile is None):
-            raise NoInstallationFileProvidedError("No installation file provided")
+        result = self.parser.parse_args(self.args_from_cli)
+
+        self.inputFile = result.file
