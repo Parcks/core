@@ -26,6 +26,8 @@ import unittest
 from src.domain.log.logger import Logger
 from src.domain.model.post_install.file_creator import FileCreator
 from src.domain.post_install.file.file_creator_runner import FileCreatorRunner
+import sys
+from src.exceptions.file_creation_failed_error import FileCreationFailedError
 
 try:
     from unittest.mock import patch
@@ -88,3 +90,12 @@ class TestFileCreatorRunner(unittest.TestCase):
     def test_create_file_writes_to_file(self):
         self.file_creator_runner.create_file()
         self.assertEqual(1, self.line_counter(self.file_creator_runner.file_creator.file_path))
+
+    @patch.object(FileCreatorRunner, '_write_to_temp_file')
+    def test_run_raises_FileCreationFailedError_if_file_could_not_be_moved(self, mocked_write_to_temp):
+        creator = FileCreator("Dummy creator", "/invalid/path", "dummy contents")
+        runner = FileCreatorRunner(creator)
+        runner.temp_file_location = "/invalid/temp/path"
+        with self.assertRaises(FileCreationFailedError):
+            runner.create_file()
+

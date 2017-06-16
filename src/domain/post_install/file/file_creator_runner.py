@@ -22,6 +22,9 @@ from __future__ import absolute_import
 from src.domain.log.logger import Logger
 import tempfile, subprocess
 
+from src.exceptions.file_creation_failed_error import FileCreationFailedError
+
+
 class FileCreatorRunner:
     def __init__(self, file_creator):
         """
@@ -44,10 +47,19 @@ class FileCreatorRunner:
 
     def _create_file_as_root(self):
         call_array = ["sudo"]+self.call_array
-        subprocess.call(call_array)
+        self._handle_result(subprocess.call(call_array))
 
     def _create_file_current_user(self):
-        subprocess.call(self.call_array)
+        self._handle_result(subprocess.call(self.call_array))
+
+    def _handle_result(self, result_code):
+        """
+        Handles the result of the move to the destination-path
+        :param result_code: The result code
+        :raises: FileCreationFailedError if the file could not be moved
+        """
+        if result_code != 0:
+            raise FileCreationFailedError("Could not move the file to "+self.file_creator.file_path)
 
     def _write_to_temp_file(self):
         """

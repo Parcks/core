@@ -48,6 +48,7 @@ class TestRemoteRunner(unittest.TestCase):
         
     def tearDown(self):
         Logger.enable()
+        sys.stdout.close()
         sys.stdout = self.saved_out
 
     @patch.object(RemoteRunner, '_boot_post_installation_facade')
