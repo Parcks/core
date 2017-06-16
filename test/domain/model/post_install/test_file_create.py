@@ -22,23 +22,24 @@ from __future__ import absolute_import
 import unittest
 
 from src.domain.log.logger import Logger
-from src.domain.model.post_install.file_creator import FileCreator
-from src.domain.post_install.file.file_creator_runner import FileCreatorRunner
+from src.domain.model.post_install.file_create import FileCreate
+from src.domain.post_install.file.file_create_runner import FileCreateRunner
 
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
 
-class TestFileCreator(unittest.TestCase):
+
+class TestFileCreate(unittest.TestCase):
     def setUp(self):
         Logger.disable_all()
-        self.file_creator = FileCreator("Dummy creator", "dummy path", "dummy contents")
+        self.file_create = FileCreate("Dummy creator", "dummy path", "dummy contents")
 
     def tearDown(self):
         Logger.enable()
 
-    @patch.object(FileCreatorRunner, 'create_file')
+    @patch.object(FileCreateRunner, 'create_file')
     def test_run_calls_create_file_on_FileCreatorRunner(self, mock):
-        self.file_creator.run()
+        self.file_create.run()
         self.assertTrue(mock.called)

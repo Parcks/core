@@ -132,4 +132,4 @@ class TestPostInstallationParser(unittest.TestCase):
     def test_load_post_installation_loads_correct_type(self):
         parser = PostInstallationParser(self.file_json)
         result = parser.parse()
-        self.assertEqual("FileCreator", result[0].__class__.__name__)
+        self.assertEqual("FileCreate", result[0].__class__.__name__)

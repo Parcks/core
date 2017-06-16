@@ -20,7 +20,7 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 
-from src.domain.model.post_install.file_creator import FileCreator
+from src.domain.model.post_install.file_create import FileCreate
 from src.domain.parse.json_parsable import JSONParsable
 from src.exceptions.malformed_create_file_error import MalformedCreateFileError
 
@@ -31,7 +31,7 @@ class CreateFileParser(JSONParsable):
 
     def parse(self):
         try:
-            return FileCreator(
+            return FileCreate(
                 self.json_object["name"],
                 self.json_object["destination-path"],
                 self.json_object["contents"],

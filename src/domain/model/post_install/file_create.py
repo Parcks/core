@@ -21,12 +21,10 @@ Setarit - parcks[at]setarit.com
 from __future__ import absolute_import
 
 from src.domain.model.post_install.file_handle import FileHandle
-from src.domain.post_install.file.file_creator_runner import FileCreatorRunner
+from src.domain.post_install.file.file_create_runner import FileCreateRunner
 
 
-class FileCreator(FileHandle):
-
-
+class FileCreate(FileHandle):
     def __init__(self, name, file_path, contents, as_root=False):
         """
         Default constructor
@@ -39,9 +37,9 @@ class FileCreator(FileHandle):
         :type contents: str
         :type as_root: bool
         """
-        super(FileCreator, self).__init__(name, file_path, as_root)
+        super(FileCreate, self).__init__(name, file_path, as_root)
         self.contents = contents
-        self.runner = FileCreatorRunner(self)
+        self.runner = FileCreateRunner(self)
 
     def run(self):
         self.runner.create_file()

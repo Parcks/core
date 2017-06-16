@@ -25,25 +25,25 @@ import tempfile, subprocess
 from src.exceptions.file_creation_failed_error import FileCreationFailedError
 
 
-class FileCreatorRunner:
-    def __init__(self, file_creator):
+class FileCreateRunner:
+    def __init__(self, file_create):
         """
         Default constructor
-        :param file_creator: The FileCreator object to be executed
-        :type file_creator: :class:`src.domain.model.post_install.file_creator.FileCreator`
+        :param file_create: The FileCreator object to be executed
+        :type file_create: :class:`src.domain.model.post_install.file_create.FileCreate`
         """
-        self.file_creator = file_creator
+        self.file_create = file_create
         self.temp_file_location = None
         self.call_array = None
 
     def create_file(self):
         self._write_to_temp_file()
         self._create_call_array()
-        if self.file_creator.as_root:
+        if self.file_create.as_root:
             self._create_file_as_root()
         else:
             self._create_file_current_user()
-        Logger.logger.info("File successfully created at "+self.file_creator.file_path)
+        Logger.logger.info("File successfully created at " + self.file_create.file_path)
 
     def _create_file_as_root(self):
         call_array = ["sudo"]+self.call_array
@@ -59,7 +59,7 @@ class FileCreatorRunner:
         :raises: FileCreationFailedError if the file could not be moved
         """
         if result_code != 0:
-            raise FileCreationFailedError("Could not move the file to "+self.file_creator.file_path)
+            raise FileCreationFailedError("Could not move the file to " + self.file_create.file_path)
 
     def _write_to_temp_file(self):
         """
@@ -69,9 +69,9 @@ class FileCreatorRunner:
         temp_file = tempfile.NamedTemporaryFile(mode='w', delete=False)
         self.temp_file_location = temp_file.name
         Logger.logger.debug("Writing to temporary file: "+self.temp_file_location)
-        temp_file.write(self.file_creator.contents)
+        temp_file.write(self.file_create.contents)
         temp_file.close()
 
     def _create_call_array(self):
-        call_array_as_str = "mv "+self.temp_file_location+" "+self.file_creator.file_path
+        call_array_as_str = "mv "+self.temp_file_location+" "+self.file_create.file_path
         self.call_array = call_array_as_str.split(" ")
