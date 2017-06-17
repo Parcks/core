@@ -20,7 +20,10 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 
-from src.domain.parse.create_file_parser import CreateFileParser
+from operator import pos
+
+from src.domain.parse.file_append_parser import FileAppendParser
+from src.domain.parse.file_create_parser import FileCreateParser
 from src.domain.parse.json_parsable import JSONParsable
 from src.domain.parse.remote_parser import RemoteParser
 from src.domain.parse.shell_parser import ShellParser
@@ -49,13 +52,14 @@ class PostInstallationParser(JSONParsable):
         return plugin_list
 
     def load_post_installation_object(self, post_installation_json_object):
-        parser = None
         if(post_installation_json_object["type"].upper()=="REMOTE"):
             parser = RemoteParser(post_installation_json_object)
         elif(post_installation_json_object["type"].upper()=="SHELL"):
             parser = ShellParser(post_installation_json_object)
         elif post_installation_json_object["type"].upper()=="FILE-CREATE":
-            parser = CreateFileParser(post_installation_json_object)
+            parser = FileCreateParser(post_installation_json_object)
+        elif post_installation_json_object["type"].upper()=="FILE-APPEND":
+            parser = FileAppendParser(post_installation_json_object)
         else:
             raise UnknownPostInstallationObjectError(post_installation_json_object["type"])
         return parser.parse()

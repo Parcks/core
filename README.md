@@ -2,6 +2,9 @@
 See [the official website](http://parcks.setarit.com/) for more info.
 Parcks is a project from [Setarit](http://setarit.com)
 
+## Docs
+See [wiki](https://github.com/Parcks/core/wiki) and [blog posts](http://parcks.setarit.com/news_overview.html).
+
 ## Running the tests
 To run the test fire up your terminal and run `python -m unittest discover` or `python3 -m unittest discover` for Python 3.3+
 
@@ -11,7 +14,7 @@ To run the test fire up your terminal and run `python -m unittest discover` or `
 * Update package list (Debian: `apt-get update`) before installing once a week
 * Continue the execution of the remaining plugins if one is unverified (currently this kills Parcks)
 * Allow running a plugin without an installer
-* Improve test coverage (currently (v.2.1.0) 89%)
+* Keep a high test coverage (currently (v.2.5.0) 90%)
 * Make Parcks a standalone package manager
 
 ## Tested distros

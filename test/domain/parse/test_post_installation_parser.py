@@ -23,7 +23,7 @@ import unittest,json
 from src.domain.parse.post_installation_parser import PostInstallationParser
 from src.domain.parse.remote_parser import RemoteParser
 from src.domain.parse.shell_parser import ShellParser
-from src.domain.parse.create_file_parser import CreateFileParser
+from src.domain.parse.file_create_parser import FileCreateParser
 from src.domain.log.logger import Logger
 from src.exceptions.unknown_post_installation_object_error import UnknownPostInstallationObjectError
 try:
@@ -37,7 +37,7 @@ class TestPostInstallationParser(unittest.TestCase):
         self.create_valid_json()
         self.create_unknown_type_json()
         self.create_file_json()
-        self.create_valid_object_json()
+        self.create_valid_file_append_json()
         self.parser = PostInstallationParser(self.validJSON)
         Logger.disable_all()
         
@@ -93,17 +93,18 @@ class TestPostInstallationParser(unittest.TestCase):
         """
         self.file_json = json.loads(JSON)
 
-    def create_valid_object_json(self):
+    def create_valid_file_append_json(self):
         JSON = """\
-        {
-            "type":"file-create",
-            "name":"dummy create",
-            "destination-path":"/tmp/dummy",
-            "contents":"dummy",
-            "root":false
-        }
+        [
+            {
+                "type":"file-append",
+                "name":"Dummy append",
+                "destination-path":"/tmp",
+                "contents":"Dummy content"
+            }
+        ]
         """
-        self.post_install_object_json = json.loads(JSON)
+        self.file_append_json = json.loads(JSON)
 
     @patch.object(RemoteParser, 'parse')
     @patch.object(ShellParser, 'parse')
@@ -122,7 +123,7 @@ class TestPostInstallationParser(unittest.TestCase):
         with self.assertRaises(UnknownPostInstallationObjectError):
             parser.parse()
 
-    @patch.object(CreateFileParser, 'parse')
+    @patch.object(FileCreateParser, 'parse')
     def test_load_post_installation_object_calls_parse_on_CreateFileParser_if_type_fileCreate(self, mock):
         parser = PostInstallationParser(self.file_json)
         parser.parse()
@@ -133,3 +134,8 @@ class TestPostInstallationParser(unittest.TestCase):
         parser = PostInstallationParser(self.file_json)
         result = parser.parse()
         self.assertEqual("FileCreate", result[0].__class__.__name__)
+
+    def test_load_post_installation_loads_FileAppendParser_if_type_file_append(self):
+        parser = PostInstallationParser(self.file_append_json)
+        result = parser.parse()
+        self.assertEqual("FileAppend", result[0].__class__.__name__)

@@ -20,7 +20,7 @@ Setarit - parcks[at]setarit.com
 """
 from __future__ import absolute_import
 import unittest, json
-from src.domain.parse.create_file_parser import CreateFileParser
+from src.domain.parse.file_create_parser import FileCreateParser
 from src.exceptions.malformed_create_file_error import MalformedCreateFileError
 from src.domain.log.logger import Logger
 
@@ -30,7 +30,7 @@ except ImportError:
     from mock import patch
 
 
-class TestRemoteParser(unittest.TestCase):
+class TestFileCreateParser(unittest.TestCase):
     def setUp(self):
         self.create_valid_create_file_json()
         self.create_invalid_create_file_json()
@@ -60,18 +60,18 @@ class TestRemoteParser(unittest.TestCase):
         self.invalid_create_file_JSON = json.loads(JSON)
 
     def test_parse_returns_FileCreator(self):
-        parser = CreateFileParser(self.valid_create_file_JSON)
+        parser = FileCreateParser(self.valid_create_file_JSON)
         file_creator = parser.parse()
         self.assertEqual("dummy creator", file_creator.name)
         self.assertEqual("/tmp/xyz", file_creator.file_path)
         self.assertEqual("JValck", file_creator.contents)
 
     def test_parse_raises_malformed_remote_error_on_invalid_json(self):
-        parser = CreateFileParser(self.invalid_create_file_JSON)
+        parser = FileCreateParser(self.invalid_create_file_JSON)
         with self.assertRaises(MalformedCreateFileError):
             parser.parse()
 
     def test_load_root_returns_false_if_no_root_attribute(self):
-        parser = CreateFileParser(self.valid_create_file_JSON)
+        parser = FileCreateParser(self.valid_create_file_JSON)
         result = parser.parse()
         self.assertFalse(result.as_root)

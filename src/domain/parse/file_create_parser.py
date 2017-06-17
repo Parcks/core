@@ -25,9 +25,9 @@ from src.domain.parse.json_parsable import JSONParsable
 from src.exceptions.malformed_create_file_error import MalformedCreateFileError
 
 
-class CreateFileParser(JSONParsable):
+class FileCreateParser(JSONParsable):
     def __init__(self, json_object):
-        super(CreateFileParser, self).__init__(json_object)
+        super(FileCreateParser, self).__init__(json_object)
 
     def parse(self):
         try:
