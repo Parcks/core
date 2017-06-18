@@ -22,6 +22,8 @@ from __future__ import absolute_import
 import shutil
 import os
 import subprocess
+
+from src.domain.log.logger import Logger
 from src.helper.file_permission_reader import FilePermissionReader
 
 
@@ -40,14 +42,17 @@ class FileAppendRunner:
         """
         Appends the content to an existing file
         """
+        Logger.logger.info("Appending to file: "+self.file_append.file_path)
         self._store_old_permissions()
         self._copy_file_to_writable_temp()
         self._append_new_contents()
         self._move_temp_to_destination()
         self._restore_permissions()
+        Logger.logger.info("File append '"+self.file_append.name+"' finished")
 
     def _store_old_permissions(self):
         self.saved_permissions = FilePermissionReader(self.file_append.file_path)
+        Logger.logger.debug("Stored old permissions")
 
     def _copy_file_to_writable_temp(self):
         """
@@ -57,11 +62,13 @@ class FileAppendRunner:
         if self.temp_file_path is None:  #python2.7
             self.temp_file_path = '/tmp/'+os.path.basename(self.file_append.file_path)
         os.chown(self.temp_file_path, os.getuid(), os.getgid())  # make writable
+        Logger.logger.debug("Copied file to temp: "+self.temp_file_path)
 
     def _append_new_contents(self):
         contents_to_append = self._prepend_newline_if_none_at_beginning_of_contents()
         with open(self.temp_file_path, 'a') as f:
             f.write(contents_to_append)
+        Logger.logger.debug("Contents appended to temp file")
 
     def _prepend_newline_if_none_at_beginning_of_contents(self):
         """
@@ -80,6 +87,7 @@ class FileAppendRunner:
             self._move_as_root()
         else:
             self._move_as_current()
+        Logger.logger.debug("Temp file moved to destination")
 
     def _move_as_root(self):
         call_array = ["sudo", "mv", self.temp_file_path, self.file_append.file_path]
@@ -95,3 +103,4 @@ class FileAppendRunner:
 
         subprocess.call(owner_cmd)
         subprocess.call(mode_cmd)
+        Logger.logger.debug("Permissions restored")

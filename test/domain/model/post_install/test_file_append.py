@@ -43,3 +43,7 @@ class TestFileAppend(unittest.TestCase):
         self.file_append.run()
         self.assertTrue(mock.called)
 
+    def test_path_with_home_symbol_becomes_absolute_path(self):
+        file_create = FileAppend("Dummy home", "~/test", "dummy contents")
+        self.assertFalse(file_create.file_path.startswith("~"))
+        self.assertTrue(file_create.file_path.startswith("/home"))

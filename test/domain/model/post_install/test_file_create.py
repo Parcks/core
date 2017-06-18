@@ -43,3 +43,8 @@ class TestFileCreate(unittest.TestCase):
     def test_run_calls_create_file_on_FileCreatorRunner(self, mock):
         self.file_create.run()
         self.assertTrue(mock.called)
+
+    def test_path_with_home_symbol_becomes_absolute_path(self):
+        file_create = FileCreate("Dummy home", "~/test", "dummy contents")
+        self.assertFalse(file_create.file_path.startswith("~"))
+        self.assertTrue(file_create.file_path.startswith("/home"))
