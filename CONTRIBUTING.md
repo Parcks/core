@@ -19,8 +19,15 @@ The conventions are based on [PEP8](https://www.python.org/dev/peps/pep-0008/).
 "Always leave code cleaner than you find it" (see [full explanation](http://programmer.97things.oreilly.com/wiki/index.php/The_Boy_Scout_Rule)). Even if you didn't add new functionality, feel free to reorganise the code so it's cleaner.
 
 ## Submitting changes
-Please send a Pull Request (PR) with a clear list of what you have done or changed. Always write a clear log message for your commits.
-You can expect a response from a maintainer within 7 days. If you haven’t heard anything by then, feel free to ping the thread. You can find the name of the maintainer(s) in the [README](https://github.com/Parcks/core/blob/master/README.md) file.
+Please send a Pull Request (PR) with a clear list of what you have done or changed. Always write a clear log message for your commits. An example of a good commit message can be found [here](https://github.com/Parcks/core/commit/6fb529273409edb0aa4194126a37ee89e76ce277).
+
+### What should it look like?
+- First line capitalized indicating briefly what you've changed
+- A more detailed explanation of your changes
+- A list containing all the changed, added, renamed, deleted files
+
+### Response time
+You can expect a response from a maintainer within 7 days. If you haven’t heard anything by then, feel free to ping the thread. You can find the name of the maintainer(s) in the [README](https://github.com/Parcks/core/blob/master/README.md) file. 
 
 ## Testing
 We don't accept failing pull requests. New functionality should be tested if possible. Please keep in mind that testing is done on a **Debian** system.
