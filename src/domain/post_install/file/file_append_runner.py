@@ -1,5 +1,5 @@
 """
-Environment Packages Installer
+Scriptable Packages Installer - Parcks
 Copyright (C) 2017  JValck - Setarit
 
 This program is free software; you can redistribute it and/or
