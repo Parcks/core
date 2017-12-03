@@ -18,19 +18,29 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Setarit - parcks[at]setarit.com
 """
+from __future__ import absolute_import
 
-class SoftwareCatalog:
-    def __init__(self, name, packages = None, variables = None):
+
+class Variable:
+    def __init__(self, name, description, value = None, default = None):
         """
         Default constructor
-        :param name: The name of the software catalog
+        :param name: The name of the variable
+        :param description: The description or question to be displayed to the user
+        :param value: The value of the variable (optional)
+        :param default: The default value of the variable (optional)
         :type name: str
-        :param packages: A list of the packages to install. Can be None
-        :type packages: list of :class:`src.domain.package.Package`
-        :param variables: A list of the variables. Optional
-        :type variables: list of :class:`src.domain.variable.Variable`
+        :type description: str
+        :type value: any
+        :type default: any
         """
         self.name = name
-        self.packages = packages
-        self.variables = variables
+        self.value = value
+        self.default = default
 
+    def is_question(self):
+        """
+        Checks if the variable value should be asked to the user
+        :return: True if the variable is inputted by the user
+        """
+        return True if self.value is None else False

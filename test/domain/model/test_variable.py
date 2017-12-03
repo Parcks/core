@@ -23,35 +23,30 @@ from __future__ import absolute_import
 import unittest
 
 from src.domain.log.logger import Logger
-from src.domain.model.package import Package
-from src.domain.model.post_install.remote import Remote
+from src.domain.model.variable import Variable
 
 try:
     from unittest.mock import patch
 except ImportError:
     from mock import patch
 
-class TestPackage(unittest.TestCase):
+class TestVariable(unittest.TestCase):
     def setUp(self):
         Logger.disable_all()
-        self.create_package_with_post_install()
-        self.create_package_without_post_install()
+        self.create_variable_json()
+        self.create_variable_json_as_question()
 
     def tearDown(self):
         Logger.enable()
 
-    def create_package_with_post_install(self):
-        self.package_with_post_install = Package("php", post_installation_runnables=[Remote("dummy"), Remote("other dummy")])
+    def create_variable_json(self):
+        self.variable = Variable("name", "desc", 7)
 
-    def create_package_without_post_install(self):
-        self.package_without_post_install = Package("php")
+    def create_variable_json_as_question(self):
+        self.question_variable = Variable("name", "question")
 
-    @patch.object(Remote, 'run')
-    def test_handle_post_installation_calls_install_on_plugin_if_plugin_provided(self, mocked_install):
-        self.package_with_post_install.handle_post_installation()
-        self.assertEqual(2, mocked_install.call_count)
+    def test_is_question_returns_true_if_no_value_provided(self):
+        self.assertTrue(self.question_variable.is_question())
 
-    @patch.object(Remote, 'run')
-    def test_handle_post_installation_does_no_call_install_on_plugin_if_no_plugin_provided(self, mocked_install):
-        self.package_without_post_install.handle_post_installation()
-        self.assertFalse(mocked_install.called)
+    def test_is_question_returns_false_if_value_provided(self):
+        self.assertFalse(self.variable.is_question())
