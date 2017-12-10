@@ -22,6 +22,7 @@ from __future__ import absolute_import
 
 from src.domain.model.variable import Variable
 from src.domain.parse.json_parsable import JSONParsable
+from src.exceptions.malformed_variable_error import MalformedVariableError
 
 
 class VariableParser(JSONParsable):
@@ -44,8 +45,12 @@ class VariableParser(JSONParsable):
         return variables
 
     def parse_variable(self, json_variable):
-        current_variable = Variable(json_variable["name"], description=json_variable["description"])
-        if "value" in json_variable:
-            current_variable.value = json_variable["value"]
-        if "default" in json_variable:
-            current_variable.default = json_variable["default"]
+        try:
+            current_variable = Variable(json_variable["name"], description=json_variable["description"])
+            if "value" in json_variable:
+                current_variable.value = json_variable["value"]
+            if "default" in json_variable:
+                current_variable.default = json_variable["default"]
+            return current_variable
+        except KeyError as error:
+            raise MalformedVariableError("Missing "+str(error)+" field")

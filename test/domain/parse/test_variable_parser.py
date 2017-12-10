@@ -25,6 +25,7 @@ import unittest
 
 from src.domain.log.logger import Logger
 from src.domain.parse.variable_parser import VariableParser
+from src.exceptions.malformed_variable_error import MalformedVariableError
 
 try:
     from unittest.mock import patch
@@ -112,3 +113,28 @@ class TestVariableParser(unittest.TestCase):
     def test_parse_returns_list_with_two_variables_if_two_provided(self):
         parser = VariableParser(self.two_json)
         self.assertEqual(2, len(parser.parse()))
+
+    def test_parse_variable_returns_malformed_variable_error_if_no_name_provided(self):
+        parser = VariableParser("")
+        with self.assertRaises(MalformedVariableError):
+            parser.parse_variable(self.json_without_name)
+
+    def test_parse_variable_returns_malformed_variable_error_if_no_description_provided(self):
+        parser = VariableParser("")
+        with self.assertRaises(MalformedVariableError):
+            parser.parse_variable(self.json_without_description)
+
+    def test_parse_variable_creates_question_variable_if_no_value_provided(self):
+        parser = VariableParser("")
+        var = parser.parse_variable(self.json_question_variable)
+        self.assertTrue(var.is_question())
+
+    def test_parse_variable_creates_variable_with_value_if_value_provided(self):
+        parser = VariableParser("")
+        var = parser.parse_variable(self.json_variable)
+        self.assertEqual("master", var.value)
+
+    def test_parse_variable_returns_Variable_object(self):
+        parser = VariableParser("")
+        var = parser.parse_variable(self.json_variable)
+        self.assertEqual("Variable", var.__class__.__name__)
